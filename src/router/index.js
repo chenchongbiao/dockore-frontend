@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const originalPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function(location) {
+VueRouter.prototype.push = function (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
@@ -17,6 +17,26 @@ const routes = [
       {
         path: 'image',
         component: () => import('@/views/image/Index'),
+      },
+      {
+        path: 'image/:id',
+        component: () => import('@/views/image/Item'),
+      },
+      {
+        path: 'image/add',
+        component: () => import('@/views/image/Item'),
+      },
+      {
+        path: 'container',
+        component: () => import('@/views/container/Index'),
+      },
+      {
+        path: 'container/:id',
+        component: () => import('@/views/container/Item'),
+      },
+      {
+        path: 'container/add',
+        component: () => import('@/views/container/Item'),
       },
     ],
   },

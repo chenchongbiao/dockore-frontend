@@ -1,14 +1,19 @@
 <template>
   <div>
-    <el-table :data="image_items" border>
+    <el-table :data="container_items" border>
       <el-table-column
               prop="id"
               label="ID"
               width="200">
       </el-table-column>
       <el-table-column
-              prop="author"
-              label="创建者"
+              prop="name"
+              label="名称"
+              width="200">
+      </el-table-column>
+      <el-table-column
+              prop="image_id"
+              label="镜像ID"
               width="200">
       </el-table-column>
       <el-table-column
@@ -17,20 +22,10 @@
               width="240">
       </el-table-column>
       <el-table-column
-              prop="size"
-              label="镜像尺寸"
-              width="120">
-      </el-table-column>
-      <el-table-column
-              prop="comment"
-              label="备注"
-              width="320">
-      </el-table-column>
-      <el-table-column
               label="操作"
               width="200">
         <template slot-scope="scope">
-          <router-link class="el-button el-button--mini" :to="`/image/${scope.row.id}`">编辑</router-link>
+          <router-link class="el-button el-button--mini" :to="`/container/${scope.row.id}`">编辑</router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -42,20 +37,20 @@
     name: "Index",
     data() {
       return {
-        image_items: [],
+        container_items: [],
       };
     },
     created() {
-      this.getImageItems();
+      this.getContainerItems();
     },
     methods: {
-      getImageItems() {
-        this.$axios.post(this.$api.IMAGE_LIST, {
+      getContainerItems() {
+        this.$axios.post(this.$api.CONTAINER_LIST, {
           token: this.$store.getters.userToken,
         }).then(
             resp => {
               if (resp.code === 0) {
-                this.image_items = resp.data.items;
+                this.container_items = resp.data.items;
               }
             }
         )
