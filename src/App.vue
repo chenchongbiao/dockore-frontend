@@ -1,36 +1,11 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-header>
-        <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside v-if="isLogined">
-          <LeftASide></LeftASide>
-        </el-aside>
-        <el-main>
-          <router-view/>
-        </el-main>
-      </el-container>
-    </el-container>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import Header from "@/components/common/Header";
-  import LeftASide from "@/components/common/LeftASide";
 
-  export default {
-    components: {Header, LeftASide},
-    computed: {
-      isLogined() {
-        return this.$store.getters.userToken !== null;
-      },
-    },
-    created() {
-
-    }
-  }
 </script>
 
 <style>
@@ -44,5 +19,9 @@
 
   a {
     text-decoration: none;
+  }
+
+  body {
+    margin: 0;
   }
 </style>

@@ -6,6 +6,8 @@ export default {
   LOGIN: `${root}/user/login`,
   IMAGE_LIST: `${root}/image/list`,
   IMAGE_ITEM: `${root}/image/item`,
+  IMAGE_DELETE: `${root}/image/delete`,
   CONTAINER_LIST: `${root}/container/list`,
   CONTAINER_ITEM: `${root}/container/item`,
+  CONTAINER_DELETE: `${root}/container/delete`,
 }

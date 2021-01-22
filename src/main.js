@@ -12,6 +12,7 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
+Vue.prototype.$bus = new Vue();
 Vue.prototype.$api = api
 Vue.prototype.$storage = storage
 

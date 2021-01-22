@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-menu class="el-menu-vertical-demo" v-model="menu_index" @select="menuSelect" ref="menu">
+    <el-menu class="el-menu-vertical-demo" v-model="menu_index" ref="menu" :router="true">
       <el-menu-item :index="item.path" v-for="item in menu_items" :key="item.path">
         <i :class="item.icon"></i>
         <span slot="title">{{item.title}}</span>
@@ -21,18 +21,15 @@
         ],
       }
     },
-    created() {
-      for (let item of this.menu_items) {
-        if (this.$route.path.indexOf(item.path) === 0) {
-          this.menu_index = item.path;
+    watch: {
+      $route(oldVal, newVal) {
+        for (let item of this.menu_items) {
+          if (this.$route.path.indexOf(item.path) === 0) {
+            this.menu_index = item.path;
+          }
         }
       }
     },
-    methods: {
-      menuSelect(index) {
-        this.$router.push(index);
-      }
-    }
   }
 </script>
 
