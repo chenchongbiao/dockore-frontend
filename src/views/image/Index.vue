@@ -5,9 +5,16 @@
         搜索：
         <el-input style="width: 256px" placeholder="请输入关键字" v-model="keyword"></el-input>
       </div>
-      <el-button style="float: right">导入镜像</el-button>
+      <div style="float: right">
+        <el-button @click="deleteSelectItems" type="danger" v-if="selection.length">删除选中</el-button>
+        <el-button>导入镜像</el-button>
+      </div>
     </div>
-    <el-table :data="tableData" border>
+    <el-table :data="tableData" border @selection-change="handleSelectionChange">
+      <el-table-column
+          type="selection"
+          width="55">
+      </el-table-column>
       <el-table-column
           prop="id"
           label="ID"
@@ -52,8 +59,6 @@
 </template>
 
 <script>
-import CreateDialog from "@/components/container/CreateDialog";
-
 export default {
   name: "Index",
   computed: {
@@ -81,6 +86,7 @@ export default {
   data() {
     return {
       items: [],
+      selection: [],
       keyword: '',
       page: 1,
       page_size: 10,
@@ -90,6 +96,13 @@ export default {
     this.getImageItems();
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selection = val;
+    },
+    deleteSelectItems() {
+      let ids = this.selection.map(items => items.id);
+      this.deleteImageItems(ids)
+    },
     getImageItems() {
       this.$axios.post(this.$api.IMAGE_LIST, {
         token: this.$store.getters.userToken,

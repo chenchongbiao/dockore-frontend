@@ -7,10 +7,15 @@
       </div>
       <div style="float: right">
         <el-switch active-text="显示所有容器" style="margin-right: 16px" v-model="is_all"></el-switch>
+        <el-button @click="deleteSelectItems" type="danger" v-if="selection.length">删除选中</el-button>
         <el-button @click="openCreateDialog">创建容器</el-button>
       </div>
     </div>
-    <el-table :data="tableData" border>
+    <el-table :data="tableData" border @selection-change="handleSelectionChange">
+      <el-table-column
+          type="selection"
+          width="55">
+      </el-table-column>
       <el-table-column
           prop="id"
           label="ID"
@@ -80,6 +85,7 @@ export default {
     return {
       items: [],
       is_all: false,
+      selection: [],
       keyword: '',
       page: 1,
       page_size: 10,
@@ -94,6 +100,13 @@ export default {
     }
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selection = val;
+    },
+    deleteSelectItems() {
+      let ids = this.selection.map(items => items.id);
+      this.deleteContainerItems(ids)
+    },
     getContainerItems() {
       this.$axios.post(this.$api.CONTAINER_LIST, {
         token: this.$store.getters.userToken,
