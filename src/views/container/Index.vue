@@ -108,10 +108,7 @@ export default {
       this.deleteContainerItems(ids)
     },
     getContainerItems() {
-      this.$axios.post(this.$api.CONTAINER_LIST, {
-        token: this.$store.getters.userToken,
-        is_all: this.is_all,
-      }).then(
+      this.$api.containerList(this.is_all).then(
           resp => {
             if (resp.code === 0) {
               this.items = resp.data.items;
@@ -120,10 +117,7 @@ export default {
       )
     },
     deleteContainerItems(ids) {
-      this.$axios.post(this.$api.CONTAINER_DELETE, {
-        token: this.$store.getters.userToken,
-        ids: ids,
-      }).then(
+      this.$api.containerDelete(ids).then(
           resp => {
             let success = resp.code === 0;
             if (success)

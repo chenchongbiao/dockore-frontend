@@ -29,7 +29,23 @@ export default {
     },
   },
   created() {
+    if (this.isLogined) {
+      this.updateUserInfo();
+    }
 
+  },
+  methods: {
+    updateUserInfo() {
+      this.$api.userInfo().then(
+          resp => {
+            if (!resp.code) {
+              this.$router.push('/login');
+            } else {
+              this.$store.commit('setUserInfo', resp.data);
+            }
+          }
+      )
+    }
   }
 }
 </script>

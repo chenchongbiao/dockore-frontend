@@ -7,16 +7,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user_token: null,
-    username: null,
+    user_info: null,
   },
   mutations: {
     setUserToken(state, token) {
       state.user_token = token;
       storage.local.set('user_token', token);
     },
-    setUserName(state, username) {
-      state.username = username;
-      storage.local.set('username', username);
+    setUserInfo(state, user_info) {
+      state.user_info = user_info;
     },
   },
   actions: {},
@@ -29,12 +28,8 @@ export default new Vuex.Store({
       }
       return token;
     },
-    userName(state) {
-      let username = state.username;
-      if (!username) {
-        username = storage.local.get('username');
-      }
-      return username;
+    userInfo(state) {
+      return state.user_info;
     },
   }
 })

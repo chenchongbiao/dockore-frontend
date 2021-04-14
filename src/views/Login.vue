@@ -35,15 +35,11 @@ export default {
   },
   methods: {
     login(username, password) {
-      this.$axios.post(this.$api.LOGIN, {
-        username: username,
-        password: password,
-      }).then(
+      this.$api.userLogin(username, password).then(
           resp => {
             let success = resp.code === 0;
             if (success) {
               this.$store.commit('setUserToken', resp.data.token);
-              this.$store.commit('setUserName', username);
               this.$router.push('/');
             }
             this.$notify({title: '用户登录', message: resp.msg, type: success ? "success" : "error"});

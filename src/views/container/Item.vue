@@ -15,9 +15,7 @@
     },
     methods: {
       getItemInfo(id) {
-        this.$axios.post(`${this.$api.CONTAINER_ITEM}/${id}`, {
-          token: this.$store.getters.userToken
-        }).then(
+        this.$api.containerItem(id).then(
             resp => {
               if (resp.code === 0) {
                 this.item = resp.data.item;

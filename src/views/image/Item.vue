@@ -15,9 +15,7 @@
     },
     methods: {
       getItemInfo(id) {
-        this.$axios.post(`${this.$api.IMAGE_ITEM}/${id}`, {
-          token: this.$store.getters.userToken
-        }).then(
+        this.$api.imageItem(id).then(
             resp => {
               if (resp.code === 0) {
                 this.item = resp.data.item;
