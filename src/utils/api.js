@@ -19,7 +19,7 @@ let axios = (new Vue()).$axios;
 
 export default {
   userLogin: (username, password) => axios.post(url.USER_LOGIN, {username, password}),
-  userInfo: () => axios.post(url.USER_INFO),
+  userInfo: () => axios.get(url.USER_INFO),
   imageList: is_all => axios.get(url.IMAGE_LIST, {params: {is_all}}),
   imageItem: id => axios.get(`${url.IMAGE_ITEM}/${id}`),
   imageDelete: ids => axios.post(url.IMAGE_DELETE, {ids}),
