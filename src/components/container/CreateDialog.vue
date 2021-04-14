@@ -12,7 +12,7 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <template v-if="step === '1'">
+        <div v-show="step === '1'">
           <div id="navbar" style="height: 56px">
             <div style="float: left">
               搜索：
@@ -52,10 +52,10 @@
                 :page-sizes="[5, 10, 50, 100]" :total="this.items.length"
                 background layout="prev, pager, next, sizes"></el-pagination>
           </div>
-        </template>
-        <template v-if="step === '2'">
+        </div>
+        <div v-show="step === '2'">
 
-        </template>
+        </div>
       </el-main>
     </el-container>
     <span slot="footer" class="dialog-footer">
@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     getImageItems() {
-      this.$api.imageList(this.parent.is_all).then(
+      this.$api.imageList(false).then(
           resp => {
             if (resp.code === 0) {
               this.items = resp.data.items;
