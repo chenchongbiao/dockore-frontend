@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-menu v-model="menu_index" :default-active="menu_index" ref="menu" :router="true">
-      <el-menu-item :index="item.path" v-for="item in menu_items" :key="item.path">
+    <el-menu ref="menu" v-model="menu_index" :default-active="menu_index" :router="true">
+      <el-menu-item v-for="item in menu_items" :key="item.path" :index="item.path">
         <i :class="item.icon"></i>
         <span slot="title">{{ item.title }}</span>
       </el-menu-item>

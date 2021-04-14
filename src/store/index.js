@@ -16,6 +16,11 @@ export default new Vuex.Store({
     },
     setUserInfo(state, user_info) {
       state.user_info = user_info;
+      storage.local.set('user_info', user_info);
+    },
+    logout(state) {
+      state.user_token = '';
+      state.user_info = {};
     },
   },
   actions: {},
@@ -23,12 +28,16 @@ export default new Vuex.Store({
   getters: {
     userToken(state) {
       let token = state.user_token;
-      if (!token) {
+      if (!token)
         token = storage.local.get('user_token');
-      }
+
       return token;
     },
     userInfo(state) {
+      let user_token = state.user_token;
+      if (!user_token)
+        user_token = storage.local.get('user_token');
+
       return state.user_info;
     },
   }

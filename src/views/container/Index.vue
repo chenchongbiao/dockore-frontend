@@ -3,11 +3,11 @@
     <div style="height: 56px">
       <div style="float: left">
         搜索：
-        <el-input style="width: 256px" placeholder="请输入关键字" v-model="keyword"></el-input>
+        <el-input v-model="keyword" placeholder="请输入关键字" style="width: 256px"></el-input>
       </div>
       <div style="float: right">
-        <el-switch active-text="显示所有容器" style="margin-right: 16px" v-model="is_all"></el-switch>
-        <el-button @click="deleteSelectItems" type="danger" v-if="selection.length">删除选中</el-button>
+        <el-switch v-model="is_all" active-text="显示所有容器" style="margin-right: 16px"></el-switch>
+        <el-button v-if="selection.length" type="danger" @click="deleteSelectItems">删除选中</el-button>
         <el-button @click="openCreateDialog">创建容器</el-button>
       </div>
     </div>
@@ -17,39 +17,39 @@
           width="55">
       </el-table-column>
       <el-table-column
-          prop="id"
           label="ID"
+          prop="id"
           width="200">
       </el-table-column>
       <el-table-column
-          prop="name"
           label="名称"
+          prop="name"
           width="200">
       </el-table-column>
       <el-table-column
-          prop="image_id"
           label="镜像ID"
+          prop="image_id"
           width="200">
       </el-table-column>
       <el-table-column
-          prop="create_time"
           label="创建时间"
+          prop="create_time"
           width="240">
       </el-table-column>
       <el-table-column
           label="操作"
           width="200">
         <template slot-scope="scope">
-          <router-link class="el-button el-button--mini" :to="`/container/${scope.row.id}`">编辑</router-link>
-          <el-button type="danger" size="mini" @click="deleteContainerItems([scope.row.id])">删除</el-button>
+          <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">编辑</router-link>
+          <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div style="margin-top: 8px">
       <el-pagination
-          background layout="prev, pager, next, sizes"
-          :page-size.sync="page_size" :total="this.items.length"
-          :page-sizes="[5, 10, 50, 100]" :current-page.sync="page"></el-pagination>
+          :current-page.sync="page" :page-size.sync="page_size"
+          :page-sizes="[5, 10, 50, 100]" :total="this.items.length"
+          background layout="prev, pager, next, sizes"></el-pagination>
     </div>
     <CreateDialog></CreateDialog>
   </div>

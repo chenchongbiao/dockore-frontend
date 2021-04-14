@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="创建容器" :visible.sync="dialog_visible" width="1280px">
+  <el-dialog :visible.sync="dialog_visible" title="创建容器" width="1280px">
     <el-container>
       <el-aside width="224px">
         <el-menu default-active="1" @select="x => step = x">
@@ -13,44 +13,44 @@
       </el-aside>
       <el-main>
         <template v-if="step === '1'">
-          <div style="height: 56px" id="navbar">
+          <div id="navbar" style="height: 56px">
             <div style="float: left">
               搜索：
-              <el-input style="width: 256px" placeholder="请输入关键字" v-model="keyword"></el-input>
+              <el-input v-model="keyword" placeholder="请输入关键字" style="width: 256px"></el-input>
             </div>
           </div>
-          <el-table :data="tableData" border highlight-current-row ref="table" height="320px">
+          <el-table ref="table" :data="tableData" border height="320px" highlight-current-row>
             <el-table-column
-                prop="id"
                 label="ID"
+                prop="id"
                 width="200">
             </el-table-column>
             <el-table-column
-                prop="tags"
                 label="标签"
+                prop="tags"
                 width="200">
             </el-table-column>
             <el-table-column
-                prop="author"
                 label="创建者"
+                prop="author"
                 width="200">
             </el-table-column>
             <el-table-column
-                prop="create_time"
                 label="创建时间"
+                prop="create_time"
                 width="240">
             </el-table-column>
             <el-table-column
-                prop="size"
                 label="镜像尺寸"
+                prop="size"
                 width="120">
             </el-table-column>
           </el-table>
           <div style="margin-top: 8px">
             <el-pagination
-                background layout="prev, pager, next, sizes"
-                :page-size.sync="page_size" :total="this.items.length"
-                :page-sizes="[5, 10, 50, 100]" :current-page.sync="page"></el-pagination>
+                :current-page.sync="page" :page-size.sync="page_size"
+                :page-sizes="[5, 10, 50, 100]" :total="this.items.length"
+                background layout="prev, pager, next, sizes"></el-pagination>
           </div>
         </template>
         <template v-if="step === '2'">
