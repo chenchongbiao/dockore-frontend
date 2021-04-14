@@ -6,8 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user_token: null,
-    user_info: null,
+    user_token: '',
+    user_info: {},
   },
   mutations: {
     setUserToken(state, token) {

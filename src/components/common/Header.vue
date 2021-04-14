@@ -25,13 +25,13 @@
         return this.$store.getters.userToken !== null;
       },
       username() {
-        return this.$store.getters.userName;
+        return this.$store.getters.userInfo.username;
       },
     },
     methods: {
       menuSelect(index){
         if (index === 'logout') {
-          this.$store.commit('setUserName', null);
+          this.$store.commit('setUserInfo', null);
           this.$store.commit('setUserToken', null);
           this.$router.push('/login');
         }

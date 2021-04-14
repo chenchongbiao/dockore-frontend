@@ -39,9 +39,9 @@ export default {
       this.$api.userInfo().then(
           resp => {
             if (!resp.code) {
-              this.$router.push('/login');
-            } else {
               this.$store.commit('setUserInfo', resp.data);
+            } else {
+              this.$router.push('/login');
             }
           }
       )
