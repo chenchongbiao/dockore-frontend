@@ -93,6 +93,9 @@ export default {
   },
   created() {
     this.getContainerItems();
+    this.$on('refresh_containers', () => {
+      this.getContainerItems()
+    })
   },
   watch: {
     is_all(old_value, new_value) {
@@ -122,7 +125,6 @@ export default {
             let success = resp.code === 0;
             if (success)
               this.getContainerItems();
-            this.$notify({title: '删除容器', message: resp.msg, type: success ? "success" : "error"})
           }
       )
     },

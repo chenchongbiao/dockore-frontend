@@ -118,7 +118,6 @@ export default {
             let success = resp.code === 0;
             if (success)
               this.getImageItems();
-            this.$notify({title: '删除镜像', message: resp.msg, type: success ? "success" : "error"})
           }
       )
     },

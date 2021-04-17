@@ -19,8 +19,6 @@ export default {
           resp => {
             if (resp.code === 0) {
               this.item = resp.data.item;
-            } else {
-              this.$notify({message: resp.msg, type: "error"});
             }
           }
       )

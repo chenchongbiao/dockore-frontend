@@ -42,7 +42,6 @@ export default {
               this.$store.commit('setUserToken', resp.data.token);
               this.$router.push('/');
             }
-            this.$notify({title: '用户登录', message: resp.msg, type: success ? "success" : "error"});
           }
       )
     }
