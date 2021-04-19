@@ -2,6 +2,7 @@ import Vue from 'vue'
 import './plugins/axios'
 import App from './App.vue'
 import moment from "moment"
+import fileSize from "filesize"
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
@@ -17,6 +18,7 @@ Vue.prototype.$bus = new Vue()
 Vue.prototype.$api = api
 Vue.prototype.$storage = storage
 Vue.prototype.$moment = moment
+Vue.prototype.$filesize = fileSize
 moment.locale('zh-cn')
 
 new Vue({

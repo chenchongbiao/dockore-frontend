@@ -79,6 +79,7 @@ export default {
       });
       for (let item of items) {
         item.create_time = this.$moment(item.create_time).from();
+        item.size = this.$filesize(item.size);
       }
       return items;
     }
