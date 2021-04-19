@@ -86,6 +86,7 @@ export default {
       items = JSON.parse(JSON.stringify(items))
       for (let item of items) {
         item.status = status_map[item.status];
+        item.create_time = this.$moment(item.create_time).from();
       }
       return items;
     }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import './plugins/axios'
 import App from './App.vue'
+import moment from "moment"
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
@@ -12,9 +13,11 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-Vue.prototype.$bus = new Vue();
+Vue.prototype.$bus = new Vue()
 Vue.prototype.$api = api
 Vue.prototype.$storage = storage
+Vue.prototype.$moment = moment
+moment.locale('zh-cn')
 
 new Vue({
   router,

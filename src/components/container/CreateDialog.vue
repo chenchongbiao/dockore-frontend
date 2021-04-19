@@ -123,7 +123,7 @@ export default {
         return item;
       });
       for (let item of items) {
-        item.id = item.id.slice(7, 19);
+        item.create_time = this.$moment(item.create_time).from();
       }
       return items;
     },
