@@ -37,6 +37,11 @@
           width="240">
       </el-table-column>
       <el-table-column
+          label="状态"
+          prop="status"
+          width="120">
+      </el-table-column>
+      <el-table-column
           label="操作"
           width="200">
         <template slot-scope="scope">
@@ -73,18 +78,13 @@ export default {
       );
 
       items = JSON.parse(JSON.stringify(items))
-      for (let item of items) {
-        item.id = item.id.slice(0, 12);
-        item.name = item.name.slice(1);
-        item.image_id = item.image_id.slice(7, 19);
-      }
       return items;
     }
   },
   data() {
     return {
       items: [],
-      is_all: false,
+      is_all: true,
       selection: [],
       keyword: '',
       page: 1,
@@ -93,7 +93,7 @@ export default {
   },
   created() {
     this.getContainerItems();
-    this.$on('refresh_containers', () => {
+    this.$bus.$on('refresh_containers', () => {
       this.getContainerItems()
     })
   },

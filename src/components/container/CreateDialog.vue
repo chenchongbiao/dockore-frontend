@@ -101,6 +101,8 @@ export default {
   created() {
     this.$bus.$on('create_container', () => {
       this.dialog_visible = true;
+      this.step = '1';
+      this.form = {};
       this.getImageItems();
     })
   },
@@ -139,9 +141,10 @@ export default {
   methods: {
     tableCurrentChange(n, o) {
       if (n) {
-        this.loadImageInfo(n.id)
-        this.step = '2';
-        this.$refs.menu.activeIndex = '2';
+        this.loadImageInfo(n.id, () => {
+          this.step = '2';
+          this.$refs.menu.activeIndex = '2';
+        });
       }
     },
 
@@ -155,7 +158,7 @@ export default {
       )
     },
 
-    loadImageInfo(id) {
+    loadImageInfo(id, callback) {
       this.$api.imageItem(id).then(
           resp => {
             if (resp.code === 0) {
@@ -163,6 +166,7 @@ export default {
               this.form.image = this.itemName;
               this.form.tag = this.itemTags[0];
               this.form.command = this.item.command;
+              callback();
             }
           }
       )
@@ -172,17 +176,12 @@ export default {
       this.$api.containerCreate(`${this.form.image}:${this.form.tag}`, this.form.command, this.form.name).then(
           resp => {
             if (resp.code === 0) {
-              this.$bus.$emit('refresh_containers');
-              this.closeDialog();
+              this.dialog_visible = false;
             }
+            this.$bus.$emit('refresh_containers');
           }
       )
     },
-
-    closeDialog() {
-      this.dialog_visible = false;
-      this.step = '1';
-    }
   },
 }
 </script>
