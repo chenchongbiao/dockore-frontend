@@ -28,8 +28,10 @@
       </el-table-column>
       <el-table-column
           label="镜像ID"
-          prop="image_id"
           width="200">
+        <template slot-scope="scope">
+          <el-link :href="`/image/${scope.row.image_id}`">{{scope.row.image_id}}</el-link>
+        </template>
       </el-table-column>
       <el-table-column
           label="创建时间"
@@ -77,7 +79,14 @@ export default {
           this.page * this.page_size
       );
 
+      let status_map = {
+        created: '已创建'
+      }
+
       items = JSON.parse(JSON.stringify(items))
+      for (let item of items) {
+        item.status = status_map[item.status];
+      }
       return items;
     }
   },
