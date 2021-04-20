@@ -37,21 +37,23 @@ _axios.interceptors.response.use(
       // Do something with response data
       console.log('Resp:', response.data);
 
-      if (response.config.method !== 'get' || response.data.code !== 0) {
+      let data = response.data;
+      if (response.config.method !== 'get' || data.code !== 0) {
         let vue = new Vue();
-        let success = response.data.code === 0;
+        let success = data.code === 0;
         let title = vue.$api.$name[vue.$api.$key[response.config.url]];
         if (!title)
           title = success ? '操作成功' : '操作失败';
+        let msg = data.msg;
         vue.$notify({
           title: title,
-          message: response.data.msg,
+          message: msg,
           type: success ? 'success' : 'error',
           offset: 64,
         })
       }
 
-      return response.data;
+      return data;
     },
     function (error) {
       // Do something with response error

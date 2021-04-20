@@ -19,24 +19,24 @@
       <el-table-column
           label="ID"
           prop="id"
-          width="200">
+          width="120">
       </el-table-column>
       <el-table-column
           label="名称"
           prop="name"
-          width="200">
+          width="240">
       </el-table-column>
       <el-table-column
           label="镜像ID"
-          width="200">
+          width="160">
         <template slot-scope="scope">
-          <el-link :href="`/image/${scope.row.image_id}`">{{scope.row.image_id}}</el-link>
+          <el-link :href="`/image/${scope.row.image_id}`">{{ scope.row.image_id }}</el-link>
         </template>
       </el-table-column>
       <el-table-column
           label="创建时间"
           prop="create_time"
-          width="240">
+          width="200">
       </el-table-column>
       <el-table-column
           label="状态"
@@ -132,9 +132,7 @@ export default {
     deleteContainerItems(ids) {
       this.$api.containerDelete(ids).then(
           resp => {
-            let success = resp.code === 0;
-            if (success)
-              this.getContainerItems();
+            this.getContainerItems();
           }
       )
     },

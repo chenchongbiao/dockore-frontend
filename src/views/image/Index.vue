@@ -7,7 +7,7 @@
       </div>
       <div style="float: right">
         <el-button v-if="selection.length" type="danger" @click="deleteSelectItems">删除选中</el-button>
-        <el-button>导入镜像</el-button>
+        <el-button @click="openPullDialog">拉取镜像</el-button>
       </div>
     </div>
     <el-table :data="tableData" border @selection-change="handleSelectionChange">
@@ -18,22 +18,31 @@
       <el-table-column
           label="ID"
           prop="id"
-          width="200">
+          width="160">
       </el-table-column>
       <el-table-column
           label="标签"
-          prop="tags"
-          width="200">
+          width="240">
+        <template slot-scope="scope">
+          <template v-if="scope.row.tags.length > 1">
+            <el-tag v-for="tag in scope.row.tags" :key="tag" type="info" closable
+                    @close="deleteImageItems([tag])">{{ tag }}
+            </el-tag>
+          </template>
+          <template v-else>
+            <el-tag v-for="tag in scope.row.tags" :key="tag" type="info">{{ tag }}</el-tag>
+          </template>
+        </template>
       </el-table-column>
       <el-table-column
           label="创建者"
           prop="author"
-          width="200">
+          width="320">
       </el-table-column>
       <el-table-column
           label="创建时间"
           prop="create_time"
-          width="240">
+          width="200">
       </el-table-column>
       <el-table-column
           label="镜像尺寸"
@@ -45,7 +54,12 @@
           width="200">
         <template slot-scope="scope">
           <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">编辑</router-link>
-          <el-button size="mini" type="danger" @click="deleteImageItems([scope.row.id])">删除</el-button>
+          <template v-if="scope.row.tags.length > 1">
+            <el-button size="mini" type="danger" @click="deleteImageItems(scope.row.tags)">删除</el-button>
+          </template>
+          <template v-else>
+            <el-button size="mini" type="danger" @click="deleteImageItems([scope.row.id])">删除</el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -55,12 +69,16 @@
           :page-sizes="[5, 10, 50, 100]" :total="this.items.length"
           background layout="prev, pager, next, sizes"></el-pagination>
     </div>
+    <PullDialog></PullDialog>
   </div>
 </template>
 
 <script>
+import PullDialog from "@/components/image/PullDialog";
+
 export default {
   name: "Index",
+  components: {PullDialog},
   computed: {
     tableData() {
       let items = this.items;
@@ -73,10 +91,6 @@ export default {
       );
 
       items = JSON.parse(JSON.stringify(items))
-      items = items.map(item => {
-        item.tags = item.tags.join(',')
-        return item;
-      });
       for (let item of items) {
         item.create_time = this.$moment(item.create_time).from();
         item.size = this.$filesize(item.size);
@@ -95,13 +109,23 @@ export default {
   },
   created() {
     this.getImageItems();
+    this.$bus.$on('refresh_images', () => {
+      this.getImageItems()
+    })
   },
   methods: {
     handleSelectionChange(val) {
       this.selection = val;
     },
     deleteSelectItems() {
-      let ids = this.selection.map(items => items.id);
+      let ids = [];
+      this.selection.map(item => {
+        if (item.tags.length > 1)
+          for (let tag of item.tags)
+            ids.push(tag);
+        else
+          ids.push(item.id);
+      });
       this.deleteImageItems(ids)
     },
     getImageItems() {
@@ -114,14 +138,17 @@ export default {
       )
     },
     deleteImageItems(ids) {
+      let loading = this.$loading({lock: true, text: '删除镜像中...'})
       this.$api.imageDelete(ids).then(
           resp => {
-            let success = resp.code === 0;
-            if (success)
-              this.getImageItems();
+            loading.close()
+            this.getImageItems();
           }
-      )
+      ).catch(err => loading.close());
     },
+    openPullDialog() {
+      this.$bus.$emit('pull_image');
+    }
   },
 }
 </script>

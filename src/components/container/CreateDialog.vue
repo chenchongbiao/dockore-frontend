@@ -19,27 +19,29 @@
               <el-input v-model="keyword" placeholder="请输入关键字" style="width: 256px"></el-input>
             </div>
           </div>
-          <el-table ref="table" :data="tableData" border height="320px" highlight-current-row
+          <el-table ref="table" :data="tableData" border highlight-current-row
                     @current-change="tableCurrentChange">
             <el-table-column
-                label="ID"
+                label="镜像ID"
                 prop="id"
-                width="200">
+                width="160">
             </el-table-column>
             <el-table-column
                 label="标签"
-                prop="tags"
-                width="200">
+                width="240">
+              <template slot-scope="scope">
+                <el-tag v-for="tag in scope.row.tags" :key="tag" type="info">{{ tag }}</el-tag>
+              </template>
             </el-table-column>
             <el-table-column
                 label="创建者"
                 prop="author"
-                width="200">
+                width="240">
             </el-table-column>
             <el-table-column
                 label="创建时间"
                 prop="create_time"
-                width="240">
+                width="200">
             </el-table-column>
             <el-table-column
                 label="镜像尺寸"
@@ -118,10 +120,6 @@ export default {
       );
 
       items = JSON.parse(JSON.stringify(items))
-      items = items.map(item => {
-        item.tags = item.tags.join(',')
-        return item;
-      });
       for (let item of items) {
         item.create_time = this.$moment(item.create_time).from();
       }
