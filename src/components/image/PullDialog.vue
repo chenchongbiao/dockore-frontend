@@ -121,7 +121,7 @@ export default {
             loading.close();
             this.$bus.$emit('refresh_images');
           }
-      ).catch(err => loading.close());
+      );
     },
   },
 }

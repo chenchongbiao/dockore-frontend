@@ -73,6 +73,10 @@
               <el-form-item label="启动命令">
                 <el-input v-model="form.command"></el-input>
               </el-form-item>
+              <el-form-item label="">
+                <el-checkbox v-model="form.tty">虚拟终端</el-checkbox>
+                <el-checkbox v-model="form.interactive">交互模式</el-checkbox>
+              </el-form-item>
             </el-form>
           </el-col>
         </div>
@@ -96,7 +100,7 @@ export default {
       step: '1',
       page: 1,
       page_size: 10,
-      form: {},
+      form: {tty: false, interactive: false},
       item: {tags: []},
     };
   },
@@ -104,7 +108,7 @@ export default {
     this.$bus.$on('create_container', () => {
       this.dialog_visible = true;
       this.step = '1';
-      this.form = {};
+      this.form = {tty: false, interactive: false};
       this.getImageItems();
     })
   },
@@ -171,7 +175,8 @@ export default {
     },
 
     createContainer() {
-      this.$api.containerCreate(`${this.form.image}:${this.form.tag}`, this.form.command, this.form.name).then(
+      this.$api.containerCreate(`${this.form.image}:${this.form.tag}`,
+          this.form.command, this.form.name, this.form.interactive, this.form.tty).then(
           resp => {
             if (resp.code === 0) {
               this.dialog_visible = false;

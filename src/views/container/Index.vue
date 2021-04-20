@@ -11,6 +11,7 @@
         <el-button v-if="selection.length" type="info" @click="stopContainerItems(selectionIds)">停止选中</el-button>
         <el-button v-if="selection.length" type="warning" @click="restartContainerItems(selectionIds)">重启选中</el-button>
         <el-button v-if="selection.length" type="danger" @click="deleteContainerItems(selectionIds)">删除选中</el-button>
+        <el-button circle @click="getContainerItems"><el-icon class="el-icon-refresh"></el-icon></el-button>
         <el-button @click="openCreateDialog">创建容器</el-button>
       </div>
     </div>
@@ -50,7 +51,7 @@
           label="操作"
           width="240">
         <template slot-scope="scope">
-          <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">编辑</router-link>
+          <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
           <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row.id, cmd)">
             <el-button type="primary" size="mini">
@@ -150,27 +151,35 @@ export default {
               this.items = resp.data.items;
             }
           }
-      )
+      );
     },
     deleteContainerItems(ids) {
       this.$api.containerDelete(ids).then(
           resp => this.getContainerItems()
-      )
+      );
     },
     startContainerItems(ids) {
       this.$api.containerStart(ids).then(
           resp => this.getContainerItems()
-      )
+      );
     },
     stopContainerItems(ids) {
-      this.$api.containerStop(ids).then(
-          resp => this.getContainerItems()
-      )
+      let loading = this.$loading({lock: true, text: '停止容器中...'});
+      this.$api.containerStop(ids, 5).then(
+          resp => {
+            this.getContainerItems();
+            loading.close();
+          }
+      );
     },
     restartContainerItems(ids) {
-      this.$api.containerRestart(ids).then(
-          resp => this.getContainerItems()
-      )
+      let loading = this.$loading({lock: true, text: '重启容器中...'});
+      this.$api.containerRestart(ids, 5).then(
+          resp => {
+            this.getContainerItems();
+            loading.close();
+          }
+      );
     },
     openCreateDialog() {
       this.$bus.$emit('create_container');

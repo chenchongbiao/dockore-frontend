@@ -49,7 +49,8 @@ _axios.interceptors.response.use(
           title: title,
           message: msg,
           type: success ? 'success' : 'error',
-          offset: 64,
+          offset: 128,
+          duration: (success ? 3 : 10) * 1000
         })
       }
 
@@ -63,7 +64,7 @@ _axios.interceptors.response.use(
       let title = vue.$api.$name[vue.$api.$key[error.config.url]];
       if (!title)
         title = '网络错误'
-      vue.$notify({title: title, message: error, type: "error", offset: 64});
+      vue.$notify({title: title, message: error, type: "error", offset: 128, duration: 10000});
 
       return {code: -1, msg: error};
     }

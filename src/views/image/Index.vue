@@ -53,7 +53,7 @@
           label="操作"
           width="200">
         <template slot-scope="scope">
-          <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">编辑</router-link>
+          <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <template v-if="scope.row.tags.length > 1">
             <el-button size="mini" type="danger" @click="deleteImageItems(scope.row.tags)">删除</el-button>
           </template>
@@ -144,7 +144,7 @@ export default {
             loading.close()
             this.getImageItems();
           }
-      ).catch(err => loading.close());
+      );
     },
     openPullDialog() {
       this.$bus.$emit('pull_image');
