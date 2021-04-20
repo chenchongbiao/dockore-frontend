@@ -4,10 +4,13 @@
       <div style="float: left">
         搜索：
         <el-input v-model="keyword" placeholder="请输入关键字" style="width: 256px"></el-input>
+        <el-switch v-model="is_all" active-text="显示所有容器" style="margin-left: 16px"></el-switch>
       </div>
       <div style="float: right">
-        <el-switch v-model="is_all" active-text="显示所有容器" style="margin-right: 16px"></el-switch>
-        <el-button v-if="selection.length" type="danger" @click="deleteSelectItems">删除选中</el-button>
+        <el-button v-if="selection.length" type="success" @click="startContainerItems(selectionIds)">启动选中</el-button>
+        <el-button v-if="selection.length" type="info" @click="stopContainerItems(selectionIds)">停止选中</el-button>
+        <el-button v-if="selection.length" type="warning" @click="restartContainerItems(selectionIds)">重启选中</el-button>
+        <el-button v-if="selection.length" type="danger" @click="deleteContainerItems(selectionIds)">删除选中</el-button>
         <el-button @click="openCreateDialog">创建容器</el-button>
       </div>
     </div>
@@ -45,10 +48,20 @@
       </el-table-column>
       <el-table-column
           label="操作"
-          width="200">
+          width="240">
         <template slot-scope="scope">
           <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">编辑</router-link>
           <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
+          <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row.id, cmd)">
+            <el-button type="primary" size="mini">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="start">启动容器</el-dropdown-item>
+              <el-dropdown-item command="stop">停止容器</el-dropdown-item>
+              <el-dropdown-item command="restart">重启容器</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -80,15 +93,21 @@ export default {
       );
 
       let status_map = {
-        created: '已创建'
+        created: '已创建',
+        running: '运行中',
+        exited: '已退出',
       }
 
       items = JSON.parse(JSON.stringify(items))
       for (let item of items) {
-        item.status = status_map[item.status];
+        if (status_map[item.status])
+          item.status = status_map[item.status];
         item.create_time = this.$moment(item.create_time).from();
       }
       return items;
+    },
+    selectionIds() {
+      return this.selection.map(items => items.id);
     }
   },
   data() {
@@ -116,9 +135,13 @@ export default {
     handleSelectionChange(val) {
       this.selection = val;
     },
-    deleteSelectItems() {
-      let ids = this.selection.map(items => items.id);
-      this.deleteContainerItems(ids)
+    handleOperation(id, cmd){
+      if (cmd === 'start')
+        this.startContainerItems([id]);
+      else if (cmd === 'stop')
+        this.stopContainerItems([id]);
+      else if (cmd === 'restart')
+        this.restartContainerItems([id]);
     },
     getContainerItems() {
       this.$api.containerList(this.is_all).then(
@@ -131,14 +154,27 @@ export default {
     },
     deleteContainerItems(ids) {
       this.$api.containerDelete(ids).then(
-          resp => {
-            this.getContainerItems();
-          }
+          resp => this.getContainerItems()
+      )
+    },
+    startContainerItems(ids) {
+      this.$api.containerStart(ids).then(
+          resp => this.getContainerItems()
+      )
+    },
+    stopContainerItems(ids) {
+      this.$api.containerStop(ids).then(
+          resp => this.getContainerItems()
+      )
+    },
+    restartContainerItems(ids) {
+      this.$api.containerRestart(ids).then(
+          resp => this.getContainerItems()
       )
     },
     openCreateDialog() {
       this.$bus.$emit('create_container');
-    }
+    },
   },
 }
 </script>

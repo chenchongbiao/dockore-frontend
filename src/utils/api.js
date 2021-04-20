@@ -16,6 +16,9 @@ let url = {
   CONTAINER_ITEM: `${root}/container/item`,
   CONTAINER_DELETE: `${root}/container/delete`,
   CONTAINER_CREATE: `${root}/container/create`,
+  CONTAINER_START: `${root}/container/start`,
+  CONTAINER_STOP: `${root}/container/stop`,
+  CONTAINER_RESTART: `${root}/container/restart`,
 }
 
 let key = {}
@@ -25,9 +28,12 @@ for (let [k, v] of Object.entries(url))
 let name = {
   USER_LOGIN: '用户登录',
   IMAGE_DELETE: '删除镜像',
+  IMAGE_PULL: '拉取镜像',
   CONTAINER_DELETE: '删除容器',
   CONTAINER_CREATE: '创建容器',
-  IMAGE_PULL: '拉取镜像',
+  CONTAINER_START: '启动容器',
+  CONTAINER_STOP: '停止容器',
+  CONTAINER_RESTART: '重启容器',
 }
 
 let axios = (new Vue()).$axios;
@@ -43,9 +49,11 @@ export default {
   imageDelete: ids => axios.post(url.IMAGE_DELETE, {ids}),
   imageSearch: keyword => axios.get(`${url.IMAGE_SEARCH}/${keyword}`),
   imagePull: (name, tag) => axios.post(url.IMAGE_PULL, {name, tag}),
-  imageTagDelete: (id, tag) => axios.post(url.IMAGE_TAG_DELETE, {id, tag}),
   containerList: is_all => axios.get(url.CONTAINER_LIST, {params: {is_all}}),
   containerItem: id => axios.get(`${url.CONTAINER_ITEM}/${id}`),
   containerDelete: ids => axios.post(url.CONTAINER_DELETE, {ids}),
   containerCreate: (image, command, name) => axios.post(url.CONTAINER_CREATE, {image, command, name}),
+  containerStart: ids => axios.post(url.CONTAINER_START, {ids}),
+  containerStop: ids => axios.post(url.CONTAINER_STOP, {ids}),
+  containerRestart: ids => axios.post(url.CONTAINER_RESTART, {ids}),
 }
