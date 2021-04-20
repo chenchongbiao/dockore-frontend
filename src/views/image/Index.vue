@@ -26,7 +26,7 @@
         <template slot-scope="scope">
           <template v-if="scope.row.tags.length > 1">
             <el-tag v-for="tag in scope.row.tags" :key="tag" type="info" closable
-                    @close="deleteImageItems([tag])">{{ tag }}
+                    @close="deleteImageItems([tag])" style="margin-right: 8px">{{ tag }}
             </el-tag>
           </template>
           <template v-else>
@@ -51,7 +51,7 @@
       </el-table-column>
       <el-table-column
           label="操作"
-          width="200">
+          width="240">
         <template slot-scope="scope">
           <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <template v-if="scope.row.tags.length > 1">
@@ -60,6 +60,17 @@
           <template v-else>
             <el-button size="mini" type="danger" @click="deleteImageItems([scope.row.id])">删除</el-button>
           </template>
+          <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row.id, cmd)">
+            <el-button type="primary" size="mini">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="tag">
+                <el-icon class="el-icon-collection-tag"></el-icon>
+                标记镜像
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -117,6 +128,10 @@ export default {
     handleSelectionChange(val) {
       this.selection = val;
     },
+    handleOperation(id, cmd) {
+      if (cmd === 'tag')
+        this.tagImageItem(id);
+    },
     deleteSelectItems() {
       let ids = [];
       this.selection.map(item => {
@@ -148,7 +163,22 @@ export default {
     },
     openPullDialog() {
       this.$bus.$emit('pull_image');
-    }
+    },
+    tagImageItem(id) {
+      this.$prompt('请输入新的镜像标签', `标记镜像：${id}`).then(
+          ({value}) => {
+            let col = value.split(':')
+            let name, tag;
+            if (col.length > 1) {
+              [name, tag] = col;
+            } else {
+              name = col;
+              tag = null;
+            }
+            this.$api.imageTag(id, name, tag).then(resp => this.getImageItems());
+          }
+      );
+    },
   },
 }
 </script>

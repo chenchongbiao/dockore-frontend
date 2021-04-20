@@ -168,6 +168,8 @@ export default {
               this.form.image = this.itemName;
               this.form.tag = this.itemTags[0];
               this.form.command = this.item.command;
+              this.form.interactive = this.item.interactive;
+              this.form.tty = this.item.tty;
               callback();
             }
           }

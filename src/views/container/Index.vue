@@ -11,7 +11,9 @@
         <el-button v-if="selection.length" type="info" @click="stopContainerItems(selectionIds)">停止选中</el-button>
         <el-button v-if="selection.length" type="warning" @click="restartContainerItems(selectionIds)">重启选中</el-button>
         <el-button v-if="selection.length" type="danger" @click="deleteContainerItems(selectionIds)">删除选中</el-button>
-        <el-button circle @click="getContainerItems"><el-icon class="el-icon-refresh"></el-icon></el-button>
+        <el-button circle @click="getContainerItems">
+          <el-icon class="el-icon-refresh"></el-icon>
+        </el-button>
         <el-button @click="openCreateDialog">创建容器</el-button>
       </div>
     </div>
@@ -58,9 +60,30 @@
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="start">启动容器</el-dropdown-item>
-              <el-dropdown-item command="stop">停止容器</el-dropdown-item>
-              <el-dropdown-item command="restart">重启容器</el-dropdown-item>
+              <el-dropdown-item command="rename">
+                <el-icon class="el-icon-edit"></el-icon>
+                容器更名
+              </el-dropdown-item>
+              <el-dropdown-item command="logs">
+                <el-icon class="el-icon-tickets"></el-icon>
+                运行日志
+              </el-dropdown-item>
+              <el-dropdown-item command="diff">
+                <el-icon class="el-icon-document-checked"></el-icon>
+                文件差异对比
+              </el-dropdown-item>
+              <el-dropdown-item command="start" divided>
+                <el-icon class="el-icon-video-play"></el-icon>
+                启动容器
+              </el-dropdown-item>
+              <el-dropdown-item command="stop">
+                <el-icon class="el-icon-circle-close"></el-icon>
+                停止容器
+              </el-dropdown-item>
+              <el-dropdown-item command="restart">
+                <el-icon class="el-icon-refresh-right"></el-icon>
+                重启容器
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -136,13 +159,19 @@ export default {
     handleSelectionChange(val) {
       this.selection = val;
     },
-    handleOperation(id, cmd){
+    handleOperation(id, cmd) {
       if (cmd === 'start')
         this.startContainerItems([id]);
       else if (cmd === 'stop')
         this.stopContainerItems([id]);
       else if (cmd === 'restart')
         this.restartContainerItems([id]);
+      else if (cmd === 'rename')
+        this.renameContainerItem(id);
+      else if (cmd === 'logs')
+        this.getContainerItemLogs(id);
+      else if (cmd === 'diff')
+        this.getContainerItemDiff(id);
     },
     getContainerItems() {
       this.$api.containerList(this.is_all).then(
@@ -180,6 +209,19 @@ export default {
             loading.close();
           }
       );
+    },
+    renameContainerItem(id) {
+      this.$prompt('请输入新的容器名称', `容器更名：${id}`).then(
+        ({value}) => {
+          this.$api.containerRename(id, value).then(resp => this.getContainerItems())
+        }
+      );
+    },
+    getContainerItemLogs(id) {
+      // this.$api.containerLogs(id)
+    },
+    getContainerItemDiff(id) {
+
     },
     openCreateDialog() {
       this.$bus.$emit('create_container');
