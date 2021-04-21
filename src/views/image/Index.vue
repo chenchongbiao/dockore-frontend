@@ -7,6 +7,9 @@
       </div>
       <div style="float: right">
         <el-button v-if="selection.length" type="danger" @click="deleteSelectItems">删除选中</el-button>
+        <el-button circle @click="getImageItems">
+          <el-icon class="el-icon-refresh"></el-icon>
+        </el-button>
         <el-button @click="openPullDialog">拉取镜像</el-button>
       </div>
     </div>
@@ -144,11 +147,12 @@ export default {
       this.deleteImageItems(ids)
     },
     getImageItems() {
+      let loading = this.$loading({lock: true, text: '获取镜像列表...'});
       this.$api.imageList(false).then(
           resp => {
-            if (resp.code === 0) {
+            if (resp.code === 0)
               this.items = resp.data.items;
-            }
+            loading.close();
           }
       )
     },
@@ -165,7 +169,7 @@ export default {
       this.$bus.$emit('pull_image');
     },
     tagImageItem(id) {
-      this.$prompt('请输入新的镜像标签', `标记镜像：${id}`).then(
+      this.$prompt('请输入新的镜像标签，格式："[name]:[tag]"。', `标记镜像：${id}`).then(
           ({value}) => {
             let col = value.split(':')
             let name, tag;

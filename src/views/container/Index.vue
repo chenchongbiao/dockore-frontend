@@ -66,7 +66,7 @@
               </el-dropdown-item>
               <el-dropdown-item command="logs">
                 <el-icon class="el-icon-tickets"></el-icon>
-                运行日志
+                容器操作日志
               </el-dropdown-item>
               <el-dropdown-item command="diff">
                 <el-icon class="el-icon-document-checked"></el-icon>
@@ -96,15 +96,19 @@
           background layout="prev, pager, next, sizes"></el-pagination>
     </div>
     <CreateDialog></CreateDialog>
+    <LogsDialog></LogsDialog>
+    <DiffDialog></DiffDialog>
   </div>
 </template>
 
 <script>
 import CreateDialog from "@/components/container/CreateDialog";
+import LogsDialog from "@/components/container/LogsDialog";
+import DiffDialog from "@/components/container/DiffDialog";
 
 export default {
   name: "Index",
-  components: {CreateDialog},
+  components: {CreateDialog, LogsDialog, DiffDialog},
   computed: {
     tableData() {
       let items = this.items;
@@ -174,11 +178,12 @@ export default {
         this.getContainerItemDiff(id);
     },
     getContainerItems() {
+      let loading = this.$loading({lock: true, text: '获取容器列表...'});
       this.$api.containerList(this.is_all).then(
           resp => {
-            if (resp.code === 0) {
+            if (resp.code === 0)
               this.items = resp.data.items;
-            }
+            loading.close();
           }
       );
     },
@@ -212,16 +217,16 @@ export default {
     },
     renameContainerItem(id) {
       this.$prompt('请输入新的容器名称', `容器更名：${id}`).then(
-        ({value}) => {
-          this.$api.containerRename(id, value).then(resp => this.getContainerItems())
-        }
+          ({value}) => {
+            this.$api.containerRename(id, value).then(resp => this.getContainerItems())
+          }
       );
     },
     getContainerItemLogs(id) {
-      // this.$api.containerLogs(id)
+      this.$bus.$emit('logs_container', id)
     },
     getContainerItemDiff(id) {
-
+      this.$bus.$emit('diff_container', id)
     },
     openCreateDialog() {
       this.$bus.$emit('create_container');
