@@ -60,8 +60,8 @@ export default {
   containerList: is_all => axios.get(url.CONTAINER_LIST, {params: {is_all}}),
   containerItem: id => axios.get(`${url.CONTAINER_ITEM}/${id}`),
   containerDelete: ids => axios.post(url.CONTAINER_DELETE, {ids}),
-  containerCreate: (image, command, name, interactive, tty) => axios.post(
-      url.CONTAINER_CREATE, {image, command, name, interactive, tty}),
+  containerCreate: (image, command, name, interactive, tty, ports) => axios.post(
+      url.CONTAINER_CREATE, {image, command, name, interactive, tty, ports}),
   containerStart: ids => axios.post(url.CONTAINER_START, {ids}),
   containerStop: (ids, timeout) => axios.post(url.CONTAINER_STOP, {ids, timeout}),
   containerRestart: (ids, timeout) => axios.post(url.CONTAINER_RESTART, {ids, timeout}),

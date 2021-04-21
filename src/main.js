@@ -9,6 +9,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import api from '@/utils/api'
 import storage from '@/utils/storage'
+import text from '@/utils/text'
 
 Vue.use(ElementUI)
 
@@ -17,6 +18,7 @@ Vue.config.productionTip = false
 Vue.prototype.$bus = new Vue()
 Vue.prototype.$api = api
 Vue.prototype.$storage = storage
+Vue.prototype.$text = text
 Vue.prototype.$moment = moment
 Vue.prototype.$filesize = fileSize
 moment.locale('zh-cn')

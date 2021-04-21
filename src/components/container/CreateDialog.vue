@@ -4,10 +4,16 @@
       <el-aside width="224px">
         <el-menu default-active="1" @select="x => step = x" ref="menu">
           <el-menu-item index="1">
-            <i class="el-icon-document-copy"></i>选择镜像
+            <el-icon class="el-icon-document-copy"></el-icon>
+            选择镜像
           </el-menu-item>
           <el-menu-item index="2">
-            <i class="el-icon-copy-document"></i>容器信息
+            <el-icon class="el-icon-copy-document"></el-icon>
+            容器信息
+          </el-menu-item>
+          <el-menu-item index="3">
+            <el-icon class="el-icon-link"></el-icon>
+            端口映射
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -73,12 +79,52 @@
               <el-form-item label="启动命令">
                 <el-input v-model="form.command"></el-input>
               </el-form-item>
-              <el-form-item label="">
+              <el-form-item>
                 <el-checkbox v-model="form.tty">虚拟终端</el-checkbox>
                 <el-checkbox v-model="form.interactive">交互模式</el-checkbox>
               </el-form-item>
             </el-form>
           </el-col>
+        </div>
+        <div v-show="step === '3'" style="text-align: left">
+          <el-table :data="form.ports" border>
+            <el-table-column label="内部端口" width="160">
+              <template slot-scope="scope">
+                <el-autocomplete v-model="scope.row.port" :fetch-suggestions="portSuggestion"></el-autocomplete>
+              </template>
+            </el-table-column>
+            <el-table-column label="协议" width="160">
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.protocol">
+                  <el-option label="TCP" value="tcp"></el-option>
+                  <el-option label="UDP" value="udp"></el-option>
+                  <el-option label="SCTP" value="sctp"></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="监听地址" width="240">
+              <template slot-scope="scope">
+                <el-autocomplete v-model="scope.row.listen_ip" :fetch-suggestions="ipSuggestion"></el-autocomplete>
+              </template>
+            </el-table-column>
+            <el-table-column label="监听端口" width="160">
+              <template slot-scope="scope">
+                <el-autocomplete v-model="scope.row.listen_port" :fetch-suggestions="portSuggestion"></el-autocomplete>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="160">
+              <template slot-scope="scope">
+                <el-button size="nano" type="danger" @click="removePortMapping(scope.row)">
+                  <el-icon class="el-icon-delete"></el-icon>
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="margin-top: 8px">
+            <el-button @click="appendPortMapping">
+              <el-icon class="el-icon-circle-plus"></el-icon>
+            </el-button>
+          </div>
         </div>
       </el-main>
     </el-container>
@@ -100,15 +146,17 @@ export default {
       step: '1',
       page: 1,
       page_size: 10,
-      form: {tty: false, interactive: false},
+      form: {tty: false, interactive: false, ports: []},
       item: {tags: []},
+      port_suggestion: [22, 53, 80, 443],
+      ip_suggestion: ['0.0.0.0', '127.0.0.1'],
     };
   },
   created() {
     this.$bus.$on('create_container', () => {
       this.dialog_visible = true;
       this.step = '1';
-      this.form = {tty: false, interactive: false};
+      this.form = {tty: false, interactive: false, ports: []};
       this.getImageItems();
     })
   },
@@ -177,8 +225,8 @@ export default {
     },
 
     createContainer() {
-      this.$api.containerCreate(`${this.form.image}:${this.form.tag}`,
-          this.form.command, this.form.name, this.form.interactive, this.form.tty).then(
+      this.$api.containerCreate(`${this.form.image}:${this.form.tag}`, this.form.command,
+          this.form.name, this.form.interactive, this.form.tty, this.form.ports).then(
           resp => {
             if (resp.code === 0) {
               this.dialog_visible = false;
@@ -186,6 +234,28 @@ export default {
             this.$bus.$emit('refresh_containers');
           }
       )
+    },
+
+    appendPortMapping() {
+      this.form.ports.push({});
+    },
+    removePortMapping(item) {
+      this.form.ports = this.form.ports.filter(x => x !== item);
+    },
+
+    portSuggestion(_, cb) {
+      let suggestion = [];
+      for (let port of this.port_suggestion) {
+        suggestion.push({value: port.toString()});
+      }
+      cb(suggestion);
+    },
+    ipSuggestion(_, cb) {
+      let suggestion = [];
+      for (let ip of this.ip_suggestion) {
+        suggestion.push({value: ip});
+      }
+      cb(suggestion);
     },
   },
 }

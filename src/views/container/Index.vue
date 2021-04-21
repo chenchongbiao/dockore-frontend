@@ -120,16 +120,11 @@ export default {
           this.page * this.page_size
       );
 
-      let status_map = {
-        created: '已创建',
-        running: '运行中',
-        exited: '已退出',
-      }
-
+      let status_text = this.$text.container.status;
       items = JSON.parse(JSON.stringify(items))
       for (let item of items) {
-        if (status_map[item.status])
-          item.status = status_map[item.status];
+        if (status_text[item.status])
+          item.status = status_text[item.status];
         item.create_time = this.$moment(item.create_time).from();
       }
       return items;
