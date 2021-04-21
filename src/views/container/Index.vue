@@ -64,7 +64,7 @@
                 <el-icon class="el-icon-edit"></el-icon>
                 容器更名
               </el-dropdown-item>
-              <el-dropdown-item command="logs">
+              <el-dropdown-item command="logs" divided>
                 <el-icon class="el-icon-tickets"></el-icon>
                 容器操作日志
               </el-dropdown-item>

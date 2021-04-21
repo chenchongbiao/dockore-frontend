@@ -30,7 +30,7 @@
     <el-tab-pane label="网络信息" name="network">
       <el-form :model="item" label-width="120px" style="width: 640px">
         <el-form-item label="IP">
-          <el-input v-model="item.network.ip" readonly></el-input>
+          <el-input v-model="item.network.ip" placeholder="未启动" readonly></el-input>
         </el-form-item>
         <el-form-item label="前缀">
           <el-input v-model="item.network.prefix" readonly></el-input>

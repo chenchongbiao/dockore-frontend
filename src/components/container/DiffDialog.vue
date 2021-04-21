@@ -5,8 +5,9 @@
     </el-input>
 
     <el-tree :data="treeData" ref="tree" :filter-node-method="filterNode"
-             node-key="label" :default-expanded-keys="['/']">
-      <span slot-scope="{ node, data }" style="display: flex; flex: 1; justify-content: space-between; align-items: center">
+             node-key="label" :default-expanded-keys="['/']" v-show="!treeEmpty">
+      <span slot-scope="{ node, data }"
+            style="display: flex; flex: 1; justify-content: space-between; align-items: center">
         <span>
           <el-icon v-if="data.type === 'add'" class="el-icon-circle-plus-outline"></el-icon>
           <el-icon v-else-if="data.type === 'change'" class="el-icon-warning-outline"></el-icon>
@@ -16,6 +17,10 @@
         </span>
       </span>
     </el-tree>
+
+    <div v-if="treeEmpty" style="margin-top: 128px; margin-bottom: 128px;">
+      <h1>当前容器无文件改动。</h1>
+    </div>
   </el-dialog>
 </template>
 
@@ -59,6 +64,9 @@ export default {
         addToTree(this.files[type], type);
 
       return data;
+    },
+    treeEmpty() {
+      return this.treeData[0].children.length === 0
     }
   },
   data() {
