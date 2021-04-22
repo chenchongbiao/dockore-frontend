@@ -13,6 +13,7 @@ let url = {
   IMAGE_SEARCH: `${root}/image/search`,
   IMAGE_PULL: `${root}/image/pull`,
   IMAGE_TAG: `${root}/image/tag`,
+  IMAGE_HISTORY: `${root}/image/history`,
 
   CONTAINER_LIST: `${root}/container/list`,
   CONTAINER_ITEM: `${root}/container/item`,
@@ -36,6 +37,8 @@ let name = {
   IMAGE_DELETE: '删除镜像',
   IMAGE_PULL: '拉取镜像',
   IMAGE_TAG: '标记镜像',
+  IMAGE_HISTORY: '获取镜像历史记录',
+
   CONTAINER_DELETE: '删除容器',
   CONTAINER_CREATE: '创建容器',
   CONTAINER_START: '启动容器',
@@ -59,6 +62,7 @@ export default {
   imageSearch: keyword => axios.get(`${url.IMAGE_SEARCH}/${keyword}`),
   imagePull: (name, tag) => axios.post(url.IMAGE_PULL, {name, tag}),
   imageTag: (id, name, tag) => axios.post(url.IMAGE_TAG, {id, name, tag}),
+  imageHistory: id => axios.get(`${url.IMAGE_HISTORY}/${id}`),
   containerList: is_all => axios.get(url.CONTAINER_LIST, {params: {is_all}}),
   containerItem: id => axios.get(`${url.CONTAINER_ITEM}/${id}`),
   containerDelete: ids => axios.post(url.CONTAINER_DELETE, {ids}),

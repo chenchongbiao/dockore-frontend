@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align: center">
     <el-menu ref="menu" v-model="menu_index" :default-active="menu_index" :router="true">
       <el-menu-item v-for="item in menu_items" :key="item.path" :index="item.path">
         <i :class="item.icon"></i>

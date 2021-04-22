@@ -73,6 +73,10 @@
                 <el-icon class="el-icon-collection-tag"></el-icon>
                 标记镜像
               </el-dropdown-item>
+              <el-dropdown-item command="history" divided>
+                <el-icon class="el-icon-coin"></el-icon>
+                镜像历史记录
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -85,15 +89,17 @@
           background layout="prev, pager, next, sizes"></el-pagination>
     </div>
     <PullDialog></PullDialog>
+    <HistoryDialog></HistoryDialog>
   </div>
 </template>
 
 <script>
 import PullDialog from "@/components/image/PullDialog";
+import HistoryDialog from "@/components/image/HistoryDialog";
 
 export default {
   name: "Index",
-  components: {PullDialog},
+  components: {PullDialog, HistoryDialog},
   computed: {
     tableData() {
       let items = this.items;
@@ -110,6 +116,7 @@ export default {
         item.create_time = this.$moment(item.create_time).from();
         item.size = this.$filesize(item.size);
       }
+
       return items;
     }
   },
@@ -135,6 +142,8 @@ export default {
     handleOperation(id, cmd) {
       if (cmd === 'tag')
         this.tagImageItem(id);
+      else if (cmd === 'history')
+        this.showImageItemHistory(id);
     },
     deleteSelectItems() {
       let ids = [];
@@ -183,6 +192,9 @@ export default {
             this.$api.imageTag(id, name, tag).then(resp => this.getImageItems());
           }
       );
+    },
+    showImageItemHistory(id) {
+      this.$bus.$emit('history_image', id);
     },
   },
 }

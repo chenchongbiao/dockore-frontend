@@ -45,13 +45,17 @@
           <el-input v-model="item.network.mac_address" readonly></el-input>
         </el-form-item>
       </el-form>
-      <h1 style="text-align: left; margin-top: 32px; margin-bottom: 8px; margin-left: 8px">端口映射列表</h1>
-      <el-table :data="item.network.ports" border style="width: 640px">
-        <el-table-column label="内部端口" prop="port" width="140"></el-table-column>
-        <el-table-column label="协议" prop="protocol" width="140"></el-table-column>
-        <el-table-column label="监听地址" prop="listen_ip" width="200"></el-table-column>
-        <el-table-column label="监听端口" prop="listen_port" width="140"></el-table-column>
-      </el-table>
+      <el-card style="width: 720px" shadow="hover">
+        <div slot="header">
+          <span>端口映射列表</span>
+        </div>
+        <el-table :data="item.network.ports" border>
+          <el-table-column label="内部端口" prop="port" width="140"></el-table-column>
+          <el-table-column label="协议" prop="protocol" width="140"></el-table-column>
+          <el-table-column label="监听地址" prop="listen_ip" width="200"></el-table-column>
+          <el-table-column label="监听端口" prop="listen_port" width="140"></el-table-column>
+        </el-table>
+      </el-card>
     </el-tab-pane>
   </el-tabs>
 </template>
