@@ -54,6 +54,7 @@
       </el-table-column>
       <el-table-column
           label="操作"
+          fixed="right"
           width="240">
         <template slot-scope="scope">
           <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>

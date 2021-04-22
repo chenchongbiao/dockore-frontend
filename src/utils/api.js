@@ -24,6 +24,7 @@ let url = {
   CONTAINER_RENAME: `${root}/container/rename`,
   CONTAINER_LOGS: `${root}/container/logs`,
   CONTAINER_DIFF: `${root}/container/diff`,
+  CONTAINER_COMMIT: `${root}/container/commit`,
 }
 
 let key = {}
@@ -41,6 +42,7 @@ let name = {
   CONTAINER_STOP: '停止容器',
   CONTAINER_RESTART: '重启容器',
   CONTAINER_RENAME: '容器更名',
+  CONTAINER_COMMIT: '提交容器镜像',
 }
 
 let axios = (new Vue()).$axios;
@@ -68,4 +70,6 @@ export default {
   containerRename: (id, name) => axios.post(url.CONTAINER_RENAME, {id, name}),
   containerLogs: (id, since, until) => axios.post(url.CONTAINER_LOGS, {id, since, until}),
   containerDiff: id => axios.get(`${url.CONTAINER_DIFF}/${id}`),
+  containerCommit: (id, name, tag, message, author) => axios.post(
+      url.CONTAINER_COMMIT, {id, name, tag, message, author}),
 }

@@ -15,6 +15,9 @@
         <el-form-item label="镜像ID">
           <el-input v-model="item.image_id" readonly></el-input>
         </el-form-item>
+        <el-form-item label="启动命令">
+          <el-input v-model="item.command" readonly></el-input>
+        </el-form-item>
         <el-form-item label="创建时间">
           <el-input v-model="itemCreateTime" readonly></el-input>
         </el-form-item>
@@ -44,10 +47,10 @@
       </el-form>
       <h1 style="text-align: left; margin-top: 32px; margin-bottom: 8px; margin-left: 8px">端口映射列表</h1>
       <el-table :data="item.network.ports" border style="width: 640px">
-        <el-table-column label="内部端口" prop="port" width="120"></el-table-column>
-        <el-table-column label="协议" prop="protocol" width="120"></el-table-column>
-        <el-table-column label="监听地址" prop="listen_ip" width="120"></el-table-column>
-        <el-table-column label="监听端口" prop="listen_port" width="120"></el-table-column>
+        <el-table-column label="内部端口" prop="port" width="140"></el-table-column>
+        <el-table-column label="协议" prop="protocol" width="140"></el-table-column>
+        <el-table-column label="监听地址" prop="listen_ip" width="200"></el-table-column>
+        <el-table-column label="监听端口" prop="listen_port" width="140"></el-table-column>
       </el-table>
     </el-tab-pane>
   </el-tabs>

@@ -51,6 +51,7 @@
       </el-table-column>
       <el-table-column
           label="操作"
+          fixed="right"
           width="240">
         <template slot-scope="scope">
           <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
@@ -71,6 +72,10 @@
               <el-dropdown-item command="diff">
                 <el-icon class="el-icon-document-checked"></el-icon>
                 文件差异对比
+              </el-dropdown-item>
+              <el-dropdown-item command="commit">
+                <el-icon class="el-icon-s-promotion"></el-icon>
+                提交到镜像
               </el-dropdown-item>
               <el-dropdown-item command="start" divided>
                 <el-icon class="el-icon-video-play"></el-icon>
@@ -98,6 +103,7 @@
     <CreateDialog></CreateDialog>
     <LogsDialog></LogsDialog>
     <DiffDialog></DiffDialog>
+    <CommitDialog></CommitDialog>
   </div>
 </template>
 
@@ -105,10 +111,11 @@
 import CreateDialog from "@/components/container/CreateDialog";
 import LogsDialog from "@/components/container/LogsDialog";
 import DiffDialog from "@/components/container/DiffDialog";
+import CommitDialog from "@/components/container/CommitDialog";
 
 export default {
   name: "Index",
-  components: {CreateDialog, LogsDialog, DiffDialog},
+  components: {CommitDialog, CreateDialog, LogsDialog, DiffDialog},
   computed: {
     tableData() {
       let items = this.items;
@@ -151,7 +158,8 @@ export default {
   },
   watch: {
     is_all(old_value, new_value) {
-      this.getContainerItems();
+      if (old_value !== new_value)
+        this.getContainerItems();
     }
   },
   methods: {
@@ -171,6 +179,8 @@ export default {
         this.getContainerItemLogs(id);
       else if (cmd === 'diff')
         this.getContainerItemDiff(id);
+      else if (cmd === 'commit')
+        this.commitContainerImage(id);
     },
     getContainerItems() {
       let loading = this.$loading({lock: true, text: '获取容器列表...'});
@@ -225,6 +235,9 @@ export default {
     },
     openCreateDialog() {
       this.$bus.$emit('create_container');
+    },
+    commitContainerImage(id) {
+      this.$bus.$emit('commit_container', id)
     },
   },
 }

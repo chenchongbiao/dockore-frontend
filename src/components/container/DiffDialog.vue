@@ -1,5 +1,6 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="容器文件差异对比" width="1280px">
+  <el-dialog :visible.sync="dialog_visible" title="容器文件差异对比" width="1280px"
+             v-loading="loading" element-loading-text="检查文件差异中...">
     <el-input placeholder="输入关键字进行过滤" v-model="keyword" style="margin-bottom: 8px">
       <el-button slot="append" icon="el-icon-search" @click="$refs.tree.filter(keyword)"></el-button>
     </el-input>
@@ -75,6 +76,7 @@ export default {
       id: '',
       files: {},
       keyword: '',
+      loading: false,
     }
   },
   created() {
@@ -92,10 +94,12 @@ export default {
       return data.path.indexOf(value) !== -1;
     },
     checkContainerDiff() {
+      this.loading = true;
       this.$api.containerDiff(this.id).then(
           resp => {
             if (resp.code === 0)
               this.files = resp.data.files;
+            this.loading = false;
           }
       );
     },

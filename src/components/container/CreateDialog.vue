@@ -146,7 +146,7 @@ export default {
       step: '1',
       page: 1,
       page_size: 10,
-      form: {tty: false, interactive: false, ports: []},
+      form: {},
       item: {tags: []},
       port_suggestion: [22, 53, 80, 443],
       ip_suggestion: ['0.0.0.0', '127.0.0.1'],
@@ -156,7 +156,7 @@ export default {
     this.$bus.$on('create_container', () => {
       this.dialog_visible = true;
       this.step = '1';
-      this.form = {tty: false, interactive: false, ports: []};
+      this.form = {name: '', image: '', tag: '', command: '', interactive: false, tty: false, ports: []};
       this.getImageItems();
     })
   },
