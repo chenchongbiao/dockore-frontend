@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item label="标签">
         <template v-if="item.tags.length > 1">
-          <el-tag v-for="tag in item.tags" :key="tag" type="info" closable
-                  @close="deleteImageItems([tag])" style="margin-right: 8px">{{ tag }}
+          <el-tag v-for="tag in item.tags" :key="tag" closable style="margin-right: 8px"
+                  type="info" @close="deleteImageItems([tag])">{{ tag }}
           </el-tag>
         </template>
         <template v-else>
@@ -32,7 +32,7 @@
       <el-form-item>
         <el-checkbox v-model="item.tty" disabled>虚拟终端</el-checkbox>
         <el-checkbox v-model="item.interactive" disabled>交互模式</el-checkbox>
-        <el-popover placement="right" width="320" trigger="click" style="margin-left: 32px">
+        <el-popover placement="right" style="margin-left: 32px" trigger="click" width="320">
           <el-table :data="item.ports" border>
             <el-table-column label="内部端口" prop="port" width="140"></el-table-column>
             <el-table-column label="协议" prop="protocol" width="140"></el-table-column>

@@ -29,16 +29,16 @@
           width="120">
       </el-table-column>
       <el-table-column
-          label="创建指令"
           fixed="right"
+          label="创建指令"
           width="120">
         <template slot-scope="scope">
           <el-popover
+              :content="scope.row.created_by"
               placement="left-start"
               title="创建指令"
-              width="320"
               trigger="hover"
-              :content="scope.row.created_by">
+              width="320">
             <el-button slot="reference">查看</el-button>
           </el-popover>
         </template>

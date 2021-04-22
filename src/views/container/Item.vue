@@ -45,7 +45,7 @@
           <el-input v-model="item.network.mac_address" readonly></el-input>
         </el-form-item>
       </el-form>
-      <el-card style="width: 720px" shadow="hover">
+      <el-card shadow="hover" style="width: 720px">
         <div slot="header">
           <span>端口映射列表</span>
         </div>

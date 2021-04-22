@@ -2,16 +2,16 @@
   <el-dialog :visible.sync="dialog_visible" title="容器操作日志" width="1280px">
     <el-date-picker
         v-model="dt_range"
-        type="datetimerange"
+        end-placeholder="结束日期"
         range-separator="至"
         start-placeholder="开始日期"
-        end-placeholder="结束日期">
+        type="datetimerange">
     </el-date-picker>
-    <el-button @click="catchContainerLogs" style="margin-left: 8px" circle>
+    <el-button circle style="margin-left: 8px" @click="catchContainerLogs">
       <el-icon class="el-icon-takeaway-box"></el-icon>
     </el-button>
-    <el-input type="textarea" :autosize="{ minRows: 10, maxRows: 20 }"
-              v-model="logs" readonly style="margin-top: 8px"></el-input>
+    <el-input v-model="logs" :autosize="{ minRows: 10, maxRows: 20 }"
+              readonly style="margin-top: 8px" type="textarea"></el-input>
   </el-dialog>
 </template>
 

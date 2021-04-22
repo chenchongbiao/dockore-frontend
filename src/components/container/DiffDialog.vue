@@ -1,12 +1,12 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="容器文件差异对比" width="1280px"
-             v-loading="loading" element-loading-text="检查文件差异中...">
-    <el-input placeholder="输入关键字进行过滤" v-model="keyword" style="margin-bottom: 8px">
+  <el-dialog v-loading="loading" :visible.sync="dialog_visible" element-loading-text="检查文件差异中..."
+             title="容器文件差异对比" width="1280px">
+    <el-input v-model="keyword" placeholder="输入关键字进行过滤" style="margin-bottom: 8px">
       <el-button slot="append" icon="el-icon-search" @click="$refs.tree.filter(keyword)"></el-button>
     </el-input>
 
-    <el-tree :data="treeData" ref="tree" :filter-node-method="filterNode"
-             node-key="label" :default-expanded-keys="['/']" v-show="!treeEmpty">
+    <el-tree v-show="!treeEmpty" ref="tree" :data="treeData"
+             :default-expanded-keys="['/']" :filter-node-method="filterNode" node-key="label">
       <span slot-scope="{ node, data }"
             style="display: flex; flex: 1; justify-content: space-between; align-items: center">
         <span>

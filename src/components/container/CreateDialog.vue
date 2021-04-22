@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="dialog_visible" title="创建容器" width="1280px">
     <el-container>
       <el-aside width="224px">
-        <el-menu default-active="1" @select="x => step = x" ref="menu">
+        <el-menu ref="menu" default-active="1" @select="x => step = x">
           <el-menu-item index="1">
             <el-icon class="el-icon-document-copy"></el-icon>
             选择镜像

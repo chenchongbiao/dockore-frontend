@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="提交容器改动到镜像" width="480px"
-             v-loading="loading" element-loading-text="提交容器镜像中...">
+  <el-dialog v-loading="loading" :visible.sync="dialog_visible" element-loading-text="提交容器镜像中..."
+             title="提交容器改动到镜像" width="480px">
     <el-form :model="form" label-width="80px">
       <el-form-item label="镜像名称">
         <el-input v-model="form.name"></el-input>
@@ -12,7 +12,7 @@
         <el-input v-model="form.author"></el-input>
       </el-form-item>
       <el-form-item label="提交消息">
-        <el-input type="textarea" v-model="form.message" :autosize="{ minRows: 3, maxRows: 10 }"></el-input>
+        <el-input v-model="form.message" :autosize="{ minRows: 3, maxRows: 10 }" type="textarea"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

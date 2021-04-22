@@ -50,14 +50,14 @@
           width="120">
       </el-table-column>
       <el-table-column
-          label="操作"
           fixed="right"
+          label="操作"
           width="240">
         <template slot-scope="scope">
           <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
           <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row.id, cmd)">
-            <el-button type="primary" size="mini">
+            <el-button size="mini" type="primary">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">

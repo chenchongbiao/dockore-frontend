@@ -28,8 +28,8 @@
           width="240">
         <template slot-scope="scope">
           <template v-if="scope.row.tags.length > 1">
-            <el-tag v-for="tag in scope.row.tags" :key="tag" type="info" closable
-                    @close="deleteImageItems([tag])" style="margin-right: 8px">{{ tag }}
+            <el-tag v-for="tag in scope.row.tags" :key="tag" closable style="margin-right: 8px"
+                    type="info" @close="deleteImageItems([tag])">{{ tag }}
             </el-tag>
           </template>
           <template v-else>
@@ -53,8 +53,8 @@
           width="120">
       </el-table-column>
       <el-table-column
-          label="操作"
           fixed="right"
+          label="操作"
           width="240">
         <template slot-scope="scope">
           <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
@@ -65,7 +65,7 @@
             <el-button size="mini" type="danger" @click="deleteImageItems([scope.row.id])">删除</el-button>
           </template>
           <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row.id, cmd)">
-            <el-button type="primary" size="mini">
+            <el-button size="mini" type="primary">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
