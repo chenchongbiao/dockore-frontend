@@ -2,7 +2,8 @@
   <el-dialog :visible.sync="dialog_visible" title="创建容器" width="1280px">
     <el-container>
       <el-aside width="224px">
-        <el-menu ref="menu" default-active="1" @select="x => step = x">
+        <el-menu ref="menu" default-active="1" @select="x => step = x"
+                 style="text-align: center">
           <el-menu-item index="1">
             <el-icon class="el-icon-document-copy"></el-icon>
             选择镜像
@@ -69,7 +70,7 @@
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
               <el-form-item label="镜像名称">
-                <el-input v-model="form.image"></el-input>
+                <el-input v-model="form.image" readonly></el-input>
               </el-form-item>
               <el-form-item label="镜像标签">
                 <el-select v-model="form.tag" placeholder="tag" style="width: 100%">
@@ -129,8 +130,11 @@
       </el-main>
     </el-container>
     <span slot="footer" class="dialog-footer">
+      <el-switch v-model="run" style="margin-right: 16px"
+                 active-text="运行容器" inactive-text="仅创建">
+      </el-switch>
       <el-button @click="dialog_visible = false">取 消</el-button>
-      <el-button type="primary" @click="createContainer">确 定</el-button>
+      <el-button type="primary" @click="createContainer" :disabled="!form.image">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -150,6 +154,7 @@ export default {
       item: {tags: []},
       port_suggestion: [22, 53, 80, 443],
       ip_suggestion: ['0.0.0.0', '127.0.0.1'],
+      run: true,
     };
   },
   created() {
@@ -218,6 +223,12 @@ export default {
               this.form.command = this.item.command;
               this.form.interactive = this.item.interactive;
               this.form.tty = this.item.tty;
+              this.form.ports = this.item.ports.map(({port, protocol}) => {
+                return {
+                  port: port.toString(), protocol,
+                  listen_ip: '0.0.0.0', listen_port: port.toString()
+                }
+              })
               callback();
             }
           }
@@ -225,7 +236,10 @@ export default {
     },
 
     createContainer() {
-      this.$api.containerCreate(`${this.form.image}:${this.form.tag}`, this.form.command,
+      let api = this.$api.containerCreate;
+      if (this.run)
+        api = this.$api.containerRun;
+      api(`${this.form.image}:${this.form.tag}`, this.form.command,
           this.form.name, this.form.interactive, this.form.tty, this.form.ports).then(
           resp => {
             if (resp.code === 0) {

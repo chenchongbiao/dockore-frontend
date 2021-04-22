@@ -19,6 +19,7 @@ let url = {
   CONTAINER_ITEM: `${root}/container/item`,
   CONTAINER_DELETE: `${root}/container/delete`,
   CONTAINER_CREATE: `${root}/container/create`,
+  CONTAINER_RUN: `${root}/container/run`,
   CONTAINER_START: `${root}/container/start`,
   CONTAINER_STOP: `${root}/container/stop`,
   CONTAINER_RESTART: `${root}/container/restart`,
@@ -41,6 +42,7 @@ let name = {
 
   CONTAINER_DELETE: '删除容器',
   CONTAINER_CREATE: '创建容器',
+  CONTAINER_RUN: '运行容器',
   CONTAINER_START: '启动容器',
   CONTAINER_STOP: '停止容器',
   CONTAINER_RESTART: '重启容器',
@@ -68,6 +70,8 @@ export default {
   containerDelete: ids => axios.post(url.CONTAINER_DELETE, {ids}),
   containerCreate: (image, command, name, interactive, tty, ports) => axios.post(
       url.CONTAINER_CREATE, {image, command, name, interactive, tty, ports}),
+  containerRun: (image, command, name, interactive, tty, ports) => axios.post(
+      url.CONTAINER_RUN, {image, command, name, interactive, tty, ports}),
   containerStart: ids => axios.post(url.CONTAINER_START, {ids}),
   containerStop: (ids, timeout) => axios.post(url.CONTAINER_STOP, {ids, timeout}),
   containerRestart: (ids, timeout) => axios.post(url.CONTAINER_RESTART, {ids, timeout}),
