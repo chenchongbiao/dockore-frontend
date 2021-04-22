@@ -170,8 +170,8 @@ export default {
       let loading = this.$loading({lock: true, text: '删除镜像中...'})
       this.$api.imageDelete(ids).then(
           resp => {
-            loading.close()
             this.getImageItems();
+            loading.close()
           }
       );
     },

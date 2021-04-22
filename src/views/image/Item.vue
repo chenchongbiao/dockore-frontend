@@ -74,7 +74,16 @@ export default {
             }
           }
       )
-    }
+    },
+    deleteImageItems(ids) {
+      let loading = this.$loading({lock: true, text: '删除镜像中...'})
+      this.$api.imageDelete(ids).then(
+          resp => {
+            this.getItemInfo(this.item.id);
+            loading.close()
+          }
+      );
+    },
   }
 }
 </script>
