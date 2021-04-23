@@ -219,7 +219,7 @@ export default {
           ({value}) => {
             this.$api.containerRename(id, value).then(resp => this.getContainerItems())
           }
-      );
+      ).catch(_ => _);
     },
     getContainerItemLogs(id) {
       this.$bus.$emit('logs_container', id)

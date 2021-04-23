@@ -187,7 +187,7 @@ export default {
             }
             this.$api.imageTag(id, name, tag).then(resp => this.getImageItems());
           }
-      );
+      ).catch(_ => _);
     },
     showImageItemHistory(id) {
       this.$bus.$emit('history_image', id);

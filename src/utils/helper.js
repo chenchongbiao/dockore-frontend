@@ -12,7 +12,6 @@ export default {
     }
   },
   stopLoading() {
-    console.log(loadings)
     loading.close();
     if (loadings.length) {
       loading = Loading(loadings.pop());

@@ -62,6 +62,11 @@ export default {
   $url: url,
   $options: (url) => {
     let k = key[url];
+    if (!k)
+      for (let kk in key)
+        if (url.indexOf(kk) !== -1)
+          k = key[kk];
+
     let r = {}
     if (k && options[k])
       r = JSON.parse(JSON.stringify(options[k]));
