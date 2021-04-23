@@ -1,28 +1,28 @@
 <template>
   <div>
+    <el-header>
+      <Header></Header>
+    </el-header>
     <el-container>
-      <el-header>
-        <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside v-if="isLogined">
-          <LeftASide></LeftASide>
-        </el-aside>
-        <el-main>
-          <router-view/>
-        </el-main>
-      </el-container>
+      <el-aside v-if="isLogined">
+        <LeftASide></LeftASide>
+      </el-aside>
+      <el-main>
+        <router-view/>
+      </el-main>
     </el-container>
+    <ChangePasswordDialog></ChangePasswordDialog>
   </div>
 </template>
 
 <script>
 import Header from "@/components/common/Header";
 import LeftASide from "@/components/common/LeftASide";
+import ChangePasswordDialog from "@/components/user/ChangePasswordDialog";
 
 export default {
   name: "Home",
-  components: {Header, LeftASide},
+  components: {ChangePasswordDialog, Header, LeftASide},
   computed: {
     isLogined() {
       return this.$store.getters.userToken !== null;
@@ -32,7 +32,6 @@ export default {
     if (this.isLogined) {
       this.updateUserInfo();
     }
-
   },
   methods: {
     updateUserInfo() {

@@ -3,8 +3,10 @@
     <el-table :data="tableData" border>
       <el-table-column
           label="ID"
-          prop="id"
           width="160">
+        <template slot-scope="scope">
+          <el-link :href="`/image/${scope.row.id}`">{{ scope.row.id }}</el-link>
+        </template>
       </el-table-column>
       <el-table-column
           label="标签"

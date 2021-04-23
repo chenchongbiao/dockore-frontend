@@ -7,6 +7,7 @@ let root = `${URL_BASE}${API_PATH}`
 let url = {
   USER_LOGIN: `${root}/user/login`,
   USER_INFO: `${root}/user/info`,
+  USER_CHANGE_PASSWORD: `${root}/user/change_password`,
 
   IMAGE_LIST: `${root}/image/list`,
   IMAGE_ITEM: `${root}/image/item`,
@@ -37,6 +38,7 @@ for (let [k, v] of Object.entries(url))
 let options = {
   USER_LOGIN: {name: '用户登录'},
   USER_INFO: {name: '获取用户信息', notify: false},
+  USER_CHANGE_PASSWORD: {name: '修改密码'},
 
   IMAGE_DELETE: {name: '删除镜像'},
   IMAGE_SEARCH: {name: '搜索线上镜像', notify: false},
@@ -79,9 +81,10 @@ export default {
   },
   userLogin: (username, password) => axios.post(url.USER_LOGIN, {username, password}),
   userInfo: () => axios.get(url.USER_INFO),
+  userChangePassword: (old, new_) => axios.post(url.USER_CHANGE_PASSWORD, {old, 'new': new_}),
   imageList: is_all => axios.get(url.IMAGE_LIST, {params: {is_all}}),
   imageItem: id => axios.get(`${url.IMAGE_ITEM}/${id}`),
-  imageDelete: ids => axios.post(url.IMAGE_DELETE, {ids}),
+  imageDelete: (ids, tag_only) => axios.post(url.IMAGE_DELETE, {ids, tag_only}),
   imageSearch: keyword => axios.get(`${url.IMAGE_SEARCH}/${keyword}`),
   imagePull: (name, tag) => axios.post(url.IMAGE_PULL, {name, tag}),
   imageTag: (id, name, tag) => axios.post(url.IMAGE_TAG, {id, name, tag}),

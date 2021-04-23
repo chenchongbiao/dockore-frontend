@@ -5,14 +5,9 @@
         <el-input v-model="item.id" readonly></el-input>
       </el-form-item>
       <el-form-item label="标签">
-        <template v-if="item.tags.length > 1">
-          <el-tag v-for="tag in item.tags" :key="tag" closable style="margin-right: 8px"
-                  type="info" @close="deleteImageItems([tag])">{{ tag }}
-          </el-tag>
-        </template>
-        <template v-else>
-          <el-tag v-for="tag in item.tags" :key="tag" type="info">{{ tag }}</el-tag>
-        </template>
+        <el-tag v-for="tag in item.tags" :key="tag" closable style="margin-right: 8px"
+                type="info" @close="deleteImageItems([tag], true)">{{ tag }}
+        </el-tag>
       </el-form-item>
       <el-form-item label="操作系统">
         <el-input v-model="item.os" readonly></el-input>
@@ -75,8 +70,11 @@ export default {
           }
       )
     },
-    deleteImageItems(ids) {
-      this.$api.imageDelete(ids).then(
+    deleteImageItems(ids, tag_only) {
+      if (tag_only === undefined)
+        tag_only = false;
+
+      this.$api.imageDelete(ids, tag_only).then(
           resp => {
             this.getItemInfo(this.item.id);
           }

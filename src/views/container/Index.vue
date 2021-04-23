@@ -54,7 +54,7 @@
           label="操作"
           width="240">
         <template slot-scope="scope">
-          <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
+          <el-link :href="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</el-link>
           <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
           <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row.id, cmd)">
             <el-button size="mini" type="primary">
@@ -160,8 +160,8 @@ export default {
     this.$bus.$off(this.$event.refresh_containers);
   },
   watch: {
-    is_all(old_value, new_value) {
-      if (old_value !== new_value)
+    is_all(old, new_) {
+      if (old !== new_)
         this.getContainerItems();
     }
   },

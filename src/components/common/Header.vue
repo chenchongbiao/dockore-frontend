@@ -1,19 +1,26 @@
 <template>
   <el-menu mode="horizontal" @select="menuSelect">
-    <el-menu-item>
+    <el-menu-item index="home">
       <template slot="title">
-        <router-link to="/"><h1 style="margin: 0">Dockore</h1></router-link>
+        <el-link href="/"><h1 style="margin: 0">Dockore</h1></el-link>
       </template>
     </el-menu-item>
     <template v-if="isLogined">
-      <el-submenu index="2" style="float: right">
+      <el-submenu index="user" style="float: right">
         <template slot="title">{{ username }}</template>
-        <el-menu-item index="logout"><i class="el-icon-switch-button"></i> 注销</el-menu-item>
+        <el-menu-item index="change_password">
+          <i class="el-icon-key"></i> 修改密码
+        </el-menu-item>
+        <el-menu-item index="logout">
+          <i class="el-icon-switch-button"></i> 注销
+        </el-menu-item>
       </el-submenu>
     </template>
-    <el-menu-item v-else index="3" style="float: right">
-      <router-link to="/login">登录</router-link>
-    </el-menu-item>
+    <template v-else>
+      <el-menu-item index="anonymous" style="float: right">
+        <el-link href="/login">登录</el-link>
+      </el-menu-item>
+    </template>
   </el-menu>
 </template>
 
@@ -30,7 +37,9 @@ export default {
   },
   methods: {
     menuSelect(index) {
-      if (index === 'logout') {
+      if (index === 'change_password') {
+        this.$bus.$emit(this.$event.change_password)
+      } else if (index === 'logout') {
         this.$store.commit('logout');
         this.$router.push('/login');
       }

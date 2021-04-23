@@ -4,6 +4,7 @@
       <div style="float: left">
         搜索：
         <el-input v-model="keyword" placeholder="请输入关键字" style="width: 256px"></el-input>
+        <el-switch v-model="is_all" active-text="显示所有镜像" style="margin-left: 16px"></el-switch>
       </div>
       <div style="float: right">
         <el-button v-if="selection.length" type="danger" @click="deleteSelectItems">删除选中</el-button>
@@ -27,14 +28,9 @@
           label="标签"
           width="240">
         <template slot-scope="scope">
-          <template v-if="scope.row.tags.length > 1">
-            <el-tag v-for="tag in scope.row.tags" :key="tag" closable style="margin-right: 8px"
-                    type="info" @close="deleteImageItems([tag])">{{ tag }}
-            </el-tag>
-          </template>
-          <template v-else>
-            <el-tag v-for="tag in scope.row.tags" :key="tag" type="info">{{ tag }}</el-tag>
-          </template>
+          <el-tag v-for="tag in scope.row.tags" :key="tag" closable style="margin-right: 8px"
+                  type="info" @close="deleteImageItems([tag], true)">{{ tag }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -57,7 +53,7 @@
           label="操作"
           width="240">
         <template slot-scope="scope">
-          <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
+          <el-link :href="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</el-link>
           <template v-if="scope.row.tags.length > 1">
             <el-button size="mini" type="danger" @click="deleteImageItems(scope.row.tags)">删除</el-button>
           </template>
@@ -127,6 +123,7 @@ export default {
       keyword: '',
       page: 1,
       page_size: 10,
+      is_all: false,
     };
   },
   created() {
@@ -137,6 +134,12 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off(this.$event.refresh_images);
+  },
+  watch: {
+    is_all(old, new_) {
+      if (old !== new_)
+        this.getImageItems();
+    }
   },
   methods: {
     handleSelectionChange(val) {
@@ -160,15 +163,18 @@ export default {
       this.deleteImageItems(ids)
     },
     getImageItems() {
-      this.$api.imageList(false).then(
+      this.$api.imageList(this.is_all).then(
           resp => {
             if (resp.code === 0)
               this.items = resp.data.items;
           }
       )
     },
-    deleteImageItems(ids) {
-      this.$api.imageDelete(ids).then(
+    deleteImageItems(ids, tag_only) {
+      if (tag_only === undefined)
+        tag_only = false;
+
+      this.$api.imageDelete(ids, tag_only).then(
           resp => {
             this.getImageItems();
           }

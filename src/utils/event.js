@@ -1,4 +1,6 @@
 export default {
+  change_password: 'change_password',
+
   refresh_images: 'refresh_images',
   image_pull: 'image_pull',
   image_history: 'image_history',
