@@ -20,9 +20,9 @@ export default {
     }
   },
   sendNotification(title, message, type, html, duration, offset) {
-    offset |= 128;
+    offset |= 16;
     duration |= 3;
     duration *= 1000;
-    Notification({title, message, type, offset, duration, dangerouslyUseHTMLString: html})
+    Notification({title, message, type, offset, duration, dangerouslyUseHTMLString: html, position: 'bottom-right'})
   }
 }

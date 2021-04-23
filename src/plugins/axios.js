@@ -56,8 +56,18 @@ _axios.interceptors.response.use(
           title = success ? '操作成功' : '操作失败';
 
         let msg = resp.msg;
-        if (resp.data && resp.data.exc)
-          msg = `<p style="word-break: break-all;"><div>${msg}</div>${resp.data.exc}</p>`;
+        let exc = '';
+        if (resp.data && (resp.data.exc || resp.data.excs)) {
+          if (resp.data.exc)
+            exc = resp.data.exc;
+          if (resp.data.excs)
+            if (resp.data.excs.length === 1)
+              exc = resp.data.excs[0];
+            else if (resp.data.excs.length > 1)
+              exc = `（发生"${resp.data.excs.length}"个异常）`;
+        }
+
+        msg = `<div>${msg}</div><div style="word-break: break-all;">${exc}</div>`;
 
         helper.sendNotification(title, msg,
             success ? 'success' : 'error',
