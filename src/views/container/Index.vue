@@ -30,13 +30,19 @@
       <el-table-column
           label="名称"
           prop="name"
-          width="240">
+          width="200">
       </el-table-column>
       <el-table-column
-          label="镜像ID"
-          width="160">
+          label="镜像"
+          width="240">
         <template slot-scope="scope">
-          <el-link :href="`/image/${scope.row.image_id}`">{{ scope.row.image_id }}</el-link>
+          <el-link v-if="!scope.row.image.tags.length" :href="`/image/${scope.row.image.id}`">
+            {{ scope.row.image.id }}
+          </el-link>
+          <el-link v-else v-for="tag in scope.row.image.tags" :key="tag" :href="`/image/${tag}`"
+                   style="margin-top: 2px; margin-bottom: 2px"
+                   class="el-button el-button--mini">{{ tag }}
+          </el-link>
         </template>
       </el-table-column>
       <el-table-column

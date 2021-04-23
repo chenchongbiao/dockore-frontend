@@ -28,7 +28,8 @@
           label="标签"
           width="240">
         <template slot-scope="scope">
-          <el-tag v-for="tag in scope.row.tags" :key="tag" closable style="margin-right: 8px"
+          <el-tag v-for="tag in scope.row.tags" :key="tag" closable
+                  style="margin-right: 8px; margin-top: 2px; margin-bottom: 2px"
                   type="info" @close="deleteImageItems([tag], true)">{{ tag }}
           </el-tag>
         </template>

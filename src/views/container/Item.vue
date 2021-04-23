@@ -13,7 +13,7 @@
           </el-input>
         </el-form-item>
         <el-form-item label="镜像ID">
-          <el-input v-model="item.image_id" readonly></el-input>
+          <el-input v-model="item.image.id" readonly></el-input>
         </el-form-item>
         <el-form-item label="启动命令">
           <el-input v-model="item.command" readonly></el-input>
