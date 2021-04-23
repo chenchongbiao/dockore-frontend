@@ -72,12 +72,15 @@ export default {
     };
   },
   created() {
-    this.$bus.$on('pull_image', () => {
+    this.$bus.$on(this.$event.image_pull, () => {
       this.keyword = '';
       this.form = {};
       this.items = [];
       this.dialog_visible = true;
     })
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.image_pull);
   },
   computed: {
     tableData() {
@@ -117,7 +120,7 @@ export default {
             if (resp.code === 0) {
               this.dialog_visible = false;
             }
-            this.$bus.$emit('refresh_images');
+            this.$bus.$emit(this.$event.refresh_images);
           }
       );
     },

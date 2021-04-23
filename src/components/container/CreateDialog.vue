@@ -158,12 +158,15 @@ export default {
     };
   },
   created() {
-    this.$bus.$on('create_container', () => {
+    this.$bus.$on(this.$event.container_create, () => {
       this.dialog_visible = true;
       this.step = '1';
       this.form = {name: '', image: '', tag: '', command: '', interactive: false, tty: false, ports: []};
       this.getImageItems();
     })
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.container_create);
   },
   computed: {
     tableData() {
@@ -245,7 +248,7 @@ export default {
             if (resp.code === 0) {
               this.dialog_visible = false;
             }
-            this.$bus.$emit('refresh_containers');
+            this.$bus.$emit(this.$event.refresh_containers);
           }
       )
     },

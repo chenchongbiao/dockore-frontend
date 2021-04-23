@@ -131,9 +131,12 @@ export default {
   },
   created() {
     this.getImageItems();
-    this.$bus.$on('refresh_images', () => {
+    this.$bus.$on(this.$event.refresh_images, () => {
       this.getImageItems()
     })
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.refresh_images);
   },
   methods: {
     handleSelectionChange(val) {
@@ -172,7 +175,7 @@ export default {
       );
     },
     openPullDialog() {
-      this.$bus.$emit('pull_image');
+      this.$bus.$emit(this.$event.image_pull);
     },
     tagImageItem(id) {
       this.$prompt('请输入新的镜像标签，格式："[name]:[tag]"。', `标记镜像：${id}`).then(
@@ -190,7 +193,7 @@ export default {
       ).catch(_ => _);
     },
     showImageItemHistory(id) {
-      this.$bus.$emit('history_image', id);
+      this.$bus.$emit(this.$event.image_history, id);
     },
   },
 }

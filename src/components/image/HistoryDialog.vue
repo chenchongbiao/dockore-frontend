@@ -70,10 +70,13 @@ export default {
     }
   },
   created() {
-    this.$bus.$on('history_image', id => {
+    this.$bus.$on(this.$event.image_history, id => {
       this.dialog_visible = true;
       this.catchImageHistory(id);
     });
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.image_history);
   },
   methods: {
     catchImageHistory(id) {

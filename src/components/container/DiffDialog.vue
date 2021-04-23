@@ -78,13 +78,16 @@ export default {
     }
   },
   created() {
-    this.$bus.$on('diff_container', id => {
+    this.$bus.$on(this.$event.container_diff, id => {
       this.id = id;
       this.files = '';
       this.keyword = '';
       this.dialog_visible = true;
       this.checkContainerDiff();
     });
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.container_diff);
   },
   methods: {
     filterNode(value, data) {

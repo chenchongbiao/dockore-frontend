@@ -152,9 +152,12 @@ export default {
   },
   created() {
     this.getContainerItems();
-    this.$bus.$on('refresh_containers', () => {
+    this.$bus.$on(this.$event.refresh_containers, () => {
       this.getContainerItems()
     })
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.refresh_containers);
   },
   watch: {
     is_all(old_value, new_value) {
@@ -222,16 +225,16 @@ export default {
       ).catch(_ => _);
     },
     getContainerItemLogs(id) {
-      this.$bus.$emit('logs_container', id)
+      this.$bus.$emit(this.$event.container_logs, id)
     },
     getContainerItemDiff(id) {
-      this.$bus.$emit('diff_container', id)
+      this.$bus.$emit(this.$event.container_diff, id)
     },
     openCreateDialog() {
-      this.$bus.$emit('create_container');
+      this.$bus.$emit(this.$event.container_create);
     },
     commitContainerImage(id) {
-      this.$bus.$emit('commit_container', id)
+      this.$bus.$emit(this.$event.container_commit, id)
     },
   },
 }

@@ -27,12 +27,15 @@ export default {
     }
   },
   created() {
-    this.$bus.$on('logs_container', id => {
+    this.$bus.$on(this.$event.container_logs, id => {
       this.id = id;
       this.logs = '';
       this.dt_range = [];
       this.dialog_visible = true;
     });
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.container_logs);
   },
   methods: {
     catchContainerLogs() {

@@ -31,10 +31,13 @@ export default {
     }
   },
   created() {
-    this.$bus.$on('commit_container', id => {
+    this.$bus.$on(this.$event.container_commit, id => {
       this.form = {id}
       this.dialog_visible = true;
     });
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.container_commit);
   },
   methods: {
     commitContainer() {
