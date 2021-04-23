@@ -157,21 +157,17 @@ export default {
       this.deleteImageItems(ids)
     },
     getImageItems() {
-      let loading = this.$loading({lock: true, text: '获取镜像列表...'});
       this.$api.imageList(false).then(
           resp => {
             if (resp.code === 0)
               this.items = resp.data.items;
-            loading.close();
           }
       )
     },
     deleteImageItems(ids) {
-      let loading = this.$loading({lock: true, text: '删除镜像中...'})
       this.$api.imageDelete(ids).then(
           resp => {
             this.getImageItems();
-            loading.close()
           }
       );
     },

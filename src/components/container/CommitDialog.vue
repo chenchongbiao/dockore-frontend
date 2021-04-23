@@ -1,6 +1,5 @@
 <template>
-  <el-dialog v-loading="loading" :visible.sync="dialog_visible" element-loading-text="提交容器镜像中..."
-             title="提交容器改动到镜像" width="480px">
+  <el-dialog :visible.sync="dialog_visible" title="提交容器改动到镜像" width="480px">
     <el-form :model="form" label-width="80px">
       <el-form-item label="镜像名称">
         <el-input v-model="form.name"></el-input>
@@ -29,7 +28,6 @@ export default {
     return {
       dialog_visible: false,
       form: {},
-      loading: false,
     }
   },
   created() {
@@ -40,12 +38,10 @@ export default {
   },
   methods: {
     commitContainer() {
-      this.loading = true;
       this.$api.containerCommit(this.form.id, this.form.name, this.form.tag, this.form.message, this.form.author).then(
           resp => {
             if (resp.code === 0)
               this.dialog_visible = false;
-            this.loading = false;
           }
       );
     }

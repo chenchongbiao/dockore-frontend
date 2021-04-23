@@ -7,6 +7,7 @@ let root = `${URL_BASE}${API_PATH}`
 let url = {
   USER_LOGIN: `${root}/user/login`,
   USER_INFO: `${root}/user/info`,
+
   IMAGE_LIST: `${root}/image/list`,
   IMAGE_ITEM: `${root}/image/item`,
   IMAGE_DELETE: `${root}/image/delete`,
@@ -33,29 +34,44 @@ let key = {}
 for (let [k, v] of Object.entries(url))
   key[v] = k;
 
-let name = {
-  USER_LOGIN: '用户登录',
-  IMAGE_DELETE: '删除镜像',
-  IMAGE_PULL: '拉取镜像',
-  IMAGE_TAG: '标记镜像',
-  IMAGE_HISTORY: '获取镜像历史记录',
+let options = {
+  USER_LOGIN: {name: '用户登录'},
+  USER_INFO: {name: '获取用户信息'},
 
-  CONTAINER_DELETE: '删除容器',
-  CONTAINER_CREATE: '创建容器',
-  CONTAINER_RUN: '运行容器',
-  CONTAINER_START: '启动容器',
-  CONTAINER_STOP: '停止容器',
-  CONTAINER_RESTART: '重启容器',
-  CONTAINER_RENAME: '容器更名',
-  CONTAINER_COMMIT: '提交容器镜像',
+  IMAGE_DELETE: {name: '删除镜像'},
+  IMAGE_SEARCH: {name: '搜索线上镜像'},
+  IMAGE_PULL: {name: '拉取镜像'},
+  IMAGE_TAG: {name: '标记镜像'},
+  IMAGE_HISTORY: {name: '获取镜像历史记录'},
+
+  CONTAINER_DELETE: {name: '删除容器'},
+  CONTAINER_CREATE: {name: '创建容器'},
+  CONTAINER_RUN: {name: '运行容器'},
+  CONTAINER_START: {name: '启动容器'},
+  CONTAINER_STOP: {name: '停止容器'},
+  CONTAINER_RESTART: {name: '重启容器'},
+  CONTAINER_RENAME: {name: '容器更名'},
+  CONTAINER_LOGS: {name: '获取容器日志'},
+  CONTAINER_DIFF: {name: '容器差异对比'},
+  CONTAINER_COMMIT: {name: '提交容器镜像'},
 }
 
 let axios = (new Vue()).$axios;
 
 export default {
   $url: url,
-  $name: name,
-  $key: key,
+  $options: (url) => {
+    let k = key[url];
+    let r = {}
+    if (k && options[k])
+      r = JSON.parse(JSON.stringify(options[k]));
+    if (r.loading === undefined)
+      r.loading = true;
+    if (r.notify === undefined)
+      r.notify = !!options.name;
+
+    return r;
+  },
   userLogin: (username, password) => axios.post(url.USER_LOGIN, {username, password}),
   userInfo: () => axios.get(url.USER_INFO),
   imageList: is_all => axios.get(url.IMAGE_LIST, {params: {is_all}}),

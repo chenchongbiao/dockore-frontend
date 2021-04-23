@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import axios from "axios";
 import storage from '@/utils/storage'
+import helper from "@/utils/helper";
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -23,6 +24,11 @@ _axios.interceptors.request.use(
       let token = storage.local.get('user_token')
       if (token)
         config.headers.Token = token;
+
+      let options = Vue.prototype.$api.$options(config.url);
+      if (options && options.loading)
+        helper.startLoading(`${options.name || '加载'}中...`)
+
       return config;
     },
     function (error) {
@@ -38,23 +44,26 @@ _axios.interceptors.response.use(
       console.log('Resp:', response.data);
 
       let resp = response.data;
-      if (response.config.method !== 'get' || resp.code !== 0) {
-        let vue = new Vue();
-        let success = resp.code === 0;
-        let title = vue.$api.$name[vue.$api.$key[response.config.url]];
+      let success = resp.code === 0;
+
+      let options = Vue.prototype.$api.$options(response.config.url);
+      if (options && options.loading)
+        helper.stopLoading();
+
+      if (!success || options.notify) {
+        let title = options.name;
         if (!title)
           title = success ? '操作成功' : '操作失败';
+
         let msg = resp.msg;
         if (resp.data && resp.data.exc)
-          msg = `<p>${msg}</p><p style="word-break:break-all;">${resp.data.exc}</p>`;
-        vue.$notify({
-          title: title,
-          message: msg,
-          type: success ? 'success' : 'error',
-          offset: 128,
-          duration: (success ? 3 : 10) * 1000,
-          dangerouslyUseHTMLString: true,
-        });
+          msg = `<p style="word-break: break-all;"><div>${msg}</div>${resp.data.exc}</p>`;
+
+        helper.sendNotification(title, msg,
+            success ? 'success' : 'error',
+            true,
+            success ? 3 : 10
+        );
       }
 
       return resp;
@@ -63,11 +72,17 @@ _axios.interceptors.response.use(
       // Do something with response error
       console.log('Error:', error);
 
-      let vue = new Vue();
-      let title = vue.$api.$name[vue.$api.$key[error.config.url]];
-      if (!title)
-        title = '网络错误'
-      vue.$notify({title: title, message: error, type: "error", offset: 128, duration: 10000});
+      let title = '网络错误';
+      if (error.config && error.config.url) {
+        let options = Vue.prototype.$api.$options(error.config.url);
+        if (options && options.loading)
+          helper.stopLoading();
+
+        if (options.name)
+          title = options.name;
+      }
+
+      helper.sendNotification(title, `<p style="word-break: break-all">${error}</p>`, 'error', true)
 
       return {code: -1, msg: error};
     }

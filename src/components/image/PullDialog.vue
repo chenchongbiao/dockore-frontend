@@ -112,13 +112,11 @@ export default {
     },
 
     pullImage() {
-      let loading = this.$loading({lock: true, text: '拉取镜像中...'});
       this.$api.imagePull(this.form.name, this.form.tag).then(
           resp => {
             if (resp.code === 0) {
               this.dialog_visible = false;
             }
-            loading.close();
             this.$bus.$emit('refresh_images');
           }
       );

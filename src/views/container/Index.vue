@@ -183,12 +183,10 @@ export default {
         this.commitContainerImage(id);
     },
     getContainerItems() {
-      let loading = this.$loading({lock: true, text: '获取容器列表...'});
       this.$api.containerList(this.is_all).then(
           resp => {
             if (resp.code === 0)
               this.items = resp.data.items;
-            loading.close();
           }
       );
     },
@@ -203,20 +201,16 @@ export default {
       );
     },
     stopContainerItems(ids) {
-      let loading = this.$loading({lock: true, text: '停止容器中...'});
       this.$api.containerStop(ids, 5).then(
           resp => {
             this.getContainerItems();
-            loading.close();
           }
       );
     },
     restartContainerItems(ids) {
-      let loading = this.$loading({lock: true, text: '重启容器中...'});
       this.$api.containerRestart(ids, 5).then(
           resp => {
             this.getContainerItems();
-            loading.close();
           }
       );
     },
