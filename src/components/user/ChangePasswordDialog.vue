@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="提交容器改动到镜像" width="480px">
-    <el-form :model="form" label-width="80px">
+  <el-dialog :visible.sync="dialog_visible" title="修改密码" width="480px">
+    <el-form :model="form" label-width="120px">
       <el-form-item label="旧密码">
         <el-input v-model="form.old" type="password" placeholder="输入旧密码"></el-input>
       </el-form-item>
@@ -14,7 +14,7 @@
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialog_visible = false">取 消</el-button>
       <el-button type="primary" @click="changePassword"
-                 :disabled="!repeat || repeat !== form.name">确 定</el-button>
+                 :disabled="!repeat || repeat !== form.new">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -31,7 +31,8 @@ export default {
   },
   created() {
     this.$bus.$on(this.$event.change_password, id => {
-      this.form = {id}
+      this.form = {id};
+      this.repeat = '';
       this.dialog_visible = true;
     });
   },
