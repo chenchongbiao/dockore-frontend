@@ -36,13 +36,13 @@ for (let [k, v] of Object.entries(url))
 
 let options = {
   USER_LOGIN: {name: '用户登录'},
-  USER_INFO: {name: '获取用户信息'},
+  USER_INFO: {name: '获取用户信息', notify: false},
 
   IMAGE_DELETE: {name: '删除镜像'},
-  IMAGE_SEARCH: {name: '搜索线上镜像'},
+  IMAGE_SEARCH: {name: '搜索线上镜像', notify: false},
   IMAGE_PULL: {name: '拉取镜像'},
   IMAGE_TAG: {name: '标记镜像'},
-  IMAGE_HISTORY: {name: '获取镜像历史记录'},
+  IMAGE_HISTORY: {name: '获取镜像历史记录', notify: false},
 
   CONTAINER_DELETE: {name: '删除容器'},
   CONTAINER_CREATE: {name: '创建容器'},
@@ -51,8 +51,8 @@ let options = {
   CONTAINER_STOP: {name: '停止容器'},
   CONTAINER_RESTART: {name: '重启容器'},
   CONTAINER_RENAME: {name: '容器更名'},
-  CONTAINER_LOGS: {name: '获取容器日志'},
-  CONTAINER_DIFF: {name: '容器差异对比'},
+  CONTAINER_LOGS: {name: '获取容器日志', notify: false},
+  CONTAINER_DIFF: {name: '容器差异对比', notify: false},
   CONTAINER_COMMIT: {name: '提交容器镜像'},
 }
 
@@ -73,7 +73,7 @@ export default {
     if (r.loading === undefined)
       r.loading = true;
     if (r.notify === undefined)
-      r.notify = !!options.name;
+      r.notify = !!r.name;
 
     return r;
   },
