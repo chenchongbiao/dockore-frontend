@@ -45,7 +45,7 @@ _axios.interceptors.response.use(
         if (!title)
           title = success ? '操作成功' : '操作失败';
         let msg = resp.msg;
-        if (resp.data.exc)
+        if (resp.data && resp.data.exc)
           msg = `<p>${msg}</p><p style="word-break:break-all;">${resp.data.exc}</p>`;
         vue.$notify({
           title: title,
