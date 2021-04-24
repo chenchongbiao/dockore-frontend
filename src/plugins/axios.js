@@ -60,11 +60,16 @@ _axios.interceptors.response.use(
         if (resp.data && (resp.data.exc || resp.data.excs)) {
           if (resp.data.exc)
             exc = resp.data.exc;
-          if (resp.data.excs)
-            if (resp.data.excs.length === 1)
-              exc = resp.data.excs[0];
-            else if (resp.data.excs.length > 1)
-              exc = `（发生"${resp.data.excs.length}"个异常）`;
+          if (resp.data.excs) {
+            let excs = resp.data.excs;
+            if (excs instanceof Object)
+              excs = Object.values(excs);
+            if (excs instanceof Array)
+              if (excs.length === 1)
+                exc = excs[0];
+              else if (excs.length > 1)
+                exc = `（发生"${excs.length}"个异常）`;
+          }
         }
 
         msg = `<div>${msg}</div><div style="word-break: break-all;">${exc}</div>`;
