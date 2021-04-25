@@ -1,7 +1,7 @@
 <template>
   <el-tabs v-model="tab">
     <el-tab-pane label="基本信息" name="basic">
-      <el-form :model="item" label-width="80px" style="width: 640px">
+      <el-form :model="item" label-width="80px" style="width: 640px; margin-top: 16px">
         <el-form-item label="容器ID">
           <el-input v-model="item.id" readonly></el-input>
         </el-form-item>

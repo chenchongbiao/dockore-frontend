@@ -46,7 +46,7 @@ _axios.interceptors.response.use(
       let resp = response.data;
       let success = resp.code === 0;
 
-      let options = Vue.prototype.$api.$options(response.config.url);
+      let options = Vue.prototype.$api.$options(response.config.url, response.config.method);
       if (options && options.loading)
         helper.stopLoading();
 

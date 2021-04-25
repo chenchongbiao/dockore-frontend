@@ -3,6 +3,8 @@ import Vue from 'vue'
 let root = `${process.env.VUE_APP_BASE_URL}/api`
 
 let url = {
+  SYSTEM_CONFIG: `${root}/system/config`,
+
   USER_LOGIN: `${root}/user/login`,
   USER_INFO: `${root}/user/info`,
   USER_CHANGE_PASSWORD: `${root}/user/change_password`,
@@ -34,6 +36,8 @@ for (let [k, v] of Object.entries(url))
   key[v] = k;
 
 let options = {
+  SYSTEM_CONFIG: {name: '系统设置'},
+
   USER_LOGIN: {name: '用户登录'},
   USER_INFO: {name: '获取用户信息', notify: false},
   USER_CHANGE_PASSWORD: {name: '修改密码'},
@@ -60,7 +64,7 @@ let axios = (new Vue()).$axios;
 
 export default {
   $url: url,
-  $options: (url) => {
+  $options: (url, method) => {
     let k = key[url];
     if (!k)
       for (let kk in key)
@@ -73,10 +77,12 @@ export default {
     if (r.loading === undefined)
       r.loading = true;
     if (r.notify === undefined)
-      r.notify = !!r.name;
+      r.notify = !!r.name && method !== 'get';
 
     return r;
   },
+  queryConfig: () => axios.get(url.SYSTEM_CONFIG),
+  updateConfig: (config) => axios.post(url.SYSTEM_CONFIG, {config}),
   userLogin: (username, password) => axios.post(url.USER_LOGIN, {username, password}),
   userInfo: () => axios.get(url.USER_INFO),
   userChangePassword: (old, new_) => axios.post(url.USER_CHANGE_PASSWORD, {old, 'new': new_}),

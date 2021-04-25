@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :model="item" label-width="80px" style="width: 640px">
+    <el-form :model="item" label-width="80px" style="width: 640px;  margin-top: 32px">
       <el-form-item label="镜像ID">
         <el-input v-model="item.id" readonly></el-input>
       </el-form-item>

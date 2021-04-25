@@ -16,6 +16,7 @@ export default {
     return {
       menu_index: null,
       menu_items: [
+        {path: '/system', title: '系统设置', icon: 'el-icon-setting'},
         {path: '/image', title: '镜像管理', icon: 'el-icon-document-copy'},
         {path: '/container', title: '容器管理', icon: 'el-icon-copy-document'},
       ],

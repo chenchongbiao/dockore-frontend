@@ -62,7 +62,7 @@
         <template slot-scope="scope">
           <el-link :href="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</el-link>
           <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
-          <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row.id, cmd)">
+          <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row, cmd)">
             <el-button size="mini" type="primary">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
@@ -175,21 +175,21 @@ export default {
     handleSelectionChange(val) {
       this.selection = val;
     },
-    handleOperation(id, cmd) {
+    handleOperation(item, cmd) {
       if (cmd === 'start')
-        this.startContainerItems([id]);
+        this.startContainerItems([item.id]);
       else if (cmd === 'stop')
-        this.stopContainerItems([id]);
+        this.stopContainerItems([item.id]);
       else if (cmd === 'restart')
-        this.restartContainerItems([id]);
+        this.restartContainerItems([item.id]);
       else if (cmd === 'rename')
-        this.renameContainerItem(id);
+        this.renameContainerItem(item);
       else if (cmd === 'logs')
-        this.getContainerItemLogs(id);
+        this.getContainerItemLogs(item.id);
       else if (cmd === 'diff')
-        this.getContainerItemDiff(id);
+        this.getContainerItemDiff(item.id);
       else if (cmd === 'commit')
-        this.commitContainerImage(id);
+        this.commitContainerImage(item.id);
     },
     getContainerItems() {
       this.$api.containerList(this.is_all).then(
@@ -223,10 +223,10 @@ export default {
           }
       );
     },
-    renameContainerItem(id) {
-      this.$prompt('请输入新的容器名称', `容器更名：${id}`).then(
+    renameContainerItem(item) {
+      this.$prompt('请输入新的容器名称', `容器更名：${item.name}`).then(
           ({value}) => {
-            this.$api.containerRename(id, value).then(resp => this.getContainerItems())
+            this.$api.containerRename(item.id, value).then(resp => this.getContainerItems())
           }
       ).catch(_ => _);
     },
