@@ -4,7 +4,10 @@
       <el-tab-pane :label="text(i)" v-for="(s, i) in form" :key="i">
         <el-form :model="s" label-width="160px" style="width: 640px; margin-top: 16px">
           <el-form-item :label="text(i, k)" v-for="(v, k) in s" :key="k">
-            <el-input v-model="s[k]" v-if="typeof s[k] === 'string'"></el-input>
+            <template v-if="typeof s[k] === 'string'">
+              <el-input v-model="s[k]" type="password" v-if="k.indexOf('password') !== -1"></el-input>
+              <el-input v-model="s[k]" v-else></el-input>
+            </template>
             <el-input-number v-model="s[k]" type="" v-else-if="typeof s[k] === 'number'"></el-input-number>
             <el-switch v-model="s[k]" type="" v-else-if="typeof s[k] === 'boolean'"></el-switch>
           </el-form-item>
