@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "Index",
+  name: "Config",
   data() {
     return {
       tab: '',
@@ -43,14 +43,7 @@ export default {
       );
     },
     text(i, k) {
-      let cfg = this.$text.config[i];
-      if (cfg === undefined)
-        return k === undefined ? i : k;
-
-      if (k === undefined)
-        k = 'this';
-
-      return cfg[k] || k;
+      return this.$text.$get('config', i, k);
     },
   },
 }

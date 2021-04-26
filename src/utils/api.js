@@ -3,6 +3,7 @@ import Vue from 'vue'
 let root = `${process.env.VUE_APP_BASE_URL}/api`
 
 let url = {
+  SYSTEM_VERSION: `${root}/system/version`,
   SYSTEM_CONFIG: `${root}/system/config`,
 
   USER_LOGIN: `${root}/user/login`,
@@ -81,6 +82,7 @@ export default {
 
     return r;
   },
+  queryVersion: () => axios.get(url.SYSTEM_VERSION),
   queryConfig: () => axios.get(url.SYSTEM_CONFIG),
   updateConfig: (config) => axios.post(url.SYSTEM_CONFIG, {config}),
   userLogin: (username, password) => axios.post(url.USER_LOGIN, {username, password}),

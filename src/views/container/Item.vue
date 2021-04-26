@@ -70,12 +70,8 @@ export default {
     },
     itemStatus() {
       let status = this.item.status;
-      if (status) {
-        let status_text = this.$text.container.status;
-        if (status_text[status])
-          status = status_text[status];
-        return status;
-      }
+      if (status)
+        return this.$text.$get('container', 'status', status);
     },
   },
   data() {

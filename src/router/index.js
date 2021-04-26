@@ -15,8 +15,12 @@ const routes = [
     component: () => import('@/views/Home'),
     children: [
       {
+        path: '',
+        component: () => import('@/views/Index'),
+      },
+      {
         path: 'system',
-        component: () => import('@/views/system/Index'),
+        component: () => import('@/views/system/Config'),
       },
       {
         path: 'image',

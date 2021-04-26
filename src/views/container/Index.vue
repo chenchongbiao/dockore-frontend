@@ -133,11 +133,9 @@ export default {
           this.page * this.page_size
       );
 
-      let status_text = this.$text.container.status;
       items = JSON.parse(JSON.stringify(items))
       for (let item of items) {
-        if (status_text[item.status])
-          item.status = status_text[item.status];
+        item.status = this.$text.$get('container', 'status', item.status);
         item.create_time = this.$moment(item.create_time).from();
       }
       return items;
