@@ -23,7 +23,7 @@
       </div>
     </div>
     <el-card shadow="hover">
-      <div ref="terminal" @resize="fitToscreen" style="width: 100%; height: calc(100vh - 224px);"></div>
+      <div ref="terminal" style="width: 100%; height: calc(100vh - 224px);"></div>
     </el-card>
   </div>
 </template>
