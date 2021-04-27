@@ -7,10 +7,13 @@
         <el-switch v-model="is_all" active-text="显示所有容器" style="margin-left: 16px"></el-switch>
       </div>
       <div style="float: right">
-        <el-button v-if="selection.length" type="success" @click="startContainerItems(selectionIds)">启动选中</el-button>
-        <el-button v-if="selection.length" type="info" @click="stopContainerItems(selectionIds)">停止选中</el-button>
-        <el-button v-if="selection.length" type="warning" @click="restartContainerItems(selectionIds)">重启选中</el-button>
-        <el-button v-if="selection.length" type="danger" @click="deleteContainerItems(selectionIds)">删除选中</el-button>
+        <el-button-group style="margin-right: 16px">
+          <el-button v-if="selection.length" type="success" @click="startContainerItems(selectionIds)">启动选中</el-button>
+          <el-button v-if="selection.length" type="info" @click="stopContainerItems(selectionIds)">停止选中</el-button>
+          <el-button v-if="selection.length" type="warning" @click="restartContainerItems(selectionIds)">重启选中
+          </el-button>
+          <el-button v-if="selection.length" type="danger" @click="deleteContainerItems(selectionIds)">删除选中</el-button>
+        </el-button-group>
         <el-button circle @click="getContainerItems">
           <el-icon class="el-icon-refresh"></el-icon>
         </el-button>
@@ -96,8 +99,12 @@
                 重启容器
               </el-dropdown-item>
               <el-dropdown-item command="terminal" divided>
-                <el-icon class="el-icon-magic-stick"></el-icon>
+                <el-icon class="el-icon-s-platform"></el-icon>
                 容器终端交互
+              </el-dropdown-item>
+              <el-dropdown-item command="exec">
+                <el-icon class="el-icon-magic-stick"></el-icon>
+                容器命令执行
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -194,6 +201,9 @@ export default {
         this.commitContainerImage(item.id);
       else if (cmd === 'terminal')
         this.openContainerTerminal(item.id);
+      else if (cmd === 'exec') {
+        this.execCommandContainer(item);
+      }
     },
     getContainerItems() {
       this.$api.containerList(this.is_all).then(
@@ -246,8 +256,8 @@ export default {
     commitContainerImage(id) {
       this.$bus.$emit(this.$event.container_commit, id)
     },
-    openContainerTerminal(id) {
-      this.$api.containerTerminal(id).then(
+    openContainerTerminal(id, cmd) {
+      this.$api.containerTerminal(id, cmd).then(
           resp => {
             if (resp.code === 0) {
               let token = resp.data.token;
@@ -256,6 +266,13 @@ export default {
           }
       )
     },
+    execCommandContainer(item) {
+      this.$prompt('请输入需要在终端执行的命令', `执行命令：${item.name}`).then(
+          ({value}) => {
+            this.openContainerTerminal(item.id, value);
+          }
+      ).catch(_ => _);
+    }
   },
 }
 </script>

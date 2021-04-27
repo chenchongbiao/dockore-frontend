@@ -111,5 +111,5 @@ export default {
   containerDiff: id => axios.get(`${url.CONTAINER_DIFF}/${id}`),
   containerCommit: (id, name, tag, message, author) => axios.post(
       url.CONTAINER_COMMIT, {id, name, tag, message, author}),
-  containerTerminal: id => axios.get(`${url.CONTAINER_TERMINAL}/${id}`),
+  containerTerminal: (id, cmd) => axios.post(`${url.CONTAINER_TERMINAL}`, {id, cmd}),
 }
