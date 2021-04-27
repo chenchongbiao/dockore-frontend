@@ -30,6 +30,7 @@ let url = {
   CONTAINER_LOGS: `${root}/container/logs`,
   CONTAINER_DIFF: `${root}/container/diff`,
   CONTAINER_COMMIT: `${root}/container/commit`,
+  CONTAINER_TERMINAL: `${root}/container/terminal`,
 }
 
 let key = {}
@@ -110,4 +111,5 @@ export default {
   containerDiff: id => axios.get(`${url.CONTAINER_DIFF}/${id}`),
   containerCommit: (id, name, tag, message, author) => axios.post(
       url.CONTAINER_COMMIT, {id, name, tag, message, author}),
+  containerTerminal: id => axios.get(`${url.CONTAINER_TERMINAL}/${id}`),
 }

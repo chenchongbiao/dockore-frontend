@@ -31,10 +31,6 @@ const routes = [
         component: () => import('@/views/image/Item'),
       },
       {
-        path: 'image/add',
-        component: () => import('@/views/image/Item'),
-      },
-      {
         path: 'container',
         component: () => import('@/views/container/Index'),
       },
@@ -43,8 +39,8 @@ const routes = [
         component: () => import('@/views/container/Item'),
       },
       {
-        path: 'container/add',
-        component: () => import('@/views/container/Item'),
+        path: 'container/terminal/:token',
+        component: () => import('@/views/container/Terminal'),
       },
     ],
   },

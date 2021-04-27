@@ -7,12 +7,19 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@juggle/resize-observer": "^3.3.0",
     "element-ui": "^2.3.6",
     "filesize": "^6.2.5",
     "moment": "^2.29.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vue-socket.io": "^3.0.10",
+    "vuex": "^3.4.0",
+    "xterm": "^4.11.0",
+    "xterm-addon-attach": "^0.6.0",
+    "xterm-addon-fit": "^0.5.0",
+    "xterm-addon-search": "^0.8.0",
+    "xterm-addon-web-links": "^0.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-router": "~4.5.0",

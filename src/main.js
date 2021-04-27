@@ -9,13 +9,20 @@ import store from './store'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import VueSocketIO from "vue-socket.io";
 
 import api from '@/utils/api'
 import storage from '@/utils/storage'
 import text from '@/utils/text'
 import event from "@/utils/event";
+import debounce from "@/utils/debounce";
 
 Vue.use(ElementUI)
+Vue.use(new VueSocketIO({
+  autoConnect: false,
+  debug: process.env.NODE_ENV === 'development',
+  connection: `${process.env.VUE_APP_BASE_URL}/terminal`,
+}))
 
 Vue.config.productionTip = false
 
@@ -26,6 +33,7 @@ Vue.prototype.$text = text
 Vue.prototype.$event = event
 Vue.prototype.$moment = moment
 Vue.prototype.$filesize = fileSize
+Vue.prototype.$debounce = debounce
 
 moment.locale('zh-cn')
 

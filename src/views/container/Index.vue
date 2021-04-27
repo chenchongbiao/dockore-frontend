@@ -95,6 +95,10 @@
                 <el-icon class="el-icon-refresh-right"></el-icon>
                 重启容器
               </el-dropdown-item>
+              <el-dropdown-item command="terminal" divided>
+                <el-icon class="el-icon-magic-stick"></el-icon>
+                容器终端交互
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -188,6 +192,8 @@ export default {
         this.getContainerItemDiff(item.id);
       else if (cmd === 'commit')
         this.commitContainerImage(item.id);
+      else if (cmd === 'terminal')
+        this.openContainerTerminal(item.id);
     },
     getContainerItems() {
       this.$api.containerList(this.is_all).then(
@@ -239,6 +245,16 @@ export default {
     },
     commitContainerImage(id) {
       this.$bus.$emit(this.$event.container_commit, id)
+    },
+    openContainerTerminal(id) {
+      this.$api.containerTerminal(id).then(
+          resp => {
+            if (resp.code === 0) {
+              let token = resp.data.token;
+              this.$router.push(`/container/terminal/${token}`)
+            }
+          }
+      )
     },
   },
 }
