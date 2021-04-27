@@ -13,6 +13,8 @@ export default {
     docker: {
       this: 'Docker设置',
       url: '服务URL',
+      'cli-bin': '客户端路径',
+      shell_expires: '交互会话有效期',
     },
     user: {
       this: '用户设置',
@@ -67,6 +69,6 @@ export default {
         return i;
     }
 
-    return text_[k] || text_def[k] || k;
+    return text_[k] || (text_def && text_def[k]) || k;
   },
 }
