@@ -29,7 +29,8 @@ export default {
     }
   },
   created() {
-    this.getVersion();
+    if (this.$store.getters.userToken)
+      this.getVersion();
   },
   methods: {
     getVersion() {
