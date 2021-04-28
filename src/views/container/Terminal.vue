@@ -12,7 +12,7 @@
         </el-breadcrumb>
       </div>
       <div>
-        <el-button-group style="margin-right: 16px">
+        <el-button-group style="margin-right: 16px" v-if="this.item.id">
           <el-button type="success" @click="startContainer">启动选中</el-button>
           <el-button type="danger" @click="stopContainer">停止选中</el-button>
           <el-button type="warning" @click="restartContainer">重启选中</el-button>
@@ -60,6 +60,7 @@ export default {
     };
   },
   created() {
+    this.$socket.connect();
     this.term.loadAddon(this.web_link);
     this.term.loadAddon(this.fit);
     this.term.loadAddon(this.search);
@@ -127,6 +128,7 @@ export default {
   },
   beforeDestroy() {
     this.ro.disconnect();
+    this.$socket.disconnect();
   },
 }
 </script>

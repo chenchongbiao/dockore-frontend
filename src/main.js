@@ -19,9 +19,11 @@ import debounce from "@/utils/debounce";
 
 Vue.use(ElementUI)
 Vue.use(new VueSocketIO({
-  autoConnect: false,
   debug: process.env.NODE_ENV === 'development',
   connection: `${process.env.VUE_APP_BASE_URL}/terminal`,
+  options: {
+    autoConnect: false,
+  }
 }))
 
 Vue.config.productionTip = false
