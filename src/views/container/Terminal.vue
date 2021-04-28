@@ -13,9 +13,18 @@
       </div>
       <div>
         <el-button-group style="margin-right: 16px" v-if="this.item.id">
-          <el-button type="success" @click="startContainer">启动选中</el-button>
-          <el-button type="danger" @click="stopContainer">停止选中</el-button>
-          <el-button type="warning" @click="restartContainer">重启选中</el-button>
+          <el-button type="danger" @click="stopContainer">
+            <el-icon class="el-icon-video-pause"></el-icon>
+            停止
+          </el-button>
+          <el-button type="warning" @click="restartContainer">
+            <el-icon class="el-icon-refresh-right"></el-icon>
+            重启
+          </el-button>
+          <el-button type="success" @click="startContainer">
+            <el-icon class="el-icon-video-play"></el-icon>
+            启动
+          </el-button>
         </el-button-group>
         <el-button circle @click="refresh">
           <el-icon class="el-icon-refresh"></el-icon>
@@ -72,27 +81,27 @@ export default {
     this.ro.observe(this.$refs.terminal);
     this.term.open(this.$refs.terminal);
     this.term.onKey(this.pty_input);
-    this.$socket.emit('open', this.token);
   },
   sockets: {
     connect() {
       this.attach = new AttachAddon(this.$socket);
       this.term.loadAddon(this.attach);
+      this.$socket.emit('open', this.$store.getters.userToken, this.token);
     },
     disconnect() {
       helper.sendNotification('容器终端', '网络连接中断。', 'warning');
       this.term.write(
-          '\n' +
-          '--==========================--\r\n' +
-          ' * Terminal: Network was down.\r\n' +
-          '--==========================--\r\n'
+          '\r\n' +
+          ' --==========================--\r\n' +
+          '  * Terminal: Network was down.\r\n' +
+          ' --==========================--\r\n'
       )
     },
     pty_output(data) {
       this.term.write(data.output)
     },
-    init_failed() {
-      helper.sendNotification('容器终端', '会话无效，请重新打开。', 'error');
+    init_failed(resp) {
+      helper.sendNotification('容器终端', resp.msg ? resp.msg : '打开容器终端失败。', 'error');
     },
     init_success(obj) {
       this.item = obj;

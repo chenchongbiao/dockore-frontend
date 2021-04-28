@@ -8,11 +8,22 @@
       </div>
       <div style="float: right">
         <el-button-group style="margin-right: 16px">
-          <el-button v-if="selection.length" type="success" @click="startContainerItems(selectionIds)">启动选中</el-button>
-          <el-button v-if="selection.length" type="info" @click="stopContainerItems(selectionIds)">停止选中</el-button>
-          <el-button v-if="selection.length" type="warning" @click="restartContainerItems(selectionIds)">重启选中
+          <el-button v-if="selection.length" type="info" @click="stopContainerItems(selectionIds)">
+            <el-icon class="el-icon-video-pause"></el-icon>
+            停止
           </el-button>
-          <el-button v-if="selection.length" type="danger" @click="deleteContainerItems(selectionIds)">删除选中</el-button>
+          <el-button v-if="selection.length" type="warning" @click="restartContainerItems(selectionIds)">
+            <el-icon class="el-icon-refresh-right"></el-icon>
+            重启
+          </el-button>
+          <el-button v-if="selection.length" type="success" @click="startContainerItems(selectionIds)">
+            <el-icon class="el-icon-video-play"></el-icon>
+            启动
+          </el-button>
+          <el-button v-if="selection.length" type="danger" @click="deleteContainerItems(selectionIds)">
+            <el-icon class="el-icon-delete"></el-icon>
+            删除
+          </el-button>
         </el-button-group>
         <el-button circle @click="getContainerItems">
           <el-icon class="el-icon-refresh"></el-icon>
