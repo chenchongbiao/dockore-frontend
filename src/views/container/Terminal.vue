@@ -42,7 +42,6 @@ import {Terminal} from 'xterm';
 import {WebLinksAddon} from 'xterm-addon-web-links'
 import {FitAddon} from 'xterm-addon-fit'
 import {SearchAddon} from 'xterm-addon-search'
-import {AttachAddon} from 'xterm-addon-attach'
 import {ResizeObserver} from '@juggle/resize-observer';
 import helper from "@/utils/helper";
 
@@ -63,32 +62,33 @@ export default {
       web_link: new WebLinksAddon(),
       fit: new FitAddon(),
       search: new SearchAddon(),
-      attach: null,
       ro: null,
       item: {},
     };
   },
   created() {
-    this.$socket.connect();
+    this.$connect(`${process.env.VUE_APP_WS_URL}/terminal`);
     this.term.loadAddon(this.web_link);
     this.term.loadAddon(this.fit);
     this.term.loadAddon(this.search);
-    this.ro = new ResizeObserver((entries, observer) => {
-      this.fitToscreen();
-    });
   },
   mounted() {
-    this.ro.observe(this.$refs.terminal);
     this.term.open(this.$refs.terminal);
     this.term.onKey(this.pty_input);
   },
   sockets: {
-    connect() {
-      this.attach = new AttachAddon(this.$socket);
-      this.term.loadAddon(this.attach);
-      this.$socket.emit('open', this.$store.getters.userToken, this.token);
+    onopen() {
+      this.ro = new ResizeObserver((entries, observer) => {
+        this.fitToscreen();
+      });
+      this.ro.observe(this.$refs.terminal);
+
+      this.emit('open', {
+        user_token: this.$store.getters.userToken,
+        token: this.token,
+      });
     },
-    disconnect() {
+    onclose() {
       helper.sendNotification('容器终端', '网络连接中断。', 'warning');
       this.term.write(
           '\r\n' +
@@ -97,47 +97,55 @@ export default {
           ' --==========================--\r\n'
       )
     },
-    pty_output(data) {
-      this.term.write(data.output)
+    onmessage(event) {
+      let msg = JSON.parse(event.data);
+      let callback = this[msg.event];
+      if (callback)
+        callback(msg.data);
+    },
+  },
+  methods: {
+    emit(event, data) {
+      return this.$socket.send(JSON.stringify({
+        event, data
+      }));
+    },
+    init_success(item) {
+      this.item = item;
+      helper.sendNotification('容器终端', '打开容器终端成功。', 'success');
+      this.fitToscreen();
     },
     init_failed(resp) {
       helper.sendNotification('容器终端', resp.msg ? resp.msg : '打开容器终端失败。', 'error');
     },
-    init_success(obj) {
-      this.item = obj;
-      helper.sendNotification('容器终端', '打开容器终端成功。', 'success');
-      this.fitToscreen();
-    },
-  },
-  methods: {
     pty_input({key, domEvent}) {
-      this.$socket.emit("pty_input", {input: key});
-      this.$debounce(() => this.$socket.emit('pty_input'), 3000);
+      this.emit("pty_input", {input: key});
+    },
+    pty_output(data) {
+      this.term.write(data.output)
     },
     fitToscreen() {
       this.$debounce(() => {
         this.fit.fit()
-        this.$socket.emit("resize", {"cols": this.term.cols, "rows": this.term.rows})
+        this.emit("resize", {"cols": this.term.cols, "rows": this.term.rows})
       }, 1000)
     },
     startContainer() {
       this.$api.containerStart([this.item.id]).then(this.refresh);
     },
     stopContainer() {
-      this.$api.containerStop([this.item.id], 5).then(
-          () => setTimeout(() => this.$socket.emit('pty_input'), 1000)
-      );
+      this.$api.containerStop([this.item.id], 5);
     },
     restartContainer() {
       this.$api.containerRestart([this.item.id], 5).then(this.refresh);
     },
     refresh() {
       this.$router.go(0);
-    }
+    },
   },
   beforeDestroy() {
     this.ro.disconnect();
-    this.$socket.disconnect();
+    this.$disconnect();
   },
 }
 </script>

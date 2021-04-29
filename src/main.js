@@ -9,7 +9,7 @@ import store from './store'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import VueSocketIO from "vue-socket.io";
+import VueNativeSock from 'vue-native-websocket'
 
 import api from '@/utils/api'
 import storage from '@/utils/storage'
@@ -18,13 +18,10 @@ import event from "@/utils/event";
 import debounce from "@/utils/debounce";
 
 Vue.use(ElementUI)
-Vue.use(new VueSocketIO({
-  debug: process.env.NODE_ENV === 'development',
-  connection: `${process.env.VUE_APP_BASE_URL}/terminal`,
-  options: {
-    autoConnect: false,
-  }
-}))
+Vue.use(VueNativeSock, process.env.VUE_APP_WS_URL, {
+  connectManually: true,
+  reconnection: false,
+})
 
 Vue.config.productionTip = false
 
