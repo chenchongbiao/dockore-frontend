@@ -2,7 +2,9 @@
   <el-menu mode="horizontal" @select="menuSelect">
     <el-menu-item index="home">
       <template slot="title">
-        <el-link href="/"><h1 style="margin: 0">Dockore</h1></el-link>
+        <el-link href="/">
+          <h1 style="margin: 0; font-size: 26px">Dockore</h1>
+        </el-link>
       </template>
     </el-menu-item>
     <template v-if="isLogined">
