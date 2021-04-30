@@ -1,6 +1,7 @@
 <template>
   <div style="text-align: center">
-    <el-menu ref="menu" v-model="menu_index" :default-active="menu_index" :router="true">
+    <el-menu ref="menu" v-model="menu_index" :default-active="menu_index"
+             :router="true" :collapse="collapse" class="left-aside">
       <el-menu-item v-for="item in menu_items" :key="item.path" :index="item.path">
         <i :class="item.icon"></i>
         <span slot="title">{{ item.title }}</span>
@@ -20,6 +21,7 @@ export default {
         {path: '/image', title: '镜像管理', icon: 'el-icon-document-copy'},
         {path: '/container', title: '容器管理', icon: 'el-icon-copy-document'},
       ],
+      collapse: false,
     }
   },
   created() {
@@ -28,10 +30,21 @@ export default {
         this.menu_index = item.path;
       }
     }
+  },
+  mounted() {
+    window.onresize = this.fit;
+    this.fit();
+  },
+  methods: {
+    fit() {
+      this.collapse = document.body.clientWidth < 1440;
+    },
   }
 }
 </script>
 
 <style scoped>
-
+.left-aside:not(.el-menu--collapse) {
+  width: 256px;
+}
 </style>

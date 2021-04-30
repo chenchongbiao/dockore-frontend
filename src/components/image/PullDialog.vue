@@ -4,8 +4,8 @@
       <div id="navbar" style="height: 56px">
         <h2 style="float: left; margin-top: 8px">搜索结果</h2>
         <div style="float: right">
-          <el-input v-model="keyword" placeholder="请输入关键字" style="width: 256px">
-            <el-button slot="append" @click="searchImageItems(keyword)">
+          <el-input v-model="keyword" placeholder="请输入关键字" style="width: 256px" @keyup.enter.native="searchImageItems">
+            <el-button slot="append" @click="searchImageItems">
               <i class="el-icon-search"></i>
             </el-button>
           </el-input>
@@ -53,7 +53,7 @@
     <span slot="footer" class="dialog-footer">
         <el-input v-model="form.tag" placeholder="版本标签（latest）" style="width: 144px; margin-right: 8px"></el-input>
       <el-button @click="dialog_visible = false">取 消</el-button>
-      <el-button type="primary" @click="pullImage">确 定</el-button>
+      <el-button type="primary" @click="pullImage" :disabled="pull_disabled">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -69,6 +69,7 @@ export default {
       page: 1,
       page_size: 10,
       form: {},
+      pull_disabled: true,
     };
   },
   created() {
@@ -98,14 +99,15 @@ export default {
     tableCurrentChange(n, o) {
       if (n) {
         this.form.name = n.name;
+        this.pull_disabled = false;
       }
     },
 
-    searchImageItems(keyword) {
-      if (!keyword)
+    searchImageItems() {
+      if (!this.keyword)
         return
 
-      this.$api.imageSearch(keyword).then(
+      this.$api.imageSearch(this.keyword).then(
           resp => {
             if (resp.code === 0) {
               this.items = resp.data.items;

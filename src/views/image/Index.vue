@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column
           label="标签"
-          width="240">
+          width="220">
         <template slot-scope="scope">
           <el-tag v-for="tag in scope.row.tags" :key="tag" closable
                   style="margin-right: 8px; margin-top: 2px; margin-bottom: 2px"
@@ -37,7 +37,7 @@
       <el-table-column
           label="创建者"
           prop="author"
-          width="320">
+          width="250">
       </el-table-column>
       <el-table-column
           label="创建时间"

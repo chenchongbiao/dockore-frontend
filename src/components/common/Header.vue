@@ -16,11 +16,6 @@
         </el-menu-item>
       </el-submenu>
     </template>
-    <template v-else>
-      <el-menu-item index="anonymous" style="float: right">
-        <el-link href="/login">登录</el-link>
-      </el-menu-item>
-    </template>
   </el-menu>
 </template>
 
@@ -29,7 +24,7 @@ export default {
   name: "Header",
   computed: {
     isLogined() {
-      return this.$store.getters.userToken !== null;
+      return !!this.username;
     },
     username() {
       return this.$store.getters.userInfo.username;

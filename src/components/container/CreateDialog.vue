@@ -254,7 +254,7 @@ export default {
     },
 
     appendPortMapping() {
-      this.form.ports.push({});
+      this.form.ports.push({protocol: 'tcp', listen_ip: '0.0.0.0'});
     },
     removePortMapping(item) {
       this.form.ports = this.form.ports.filter(x => x !== item);

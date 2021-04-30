@@ -4,7 +4,7 @@
       <Header></Header>
     </el-header>
     <el-container>
-      <el-aside v-if="isLogined">
+      <el-aside v-if="isLogined" style="width: auto">
         <LeftASide></LeftASide>
       </el-aside>
       <el-main>
