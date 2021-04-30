@@ -1,6 +1,18 @@
 <template>
   <div>
-    <el-form :model="item" label-width="80px" style="width: 640px;  margin-top: 32px">
+    <div style="margin: 8px 8px 32px;">
+      <div style="display: flex; align-items: center">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item to="/">首页</el-breadcrumb-item>
+          <el-breadcrumb-item to="/image">镜像管理</el-breadcrumb-item>
+          <el-breadcrumb-item :to="`/image/${item.id}`">
+            镜像：{{ item.id }}
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+    </div>
+
+    <el-form :model="item" label-width="120px" style="width: 640px;">
       <el-form-item label="镜像ID">
         <el-input v-model="item.id" readonly></el-input>
       </el-form-item>
