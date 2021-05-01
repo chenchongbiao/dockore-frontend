@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "Index",
+  name: "Version",
   data() {
     return {
       tab: '',

@@ -22,7 +22,7 @@
       <el-table-column
           label="ID"
           prop="id"
-          width="160">
+          width="120">
       </el-table-column>
       <el-table-column
           label="标签"

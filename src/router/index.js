@@ -15,11 +15,11 @@ const routes = [
     component: () => import('@/views/Home'),
     children: [
       {
-        path: '',
-        component: () => import('@/views/Index'),
+        path: 'system/version',
+        component: () => import('@/views/system/Version'),
       },
       {
-        path: 'system',
+        path: 'system/config',
         component: () => import('@/views/system/Config'),
       },
       {
