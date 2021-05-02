@@ -1,20 +1,20 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="创建容器" width="1280px">
+  <el-dialog :visible.sync="dialog_visible" title="创建容器" :width="collapse? '1124px':'1280px'">
     <el-container>
-      <el-aside width="224px">
+      <el-aside style="width: auto">
         <el-menu ref="menu" default-active="1" @select="x => step = x"
-                 style="text-align: center">
+                 style="text-align: center" :collapse="collapse" class="collapse-menu">
           <el-menu-item index="1">
             <el-icon class="el-icon-document-copy"></el-icon>
-            选择镜像
+            <span slot="title">选择镜像</span>
           </el-menu-item>
           <el-menu-item index="2">
             <el-icon class="el-icon-copy-document"></el-icon>
-            容器信息
+            <span slot="title">容器信息</span>
           </el-menu-item>
           <el-menu-item index="3">
             <el-icon class="el-icon-link"></el-icon>
-            端口映射
+            <span slot="title">端口映射</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -43,7 +43,7 @@
             <el-table-column
                 label="创建者"
                 prop="author"
-                width="240">
+                width="220">
             </el-table-column>
             <el-table-column
                 label="创建时间"
@@ -140,6 +140,8 @@
 </template>
 
 <script>
+import {ResizeObserver} from "@juggle/resize-observer";
+
 export default {
   name: "CreateDialog",
   data() {
@@ -155,6 +157,8 @@ export default {
       port_suggestion: [22, 53, 80, 443],
       ip_suggestion: ['0.0.0.0', '127.0.0.1'],
       run: true,
+      collapse: false,
+      ro: null,
     };
   },
   created() {
@@ -165,7 +169,15 @@ export default {
       this.getImageItems();
     })
   },
+  mounted() {
+    this.ro = new ResizeObserver((entries, observer) => {
+      this.fit();
+    });
+    this.ro.observe(document.body);
+    this.fit();
+  },
   beforeDestroy() {
+    this.ro.disconnect();
     this.$bus.$off(this.$event.container_create);
   },
   computed: {
@@ -274,10 +286,15 @@ export default {
       }
       cb(suggestion);
     },
+    fit() {
+      this.collapse = document.body.clientWidth < 1280;
+    },
   },
 }
 </script>
 
 <style scoped>
-
+.collapse-menu:not(.el-menu--collapse) {
+  width: 224px;
+}
 </style>
