@@ -15,12 +15,24 @@ const routes = [
     component: () => import('@/views/Home'),
     children: [
       {
-        path: 'system/version',
-        component: () => import('@/views/system/Version'),
+        path: 'admin/system/config',
+        component: () => import('@/views/admin/system/Config'),
       },
       {
-        path: 'system/config',
-        component: () => import('@/views/system/Config'),
+        path: 'admin/user',
+        component: () => import('@/views/admin/user/Index'),
+      },
+      {
+        path: 'admin/user/add',
+        component: () => import('@/views/admin/user/Item'),
+      },
+      {
+        path: 'admin/user/edit/:id',
+        component: () => import('@/views/admin/user/Item'),
+      },
+      {
+        path: 'system/version',
+        component: () => import('@/views/system/Version'),
       },
       {
         path: 'image',

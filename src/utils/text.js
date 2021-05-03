@@ -56,6 +56,12 @@ export default {
       exited: '已退出',
     }
   },
+  user: {
+    roles: {
+      0: '管理员',
+      1: '普通用户',
+    }
+  },
   $get(s, i, k) {
     let text_ = this[s][i];
     let text_def = this[s]['_'];

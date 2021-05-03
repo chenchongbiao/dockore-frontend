@@ -75,6 +75,7 @@ export default {
   mounted() {
     this.term.open(this.$refs.terminal);
     this.term.onKey(this.pty_input);
+    this.fit.fit();
   },
   sockets: {
     onopen() {
@@ -126,8 +127,8 @@ export default {
     },
     fitToscreen() {
       this.$debounce(() => {
-        this.fit.fit()
-        this.emit("resize", {"cols": this.term.cols, "rows": this.term.rows})
+        this.fit.fit();
+        this.emit("resize", {"cols": this.term.cols, "rows": this.term.rows});
       }, 1000)
     },
     startContainer() {

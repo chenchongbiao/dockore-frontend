@@ -34,14 +34,14 @@ export default {
   },
   methods: {
     getConfig() {
-      this.$api.queryConfig().then(
+      this.$api.adminQueryConfig().then(
           resp => {
             this.form = resp.data.config;
           }
       );
     },
     updateConfig() {
-      this.$api.updateConfig(this.form).then(
+      this.$api.adminUpdateConfig(this.form).then(
           resp => this.getConfig()
       );
     },

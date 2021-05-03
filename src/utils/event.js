@@ -10,4 +10,6 @@ export default {
   container_diff: 'container_diff',
   container_logs: 'container_logs',
   container_commit: 'container_commit',
+
+  update_user_info: 'update_user_info',
 }

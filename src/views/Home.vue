@@ -29,9 +29,13 @@ export default {
     },
   },
   created() {
+    this.$bus.$on(this.$event.update_user_info, this.updateUserInfo);
     if (this.isLogined) {
       this.updateUserInfo();
     }
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.$event.update_user_info);
   },
   methods: {
     updateUserInfo() {

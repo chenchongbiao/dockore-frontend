@@ -3,8 +3,15 @@ import Vue from 'vue'
 let root = `${process.env.VUE_APP_BASE_URL}/api`
 
 let url = {
+  ADMIN_SYSTEM_CONFIG: `${root}/admin/system/config`,
+
+  ADMIN_USER_LIST: `${root}/admin/user/list`,
+  ADMIN_USER_ITEM: `${root}/admin/user/item`,
+  ADMIN_USER_ADD: `${root}/admin/user/add`,
+  ADMIN_USER_EDIT: `${root}/admin/user/edit`,
+  ADMIN_USER_DELETE: `${root}/admin/user/delete`,
+
   SYSTEM_VERSION: `${root}/system/version`,
-  SYSTEM_CONFIG: `${root}/system/config`,
 
   USER_LOGIN: `${root}/user/login`,
   USER_INFO: `${root}/user/info`,
@@ -38,7 +45,10 @@ for (let [k, v] of Object.entries(url))
   key[v] = k;
 
 let options = {
-  SYSTEM_CONFIG: {name: '系统设置'},
+  ADMIN_SYSTEM_CONFIG: {name: '系统设置'},
+  ADMIN_USER_ADD: {name: '添加用户'},
+  ADMIN_USER_EDIT: {name: '编辑用户'},
+  ADMIN_USER_DELETE: {name: '删除用户'},
 
   USER_LOGIN: {name: '用户登录'},
   USER_INFO: {name: '获取用户信息', notify: false},
@@ -83,12 +93,22 @@ export default {
 
     return r;
   },
+  adminQueryConfig: () => axios.get(url.ADMIN_SYSTEM_CONFIG),
+  adminUpdateConfig: (config) => axios.post(url.ADMIN_SYSTEM_CONFIG, {config}),
+  adminUserList: (page, per_page, keyword) => axios.get(
+      url.ADMIN_USER_LIST, {params: {page, per_page, keyword}}),
+  adminUserItem: (id) => axios.get(`${url.ADMIN_USER_ITEM}/${id}`),
+  adminUserAdd: (username, password, role_type) => axios.post(url.ADMIN_USER_ADD, {username, password, role_type}),
+  adminUserEdit: (id, username, password, role_type) => axios.post(
+      url.ADMIN_USER_EDIT, {id, username, password, role_type}),
+  adminUserDelete: ids => axios.post(url.ADMIN_USER_DELETE, {ids}),
+
   queryVersion: () => axios.get(url.SYSTEM_VERSION),
-  queryConfig: () => axios.get(url.SYSTEM_CONFIG),
-  updateConfig: (config) => axios.post(url.SYSTEM_CONFIG, {config}),
+
   userLogin: (username, password) => axios.post(url.USER_LOGIN, {username, password}),
   userInfo: () => axios.get(url.USER_INFO),
   userChangePassword: (old, new_) => axios.post(url.USER_CHANGE_PASSWORD, {old, 'new': new_}),
+
   imageList: is_all => axios.get(url.IMAGE_LIST, {params: {is_all}}),
   imageItem: id => axios.get(`${url.IMAGE_ITEM}/${id}`),
   imageDelete: (ids, tag_only) => axios.post(url.IMAGE_DELETE, {ids, tag_only}),
@@ -96,6 +116,7 @@ export default {
   imagePull: (name, tag) => axios.post(url.IMAGE_PULL, {name, tag}),
   imageTag: (id, name, tag) => axios.post(url.IMAGE_TAG, {id, name, tag}),
   imageHistory: id => axios.get(`${url.IMAGE_HISTORY}/${id}`),
+
   containerList: is_all => axios.get(url.CONTAINER_LIST, {params: {is_all}}),
   containerItem: id => axios.get(`${url.CONTAINER_ITEM}/${id}`),
   containerDelete: ids => axios.post(url.CONTAINER_DELETE, {ids}),

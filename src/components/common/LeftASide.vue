@@ -3,7 +3,7 @@
     <el-menu ref="menu" v-model="menu_index" :default-active="menu_index"
              :router="true" :collapse="collapse" class="collapse-menu">
       <el-menu-item v-for="item in menu_items" :key="item.path" :index="item.path"
-                    v-if="item.role === undefined||userRole === item.role">
+                    v-if="item.role_type === undefined||userRole === item.role_type">
         <i :class="item.icon"></i>
         <span slot="title">{{ item.title }}</span>
       </el-menu-item>
@@ -18,7 +18,7 @@ export default {
   name: "LeftASide",
   computed: {
     userRole() {
-      return this.$store.getters.userInfo.role;
+      return this.$store.getters.userInfo.role_type;
     }
   },
   data() {
@@ -26,7 +26,8 @@ export default {
       menu_index: null,
       menu_items: [
         {path: '/system/version', title: '系统版本', icon: 'el-icon-warning-outline'},
-        {path: '/system/config', title: '系统设置', icon: 'el-icon-setting', role: 0},
+        {path: '/admin/system/config', title: '系统设置', icon: 'el-icon-setting', role_type: 0},
+        {path: '/admin/user', title: '用户管理', icon: 'el-icon-user', role_type: 0},
         {path: '/image', title: '镜像管理', icon: 'el-icon-document-copy'},
         {path: '/container', title: '容器管理', icon: 'el-icon-copy-document'},
       ],
