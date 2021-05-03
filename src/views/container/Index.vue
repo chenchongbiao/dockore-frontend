@@ -53,7 +53,7 @@
           <el-link v-if="!scope.row.image.tags.length" :href="`/image/${scope.row.image.id}`">
             {{ scope.row.image.id }}
           </el-link>
-          <el-link v-else v-for="tag in scope.row.image.tags" :key="tag" :href="`/image/${tag}`"
+          <el-link v-else v-for="tag in scope.row.image.tags" :key="tag" :href="`/image/${scope.row.image.id}`"
                    style="margin-top: 2px; margin-bottom: 2px"
                    class="el-button el-button--mini">{{ tag }}
           </el-link>
