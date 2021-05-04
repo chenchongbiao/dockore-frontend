@@ -29,17 +29,12 @@ export default {
       repeat: '',
     }
   },
-  created() {
-    this.$bus.$on(this.$event.change_password, id => {
-      this.form = {id};
+  methods: {
+    open() {
+      this.form = {};
       this.repeat = '';
       this.dialog_visible = true;
-    });
-  },
-  beforeDestroy() {
-    this.$bus.$off(this.$event.change_password);
-  },
-  methods: {
+    },
     changePassword() {
       this.$api.userChangePassword(this.form.old, this.form.new).then(
           resp => {

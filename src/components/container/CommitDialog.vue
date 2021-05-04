@@ -30,16 +30,11 @@ export default {
       form: {},
     }
   },
-  created() {
-    this.$bus.$on(this.$event.container_commit, id => {
+  methods: {
+    open(id) {
       this.form = {id}
       this.dialog_visible = true;
-    });
-  },
-  beforeDestroy() {
-    this.$bus.$off(this.$event.container_commit);
-  },
-  methods: {
+    },
     commitContainer() {
       this.$api.containerCommit(this.form.id, this.form.name, this.form.tag, this.form.message, this.form.author).then(
           resp => {

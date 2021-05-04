@@ -15,6 +15,10 @@ export default {
       CONTAINER_INFO: '容器信息',
       CONTAINER_TERMINAL: '容器终端',
       USER_LOGIN: '用户登录',
+      VOLUME: '存储卷管理',
+      VOLUME_INFO: '存储卷信息',
+      NETWORK: '网络管理',
+      NETWORK_INFO: '网络信息',
     }
   },
   config: {
@@ -73,6 +77,21 @@ export default {
       running: '运行中',
       exited: '已退出',
     }
+  },
+  network: {
+    driver: {
+      null: '（无）',
+      host: '主机',
+      bridge: '网桥',
+      ipvlan: 'IP VLAN',
+      macvlan: 'MAC VLAN',
+      overlay: 'Overlay',
+    },
+  },
+  volume: {
+    driver: {
+      local: '本地设备',
+    },
   },
   user: {
     roles: {

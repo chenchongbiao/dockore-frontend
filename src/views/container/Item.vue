@@ -1,20 +1,18 @@
 <template>
   <div>
-    <div style="margin: 8px 8px 16px;">
-      <div style="display: flex; align-items: center">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item to="/">首页</el-breadcrumb-item>
-          <el-breadcrumb-item to="/container">容器管理</el-breadcrumb-item>
-          <el-breadcrumb-item :to="`/container/${item.id}`">
-            容器：{{ item.name }}
-          </el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
+    <div style="display: flex; align-items: center; margin: 8px 8px 16px;">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item to="/">首页</el-breadcrumb-item>
+        <el-breadcrumb-item to="/container">容器管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="`/container/${item.id}`">
+          容器：{{ item.name }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <el-tabs v-model="tab">
       <el-tab-pane label="基本信息" name="basic">
-        <el-form :model="item" label-width="120px" style="width: 640px; margin-top: 16px">
+        <el-form :model="item" label-width="120px" style="width: 640px">
           <el-form-item label="容器ID">
             <el-input v-model="item.id" readonly></el-input>
           </el-form-item>
@@ -44,7 +42,7 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="网络信息" name="network">
-        <el-form :model="item" label-width="120px" style="width: 640px; margin-top: 16px">
+        <el-form :model="item" label-width="120px" style="width: 640px">
           <el-form-item label="IP">
             <el-input v-model="item.network.ip" placeholder="未启动" readonly></el-input>
           </el-form-item>
@@ -101,9 +99,8 @@ export default {
     getItemInfo(id) {
       this.$api.containerItem(id).then(
           resp => {
-            if (resp.code === 0) {
+            if (resp.code === 0)
               this.item = resp.data.item;
-            }
           }
       )
     },
@@ -117,5 +114,12 @@ export default {
 </script>
 
 <style scoped>
+.el-tab-pane {
+  padding-top: 16px;
+  padding-left: 16px;
+}
 
+.el-tabs {
+  padding-left: 16px;
+}
 </style>

@@ -72,17 +72,6 @@ export default {
       pull_disabled: true,
     };
   },
-  created() {
-    this.$bus.$on(this.$event.image_pull, () => {
-      this.keyword = '';
-      this.form = {};
-      this.items = [];
-      this.dialog_visible = true;
-    })
-  },
-  beforeDestroy() {
-    this.$bus.$off(this.$event.image_pull);
-  },
   computed: {
     tableData() {
       let items = this.items;
@@ -91,11 +80,18 @@ export default {
           this.page * this.page_size
       );
 
-      items = JSON.parse(JSON.stringify(items))
+      items = this.$helper.copyObject(items);
       return items;
     },
   },
   methods: {
+    open() {
+      this.keyword = '';
+      this.form = {};
+      this.items = [];
+      this.dialog_visible = true;
+    },
+
     tableCurrentChange(n, o) {
       if (n) {
         this.form.name = n.name;
@@ -109,9 +105,8 @@ export default {
 
       this.$api.imageSearch(this.keyword).then(
           resp => {
-            if (resp.code === 0) {
+            if (resp.code === 0)
               this.items = resp.data.items;
-            }
           }
       )
     },
@@ -119,9 +114,8 @@ export default {
     pullImage() {
       this.$api.imagePull(this.form.name, this.form.tag).then(
           resp => {
-            if (resp.code === 0) {
+            if (resp.code === 0)
               this.dialog_visible = false;
-            }
             this.$bus.$emit(this.$event.refresh_images);
           }
       );

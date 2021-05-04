@@ -74,7 +74,7 @@
               </el-form-item>
               <el-form-item label="镜像标签">
                 <el-select v-model="form.tag" placeholder="tag" style="width: 100%">
-                  <el-option v-for="tag in itemTags" :key="tag" :label="tag" :value="tag"></el-option>
+                  <el-option v-for="tag in selectionTags" :key="tag" :label="tag" :value="tag"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="启动命令">
@@ -161,14 +161,6 @@ export default {
       ro: null,
     };
   },
-  created() {
-    this.$bus.$on(this.$event.container_create, () => {
-      this.dialog_visible = true;
-      this.step = '1';
-      this.form = {name: '', image: '', tag: '', command: '', interactive: false, tty: false, ports: []};
-      this.getImageItems();
-    })
-  },
   mounted() {
     this.ro = new ResizeObserver((entries, observer) => {
       this.fit();
@@ -178,7 +170,6 @@ export default {
   },
   beforeDestroy() {
     this.ro.disconnect();
-    this.$bus.$off(this.$event.container_create);
   },
   computed: {
     tableData() {
@@ -191,16 +182,16 @@ export default {
           this.page * this.page_size
       );
 
-      items = JSON.parse(JSON.stringify(items))
+      items = this.$helper.copyObject(items);
       for (let item of items) {
         item.create_time = this.$moment(item.create_time).from();
       }
       return items;
     },
-    itemName() {
+    selectionName() {
       return this.item.tags[0].split(':')[0] || 'latest'
     },
-    itemTags() {
+    selectionTags() {
       let a = [];
       for (let tag of this.item.tags) {
         a.push(tag.split(':')[1])
@@ -209,11 +200,16 @@ export default {
     },
   },
   methods: {
+    open() {
+      this.dialog_visible = true;
+      this.step = '1';
+      this.form = {name: '', image: '', tag: '', command: '', interactive: false, tty: false, ports: []};
+      this.getImageItems();
+    },
     tableCurrentChange(n, o) {
       if (n) {
         this.loadImageInfo(n.id, () => {
           this.step = '2';
-          this.$refs.menu.activeIndex = '2';
         });
       }
     },
@@ -221,9 +217,8 @@ export default {
     getImageItems() {
       this.$api.imageList(false).then(
           resp => {
-            if (resp.code === 0) {
+            if (resp.code === 0)
               this.items = resp.data.items;
-            }
           }
       )
     },
@@ -233,8 +228,8 @@ export default {
           resp => {
             if (resp.code === 0) {
               this.item = resp.data.item;
-              this.form.image = this.itemName;
-              this.form.tag = this.itemTags[0];
+              this.form.image = this.selectionName;
+              this.form.tag = this.selectionTags[0];
               this.form.command = this.item.command;
               this.form.interactive = this.item.interactive;
               this.form.tty = this.item.tty;
@@ -257,9 +252,8 @@ export default {
       api(`${this.form.image}:${this.form.tag}`, this.form.command,
           this.form.name, this.form.interactive, this.form.tty, this.form.ports).then(
           resp => {
-            if (resp.code === 0) {
+            if (resp.code === 0)
               this.dialog_visible = false;
-            }
             this.$bus.$emit(this.$event.refresh_containers);
           }
       )
@@ -288,6 +282,11 @@ export default {
     },
     fit() {
       this.collapse = document.body.clientWidth < 1280;
+    },
+  },
+  watch: {
+    step(nv, ov) {
+      this.$refs.menu.activeIndex = nv;
     },
   },
 }

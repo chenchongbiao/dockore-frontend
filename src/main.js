@@ -15,7 +15,7 @@ import api from '@/utils/api'
 import storage from '@/utils/storage'
 import text from '@/utils/text'
 import event from "@/utils/event";
-import debounce from "@/utils/debounce";
+import helper from "@/utils/helper";
 
 Vue.use(ElementUI)
 Vue.use(VueNativeSock, process.env.VUE_APP_WS_URL, {
@@ -32,7 +32,7 @@ Vue.prototype.$text = text
 Vue.prototype.$event = event
 Vue.prototype.$moment = moment
 Vue.prototype.$filesize = fileSize
-Vue.prototype.$debounce = debounce
+Vue.prototype.$helper = helper
 
 moment.locale('zh-cn')
 

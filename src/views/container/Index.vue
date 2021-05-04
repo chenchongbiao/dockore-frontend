@@ -28,7 +28,7 @@
         <el-button circle @click="getContainerItems">
           <el-icon class="el-icon-refresh"></el-icon>
         </el-button>
-        <el-button @click="openCreateDialog">创建容器</el-button>
+        <el-button @click="$refs.create_dialog.open()">创建容器</el-button>
       </div>
     </div>
     <el-table :data="tableData" border @selection-change="handleSelectionChange">
@@ -54,8 +54,8 @@
             {{ scope.row.image.id }}
           </router-link>
           <router-link v-else v-for="tag in scope.row.image.tags" :key="tag" :to="`/image/${scope.row.image.id}`"
-                   style="margin-top: 2px; margin-bottom: 2px"
-                   class="el-button el-button--mini">{{ tag }}
+                       style="margin-top: 2px; margin-bottom: 2px"
+                       class="el-button el-button--mini">{{ tag }}
           </router-link>
         </template>
       </el-table-column>
@@ -128,10 +128,10 @@
           :page-sizes="[5, 10, 50, 100]" :total="this.items.length"
           background layout="prev, pager, next, sizes"></el-pagination>
     </div>
-    <CreateDialog></CreateDialog>
-    <LogsDialog></LogsDialog>
-    <DiffDialog></DiffDialog>
-    <CommitDialog></CommitDialog>
+    <CreateDialog ref="create_dialog"></CreateDialog>
+    <LogsDialog ref="logs_dialog"></LogsDialog>
+    <DiffDialog ref="diff_dialog"></DiffDialog>
+    <CommitDialog ref="commit_dialog"></CommitDialog>
   </div>
 </template>
 
@@ -155,7 +155,7 @@ export default {
           this.page * this.page_size
       );
 
-      items = JSON.parse(JSON.stringify(items))
+      items = this.$helper.copyObject(items);
       for (let item of items) {
         item.status = this.$text.$get('container', 'status', item.status);
         item.create_time = this.$moment(item.create_time).from();
@@ -186,8 +186,8 @@ export default {
     this.$bus.$off(this.$event.refresh_containers);
   },
   watch: {
-    is_all(old, new_) {
-      if (old !== new_)
+    is_all(nv, ov) {
+      if (nv !== ov)
         this.getContainerItems();
     }
   },
@@ -205,11 +205,11 @@ export default {
       else if (cmd === 'rename')
         this.renameContainerItem(item);
       else if (cmd === 'logs')
-        this.getContainerItemLogs(item.id);
+        this.$refs.logs_dialog.open(id);
       else if (cmd === 'diff')
-        this.getContainerItemDiff(item.id);
+        this.$refs.diff_dialog.open(id)
       else if (cmd === 'commit')
-        this.commitContainerImage(item.id);
+        this.$refs.commit_dialog.open(id)
       else if (cmd === 'terminal')
         this.openContainerTerminal(item.id);
       else if (cmd === 'exec') {
@@ -254,18 +254,6 @@ export default {
             this.$api.containerRename(item.id, value).then(resp => this.getContainerItems())
           }
       ).catch(_ => _);
-    },
-    getContainerItemLogs(id) {
-      this.$bus.$emit(this.$event.container_logs, id)
-    },
-    getContainerItemDiff(id) {
-      this.$bus.$emit(this.$event.container_diff, id)
-    },
-    openCreateDialog() {
-      this.$bus.$emit(this.$event.container_create);
-    },
-    commitContainerImage(id) {
-      this.$bus.$emit(this.$event.container_commit, id)
     },
     openContainerTerminal(id, cmd) {
       this.$api.containerTerminal(id, cmd).then(

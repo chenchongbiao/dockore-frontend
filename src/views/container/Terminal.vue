@@ -126,7 +126,7 @@ export default {
       this.term.write(data.output)
     },
     fitToscreen() {
-      this.$debounce(() => {
+      this.$helper.debounce(() => {
         this.fit.fit();
         this.emit("resize", {"cols": this.term.cols, "rows": this.term.rows});
       }, 1000)

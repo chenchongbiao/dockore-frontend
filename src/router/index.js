@@ -66,6 +66,26 @@ const routes = [
         component: () => import('@/views/container/Terminal'),
         meta: {title: text.global.route_title.CONTAINER_TERMINAL},
       },
+      {
+        path: 'network',
+        component: () => import('@/views/network/Index'),
+        meta: {title: text.global.route_title.NETWORK},
+      },
+      {
+        path: 'network/:id',
+        component: () => import('@/views/network/Item'),
+        meta: {title: text.global.route_title.NETWORK_INFO},
+      },
+      {
+        path: 'volume',
+        component: () => import('@/views/volume/Index'),
+        meta: {title: text.global.route_title.VOLUME},
+      },
+      {
+        path: 'volume/:id',
+        component: () => import('@/views/volume/Item'),
+        meta: {title: text.global.route_title.VOLUME_INFO},
+      },
     ],
   },
   {

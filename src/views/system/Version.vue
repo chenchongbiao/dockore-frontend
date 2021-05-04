@@ -2,7 +2,7 @@
   <div>
     <el-tabs v-model="tab">
       <el-tab-pane :label="text(i)" v-for="(s, i) in version" :key="i">
-        <el-form :model="s" label-width="160px" style="width: 640px; margin-top: 16px">
+        <el-form :model="s" label-width="160px">
           <el-form-item :label="text(i, k)" v-for="(v, k) in s" :key="k">
             <template v-if="typeof s[k] === 'string'">
               <el-date-picker v-model="s[k]" v-if="k.indexOf('_time') !== -1" type="datetime" readonly></el-date-picker>
@@ -49,5 +49,17 @@ export default {
 </script>
 
 <style scoped>
+.el-form {
+  width: 640px;
+}
+
+.el-tab-pane {
+  padding-top: 16px;
+  padding-left: 16px;
+}
+
+.el-tabs {
+  padding-left: 16px;
+}
 
 </style>

@@ -56,7 +56,7 @@ export default {
     tableData() {
       let items = this.histories;
 
-      items = JSON.parse(JSON.stringify(items))
+      items = this.$helper.copyObject(items);
       for (let item of items) {
         item.create_time = this.$moment(item.create_time).from();
         item.size = this.$filesize(item.size);
@@ -71,16 +71,11 @@ export default {
       histories: [],
     }
   },
-  created() {
-    this.$bus.$on(this.$event.image_history, id => {
+  methods: {
+    open(id) {
       this.dialog_visible = true;
       this.catchImageHistory(id);
-    });
-  },
-  beforeDestroy() {
-    this.$bus.$off(this.$event.image_history);
-  },
-  methods: {
+    },
     catchImageHistory(id) {
       this.$api.imageHistory(id).then(
           resp => {

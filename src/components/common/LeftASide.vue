@@ -30,6 +30,8 @@ export default {
         {path: '/admin/user', title: '用户管理', icon: 'el-icon-user', role_type: 0},
         {path: '/image', title: '镜像管理', icon: 'el-icon-document-copy'},
         {path: '/container', title: '容器管理', icon: 'el-icon-copy-document'},
+        {path: '/network', title: '网络管理', icon: 'el-icon-connection'},
+        {path: '/volume', title: '存储卷管理', icon: 'el-icon-files'},
       ],
       collapse: false,
       ro: null,

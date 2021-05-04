@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import helper from "@/utils/helper";
 
 let root = `${process.env.VUE_APP_BASE_URL}/api`
 
@@ -38,6 +39,18 @@ let url = {
   CONTAINER_DIFF: `${root}/container/diff`,
   CONTAINER_COMMIT: `${root}/container/commit`,
   CONTAINER_TERMINAL: `${root}/container/terminal`,
+
+  NETWORK_LIST: `${root}/network/list`,
+  NETWORK_ITEM: `${root}/network/item`,
+  NETWORK_DELETE: `${root}/network/delete`,
+  NETWORK_CREATE: `${root}/network/create`,
+  NETWORK_CONNECT: `${root}/network/connect`,
+  NETWORK_DISCONNECT: `${root}/network/disconnect`,
+
+  VOLUME_LIST: `${root}/volume/list`,
+  VOLUME_ITEM: `${root}/volume/item`,
+  VOLUME_DELETE: `${root}/volume/delete`,
+  VOLUME_CREATE: `${root}/volume/create`,
 }
 
 let key = {}
@@ -54,14 +67,14 @@ let options = {
   USER_INFO: {name: '获取用户信息', notify: false},
   USER_CHANGE_PASSWORD: {name: '修改密码'},
 
+  IMAGE_PULL: {name: '拉取镜像'},
   IMAGE_DELETE: {name: '删除镜像'},
   IMAGE_SEARCH: {name: '搜索线上镜像', notify: false},
-  IMAGE_PULL: {name: '拉取镜像'},
   IMAGE_TAG: {name: '标记镜像'},
   IMAGE_HISTORY: {name: '获取镜像历史记录', notify: false},
 
-  CONTAINER_DELETE: {name: '删除容器'},
   CONTAINER_CREATE: {name: '创建容器'},
+  CONTAINER_DELETE: {name: '删除容器'},
   CONTAINER_RUN: {name: '运行容器'},
   CONTAINER_START: {name: '启动容器'},
   CONTAINER_STOP: {name: '停止容器'},
@@ -70,6 +83,14 @@ let options = {
   CONTAINER_LOGS: {name: '获取容器日志', notify: false},
   CONTAINER_DIFF: {name: '容器差异对比', notify: false},
   CONTAINER_COMMIT: {name: '提交容器镜像'},
+
+  NETWORK_CREATE: {name: '创建网络'},
+  NETWORK_DELETE: {name: '删除网络'},
+  NETWORK_CONNECT: {name: '连接网络'},
+  NETWORK_DISCONNECT: {name: '断开网络'},
+
+  VOLUME_CREATE: {name: '创建存储卷'},
+  VOLUME_DELETE: {name: '删除存储卷'},
 }
 
 let axios = (new Vue()).$axios;
@@ -85,7 +106,7 @@ export default {
 
     let r = {}
     if (k && options[k])
-      r = JSON.parse(JSON.stringify(options[k]));
+      r = helper.copyObject(options[k]);
     if (r.loading === undefined)
       r.loading = true;
     if (r.notify === undefined)
@@ -133,4 +154,16 @@ export default {
   containerCommit: (id, name, tag, message, author) => axios.post(
       url.CONTAINER_COMMIT, {id, name, tag, message, author}),
   containerTerminal: (id, cmd) => axios.post(`${url.CONTAINER_TERMINAL}`, {id, cmd}),
+
+  volumeList: () => axios.get(url.VOLUME_LIST),
+  volumeItem: id => axios.get(`${url.VOLUME_ITEM}/${id}`),
+  volumeDelete: ids => axios.post(url.VOLUME_DELETE, {ids}),
+  volumeCreate: (name, driver, driver_opts) => axios.post(url.VOLUME_CREATE, {name, driver, driver_opts}),
+
+  networkList: () => axios.get(url.NETWORK_LIST),
+  networkItem: id => axios.get(`${url.NETWORK_ITEM}/${id}`),
+  networkDelete: ids => axios.post(url.NETWORK_DELETE, {ids}),
+  networkCreate: (name, driver, driver_opts) => axios.post(url.NETWORK_CREATE, {name, driver, driver_opts}),
+  networkConnect: (id, container_id, ipv4_address) => axios.post(url.NETWORK_CONNECT, {id, container_id, ipv4_address}),
+  networkDisconnect: (id, container_id, force) => axios.post(url.NETWORK_DISCONNECT, {id, container_id, force}),
 }

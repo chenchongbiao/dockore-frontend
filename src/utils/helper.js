@@ -2,6 +2,7 @@ import Loading from "element-ui/packages/loading/src";
 import Notification from "element-ui/packages/notification/src/main";
 
 let loadings = [], loading;
+let debounce_timeout = {}
 
 export default {
   startLoading(text) {
@@ -24,5 +25,12 @@ export default {
     duration |= 3;
     duration *= 1000;
     Notification({title, message, type, offset, duration, dangerouslyUseHTMLString: html, position: 'bottom-right'})
-  }
+  },
+  copyObject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  },
+  debounce(fn, wait) {
+    if (debounce_timeout[fn]) clearTimeout(debounce_timeout[fn])
+    debounce_timeout[fn] = setTimeout(fn, wait)
+  },
 }

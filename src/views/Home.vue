@@ -11,18 +11,16 @@
         <router-view/>
       </el-main>
     </el-container>
-    <ChangePasswordDialog></ChangePasswordDialog>
   </div>
 </template>
 
 <script>
 import Header from "@/components/common/Header";
 import LeftASide from "@/components/common/LeftASide";
-import ChangePasswordDialog from "@/components/user/ChangePasswordDialog";
 
 export default {
   name: "Home",
-  components: {ChangePasswordDialog, Header, LeftASide},
+  components: {Header, LeftASide},
   computed: {
     isLogined() {
       return this.$store.getters.userToken !== null;

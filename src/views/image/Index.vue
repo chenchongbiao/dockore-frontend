@@ -11,7 +11,7 @@
         <el-button circle @click="getImageItems">
           <el-icon class="el-icon-refresh"></el-icon>
         </el-button>
-        <el-button @click="openPullDialog">拉取镜像</el-button>
+        <el-button @click="$refs.pull_dialog.open()">拉取镜像</el-button>
       </div>
     </div>
     <el-table :data="tableData" border @selection-change="handleSelectionChange">
@@ -85,8 +85,8 @@
           :page-sizes="[5, 10, 50, 100]" :total="this.items.length"
           background layout="prev, pager, next, sizes"></el-pagination>
     </div>
-    <PullDialog></PullDialog>
-    <HistoryDialog></HistoryDialog>
+    <PullDialog ref="pull_dialog"></PullDialog>
+    <HistoryDialog ref="history_dialog"></HistoryDialog>
   </div>
 </template>
 
@@ -108,7 +108,7 @@ export default {
           this.page * this.page_size
       );
 
-      items = JSON.parse(JSON.stringify(items))
+      items = this.$helper.copyObject(items);
       for (let item of items) {
         item.create_time = this.$moment(item.create_time).from();
         item.size = this.$filesize(item.size);
@@ -137,8 +137,8 @@ export default {
     this.$bus.$off(this.$event.refresh_images);
   },
   watch: {
-    is_all(old, new_) {
-      if (old !== new_)
+    is_all(nv, ov) {
+      if (nv !== ov)
         this.getImageItems();
     }
   },
@@ -150,7 +150,7 @@ export default {
       if (cmd === 'tag')
         this.tagImageItem(id);
       else if (cmd === 'history')
-        this.showImageItemHistory(id);
+        this.$refs.history_dialog.open(id);
     },
     deleteSelectItems() {
       let ids = [];
@@ -181,26 +181,17 @@ export default {
           }
       );
     },
-    openPullDialog() {
-      this.$bus.$emit(this.$event.image_pull);
-    },
     tagImageItem(id) {
       this.$prompt('请输入新的镜像标签，格式："[name]:[tag]"。', `标记镜像：${id}`).then(
           ({value}) => {
             let col = value.split(':')
-            let name, tag;
-            if (col.length > 1) {
+            let name = col, tag = null;
+            if (col.length > 1)
               [name, tag] = col;
-            } else {
-              name = col;
-              tag = null;
-            }
+
             this.$api.imageTag(id, name, tag).then(resp => this.getImageItems());
           }
       ).catch(_ => _);
-    },
-    showImageItemHistory(id) {
-      this.$bus.$emit(this.$event.image_history, id);
     },
   },
 }

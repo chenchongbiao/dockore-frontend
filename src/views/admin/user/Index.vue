@@ -63,7 +63,7 @@ export default {
   name: "Index",
   computed: {
     tableData() {
-      let items = JSON.parse(JSON.stringify(this.items));
+      let items = this.$helper.copyObject(this.items);
       for (let item of items) {
         item.role_type = this.$text.$get('user', 'roles', item.role_type);
       }

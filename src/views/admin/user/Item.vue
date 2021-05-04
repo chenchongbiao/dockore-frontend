@@ -1,19 +1,17 @@
 <template>
   <div>
-    <div style="margin: 8px 8px 32px;">
-      <div style="display: flex; align-items: center">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item to="/">首页</el-breadcrumb-item>
-          <el-breadcrumb-item to="/admin/user">用户管理</el-breadcrumb-item>
-          <el-breadcrumb-item to="/admin/user/add" v-if="isAdd">添加用户</el-breadcrumb-item>
-          <el-breadcrumb-item :to="`/admin/user/edit/${item.id}`" v-else>
-            用户：{{ item.username }}
-          </el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
+    <div style="display: flex; align-items: center; margin: 8px 8px 32px;">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item to="/">首页</el-breadcrumb-item>
+        <el-breadcrumb-item to="/admin/user">用户管理</el-breadcrumb-item>
+        <el-breadcrumb-item to="/admin/user/add" v-if="isAdd">添加用户</el-breadcrumb-item>
+        <el-breadcrumb-item :to="`/admin/user/edit/${item.id}`" v-else>
+          用户：{{ item.username }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
-    <el-form :model="item" label-width="120px" style="width: 640px;">
+    <el-form :model="item" label-width="120px">
       <el-form-item label="用户名">
         <el-input v-model="item.username"></el-input>
       </el-form-item>
@@ -23,7 +21,7 @@
       </el-form-item>
       <el-form-item label="用户角色">
         <el-select v-model="item.role_type" style="width: 100%">
-          <el-option v-for="(k, v) in roles" :key="k" :label="k" :value="parseInt(v)"></el-option>
+          <el-option v-for="(k, v) in roleChoices" :key="k" :label="k" :value="parseInt(v)"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -44,7 +42,7 @@ export default {
     isAdd() {
       return !this.id;
     },
-    roles() {
+    roleChoices() {
       return this.$text.user.roles;
     },
   },
@@ -89,5 +87,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-form {
+  width: 640px;
+}
 </style>

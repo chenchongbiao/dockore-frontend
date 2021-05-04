@@ -77,19 +77,14 @@ export default {
       keyword: '',
     }
   },
-  created() {
-    this.$bus.$on(this.$event.container_diff, id => {
+  methods: {
+    open(id) {
       this.id = id;
       this.files = '';
       this.keyword = '';
       this.dialog_visible = true;
       this.checkContainerDiff();
-    });
-  },
-  beforeDestroy() {
-    this.$bus.$off(this.$event.container_diff);
-  },
-  methods: {
+    },
     filterNode(value, data) {
       if (!value) return true;
       return data.path.indexOf(value) !== -1;
