@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="dialog_visible" title="提交容器改动到镜像" width="480px">
-    <el-form :model="form" label-width="80px">
+    <el-form :model="form" label-width="120px">
       <el-form-item label="镜像名称">
         <el-input v-model="form.name"></el-input>
       </el-form-item>

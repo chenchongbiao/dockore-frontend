@@ -1,16 +1,16 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="创建存储卷" :width="collapse? '1024px':'1124px'">
+  <el-dialog :visible.sync="dialog_visible" title="创建网络" :width="collapse? '1024px':'1124px'">
     <el-container>
       <el-aside style="width: auto">
         <el-menu default-active="1" style="text-align: center" @select="x => step = x"
                  ref="menu" :collapse="collapse" class="collapse-menu">
           <el-menu-item index="1">
             <el-icon class="el-icon-files"></el-icon>
-            <span slot="title">存储卷信息</span>
+            <span slot="title">网络信息</span>
           </el-menu-item>
           <el-menu-item index="2">
             <el-icon class="el-icon-copy-document"></el-icon>
-            <span slot="title">驱动器选项</span>
+            <span slot="title">高级选项</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -18,19 +18,28 @@
         <div v-show="step === '1'">
           <el-col :span="12">
             <el-form ref="form" :model="form" label-width="120px">
-              <el-form-item label="存储卷名称">
+              <el-form-item label="网络名称">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
-              <el-form-item label="驱动器类型">
+              <el-form-item label="驱动类型">
                 <el-select v-model="form.driver" style="width: 100%">
                   <el-option v-for="(k, v) in driverChoices" :key="k" :label="k" :value="v"></el-option>
                 </el-select>
+              </el-form-item>
+              <el-form-item label="子网网段">
+                <el-input v-model="form.subnet" placeholder="x.x.x.x/yy"></el-input>
+              </el-form-item>
+              <el-form-item label="网关">
+                <el-input v-model="form.gateway" placeholder="x.x.x.x"></el-input>
+              </el-form-item>
+              <el-form-item label="IP范围">
+                <el-input v-model="form.ip_range" placeholder="x.x.x.x/yy"></el-input>
               </el-form-item>
             </el-form>
           </el-col>
         </div>
         <div v-show="step === '2'" style="text-align: left">
-          <el-table :data="form.driver_opts" border>
+          <el-table :data="form.options" border>
             <el-table-column label="键" width="320">
               <template slot-scope="scope">
                 <el-autocomplete v-model="scope.row.key" style="width: 100%"
@@ -44,14 +53,14 @@
             </el-table-column>
             <el-table-column label="操作" width="160">
               <template slot-scope="scope">
-                <el-button size="nano" type="danger" @click="removeDriverOption(scope.row)">
+                <el-button size="nano" type="danger" @click="removeOption(scope.row)">
                   <el-icon class="el-icon-delete"></el-icon>
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
           <div style="margin-top: 8px">
-            <el-button @click="appendDriverOption">
+            <el-button @click="appendOption">
               <el-icon class="el-icon-circle-plus"></el-icon>
             </el-button>
           </div>
@@ -60,7 +69,7 @@
     </el-container>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialog_visible = false">取 消</el-button>
-      <el-button type="primary" @click="createVolume" :disabled="!form.name">确 定</el-button>
+      <el-button type="primary" @click="createNetwork" :disabled="!form.name">确 定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -73,8 +82,8 @@ export default {
   data() {
     return {
       dialog_visible: false,
-      form: {driver_opts: []},
-      driver_option_suggestion: [],
+      form: {options: []},
+      option_suggestion: [],
       collapse: false,
       ro: null,
       step: '1',
@@ -92,41 +101,41 @@ export default {
   },
   computed: {
     driverChoices() {
-      return this.$text.volume.driver;
+      return this.$text.network.driver;
     },
   },
   methods: {
     open() {
       this.dialog_visible = true;
-      this.form = {driver_opts: [], driver: 'local'};
+      this.form = {options: [], driver: 'bridge'};
       this.step = '1';
     },
 
-    createVolume() {
-      let driver_options = {};
-      for (let opt of this.form.driver_opts)
+    createNetwork() {
+      let options = {};
+      for (let opt of this.form.options)
         if (opt.key && opt.value)
-          driver_options[opt.key] = opt.value;
+          options[opt.key] = opt.value;
 
-      this.$api.volumeCreate(this.form.name, this.form.driver, driver_options).then(
+      this.$api.networkCreate(this.form.name, this.form.driver, options).then(
           resp => {
             if (resp.code === 0)
               this.dialog_visible = false;
-            this.$bus.$emit(this.$event.refresh_volumes);
+            this.$bus.$emit(this.$event.refresh_networks);
           }
       );
     },
 
-    appendDriverOption() {
-      this.form.driver_opts.push({key: '', value: ''});
+    appendOption() {
+      this.form.options.push({key: '', value: ''});
     },
-    removeDriverOption(item) {
-      this.form.driver_opts = this.form.driver_opts.filter(x => x !== item);
+    removeOption(item) {
+      this.form.options = this.form.options.filter(x => x !== item);
     },
 
     optionSuggestion(_, cb) {
       let suggestion = [];
-      for (let option of this.driver_option_suggestion) {
+      for (let option of this.option_suggestion) {
         suggestion.push({value: option.toString()});
       }
       cb(suggestion);

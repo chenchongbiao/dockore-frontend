@@ -65,7 +65,7 @@
         </div>
         <div v-show="step === '2'">
           <el-col :span="12">
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="form" label-width="120px">
               <el-form-item label="容器名称">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>

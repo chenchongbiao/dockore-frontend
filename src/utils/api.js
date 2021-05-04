@@ -163,7 +163,8 @@ export default {
   networkList: () => axios.get(url.NETWORK_LIST),
   networkItem: id => axios.get(`${url.NETWORK_ITEM}/${id}`),
   networkDelete: ids => axios.post(url.NETWORK_DELETE, {ids}),
-  networkCreate: (name, driver, driver_opts) => axios.post(url.NETWORK_CREATE, {name, driver, driver_opts}),
+  networkCreate: (name, driver, options, attachable, subnet, gateway, ip_range) => axios.post(
+      url.NETWORK_CREATE, {name, driver, options, attachable, subnet, gateway, ip_range}),
   networkConnect: (id, container_id, ipv4_address) => axios.post(url.NETWORK_CONNECT, {id, container_id, ipv4_address}),
   networkDisconnect: (id, container_id, force) => axios.post(url.NETWORK_DISCONNECT, {id, container_id, force}),
 }
