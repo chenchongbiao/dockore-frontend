@@ -112,11 +112,7 @@ export default {
     deleteSelectItems() {
       let ids = [];
       this.selection.map(item => {
-        if (item.tags.length > 1)
-          for (let tag of item.tags)
-            ids.push(tag);
-        else
-          ids.push(item.id);
+        ids.push(item.id);
       });
       this.deleteNetworkItems(ids)
     },

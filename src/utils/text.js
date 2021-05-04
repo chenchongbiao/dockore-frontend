@@ -87,6 +87,11 @@ export default {
       macvlan: 'MAC VLAN',
       overlay: 'Overlay',
     },
+    port_protocol: {
+      tcp: 'TCP',
+      udp: 'UDP',
+      sctp: 'SCTP',
+    },
   },
   volume: {
     driver: {

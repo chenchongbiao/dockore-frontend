@@ -97,9 +97,7 @@
             <el-table-column label="协议" width="160">
               <template slot-scope="scope">
                 <el-select v-model="scope.row.protocol">
-                  <el-option label="TCP" value="tcp"></el-option>
-                  <el-option label="UDP" value="udp"></el-option>
-                  <el-option label="SCTP" value="sctp"></el-option>
+                  <el-option v-for="(k, v) in portProtocols" :key="k" :label="k" :value="v"></el-option>
                 </el-select>
               </template>
             </el-table-column>
@@ -172,6 +170,9 @@ export default {
     this.ro.disconnect();
   },
   computed: {
+    portProtocols() {
+      return this.$text.network.port_protocol;
+    },
     tableData() {
       let items = this.items;
       if (this.keyword) {

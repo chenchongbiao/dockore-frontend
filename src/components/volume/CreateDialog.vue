@@ -9,7 +9,7 @@
             <span slot="title">存储卷信息</span>
           </el-menu-item>
           <el-menu-item index="2">
-            <el-icon class="el-icon-copy-document"></el-icon>
+            <el-icon class="el-icon-odometer"></el-icon>
             <span slot="title">驱动器选项</span>
           </el-menu-item>
         </el-menu>
@@ -74,7 +74,7 @@ export default {
     return {
       dialog_visible: false,
       form: {driver_opts: []},
-      driver_option_suggestion: [],
+      driver_option_suggestion: ['mountpoint'],
       collapse: false,
       ro: null,
       step: '1',

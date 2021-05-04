@@ -5,11 +5,11 @@
         <el-menu default-active="1" style="text-align: center" @select="x => step = x"
                  ref="menu" :collapse="collapse" class="collapse-menu">
           <el-menu-item index="1">
-            <el-icon class="el-icon-files"></el-icon>
+            <el-icon class="el-icon-connection"></el-icon>
             <span slot="title">网络信息</span>
           </el-menu-item>
           <el-menu-item index="2">
-            <el-icon class="el-icon-copy-document"></el-icon>
+            <el-icon class="el-icon-set-up"></el-icon>
             <span slot="title">高级选项</span>
           </el-menu-item>
         </el-menu>
@@ -35,6 +35,9 @@
               <el-form-item label="IP范围">
                 <el-input v-model="form.ip_range" placeholder="x.x.x.x/yy"></el-input>
               </el-form-item>
+              <el-form-item>
+                <el-checkbox v-model="form.attachable">开放连接</el-checkbox>
+              </el-form-item>
             </el-form>
           </el-col>
         </div>
@@ -42,7 +45,7 @@
           <el-table :data="form.options" border>
             <el-table-column label="键" width="320">
               <template slot-scope="scope">
-                <el-autocomplete v-model="scope.row.key" style="width: 100%"
+                <el-autocomplete v-model="scope.row.key" style="width: 100%" placeholder="com.docker.network.xxx"
                                  :fetch-suggestions="optionSuggestion"></el-autocomplete>
               </template>
             </el-table-column>
@@ -117,7 +120,8 @@ export default {
         if (opt.key && opt.value)
           options[opt.key] = opt.value;
 
-      this.$api.networkCreate(this.form.name, this.form.driver, options).then(
+      this.$api.networkCreate(this.form.name, this.form.driver, options,
+          this.form.attachable, this.form.subnet, this.form.gateway, this.form.ip_range).then(
           resp => {
             if (resp.code === 0)
               this.dialog_visible = false;
