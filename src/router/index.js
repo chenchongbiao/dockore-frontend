@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import text from "@/utils/text";
+import event from "@/utils/event";
 
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function (location) {
@@ -85,6 +86,7 @@ router.beforeEach((to, from, next) => {
   document.title = text.global.project.name;
   if (to.meta.title)
     document.title = `${document.title}-${to.meta.title}`;
+  Vue.prototype.$bus.$emit(event.update_active_menu, to.path);
   next();
 })
 

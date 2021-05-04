@@ -36,11 +36,8 @@ export default {
     }
   },
   created() {
-    for (let item of this.menu_items) {
-      if (this.$route.path.indexOf(item.path) === 0) {
-        this.menu_index = item.path;
-      }
-    }
+    this.updateActiveMenu();
+    this.$bus.$on(this.$event.update_active_menu, this.updateActiveMenu);
   },
   mounted() {
     this.ro = new ResizeObserver((entries, observer) => {
@@ -51,11 +48,22 @@ export default {
   },
   beforeDestroy() {
     this.ro.disconnect();
+    this.$bus.$off(this.$event.update_active_menu);
   },
   methods: {
     fit() {
       this.collapse = document.body.clientWidth < 1440;
     },
+    updateActiveMenu(path) {
+      if (path === undefined)
+        path = this.$route.path
+      this.menu_index = '';
+      for (let item of this.menu_items) {
+        if (path.indexOf(item.path) === 0) {
+          this.menu_index = item.path;
+        }
+      }
+    }
   }
 }
 </script>

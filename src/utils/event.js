@@ -12,4 +12,5 @@ export default {
   container_commit: 'container_commit',
 
   update_user_info: 'update_user_info',
+  update_active_menu: 'update_active_menu',
 }
