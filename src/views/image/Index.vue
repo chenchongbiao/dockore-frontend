@@ -35,7 +35,7 @@
         </template>
       </el-table-column>
       <el-table-column
-          label="创建者"
+          label="镜像作者"
           prop="author"
           width="250">
       </el-table-column>

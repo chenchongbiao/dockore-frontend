@@ -22,7 +22,7 @@
       <el-form-item label="操作系统">
         <el-input v-model="item.os" readonly></el-input>
       </el-form-item>
-      <el-form-item label="创建者">
+      <el-form-item label="镜像作者">
         <el-input v-model="item.author" readonly></el-input>
       </el-form-item>
       <el-form-item label="启动命令">
