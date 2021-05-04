@@ -1,10 +1,10 @@
 <template>
-  <el-menu mode="horizontal" @select="menuSelect">
+  <el-menu mode="horizontal" @select="menuSelect" ref="menu">
     <el-menu-item index="home">
       <template slot="title">
-        <el-link href="/">
-          <h1 style="margin: 0; font-size: 26px">Dockore</h1>
-        </el-link>
+        <router-link to="/" class="el-link">
+          <h1 style="margin: 0; font-size: 26px;">{{ title }}</h1>
+        </router-link>
       </template>
     </el-menu-item>
     <template v-if="isLogined">
@@ -31,6 +31,9 @@ export default {
     username() {
       return this.$store.getters.userInfo.username;
     },
+    title() {
+      return this.$text.global.project.name;
+    }
   },
   methods: {
     menuSelect(index) {
@@ -39,6 +42,8 @@ export default {
       } else if (index === 'logout') {
         this.$store.commit('logout');
         this.$router.push('/login');
+      } else if (index === 'home') {
+        this.$refs.menu.activeIndex = '';
       }
     }
   }

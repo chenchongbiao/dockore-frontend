@@ -5,7 +5,7 @@
           label="ID"
           width="160">
         <template slot-scope="scope">
-          <el-link :href="`/image/${scope.row.id}`">{{ scope.row.id }}</el-link>
+          <router-link :to="`/image/${scope.row.id}`">{{ scope.row.id }}</router-link>
         </template>
       </el-table-column>
       <el-table-column

@@ -1,4 +1,22 @@
 export default {
+  global: {
+    project: {
+      name: 'Dockore',
+    },
+    route_title: {
+      ADMIN_SYSTEM_CONFIG: '系统设置',
+      ADMIN_USER: '用户管理',
+      ADMIN_USER_ADD: '添加用户',
+      ADMIN_USER_EDIT: '编辑用户',
+      SYSTEM_VERSION: '系统版本',
+      IMAGE: '镜像管理',
+      IMAGE_INFO: '镜像信息',
+      CONTAINER: '容器管理',
+      CONTAINER_INFO: '容器信息',
+      CONTAINER_TERMINAL: '容器终端',
+      USER_LOGIN: '用户登录',
+    }
+  },
   config: {
     database: {
       this: '数据库设置',

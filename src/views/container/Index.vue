@@ -50,13 +50,13 @@
           label="镜像"
           width="270">
         <template slot-scope="scope">
-          <el-link v-if="!scope.row.image.tags.length" :href="`/image/${scope.row.image.id}`">
+          <router-link v-if="!scope.row.image.tags.length" :to="`/image/${scope.row.image.id}`">
             {{ scope.row.image.id }}
-          </el-link>
-          <el-link v-else v-for="tag in scope.row.image.tags" :key="tag" :href="`/image/${scope.row.image.id}`"
+          </router-link>
+          <router-link v-else v-for="tag in scope.row.image.tags" :key="tag" :to="`/image/${scope.row.image.id}`"
                    style="margin-top: 2px; margin-bottom: 2px"
                    class="el-button el-button--mini">{{ tag }}
-          </el-link>
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column
@@ -74,7 +74,7 @@
           label="操作"
           width="240">
         <template slot-scope="scope">
-          <el-link :href="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</el-link>
+          <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
           <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row, cmd)">
             <el-button size="mini" type="primary">

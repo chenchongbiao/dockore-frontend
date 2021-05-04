@@ -54,7 +54,7 @@
           label="操作"
           width="240">
         <template slot-scope="scope">
-          <el-link :href="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</el-link>
+          <router-link :to="`/image/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <template v-if="scope.row.tags.length > 1">
             <el-button size="mini" type="danger" @click="deleteImageItems(scope.row.tags)">删除</el-button>
           </template>

@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       tab: 'basic',
-      item: {network: {}},
+      item: {image: {}, network: {}},
     }
   },
   created() {
