@@ -67,7 +67,7 @@ export default {
     };
   },
   created() {
-    this.$connect(`${process.env.VUE_APP_WS_URL}/terminal`);
+    this.$connect(`${process.env.VUE_APP_WS_URL}/socket/container/terminal`);
     this.term.loadAddon(this.web_link);
     this.term.loadAddon(this.fit);
     this.term.loadAddon(this.search);
