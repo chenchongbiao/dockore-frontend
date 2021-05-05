@@ -3,7 +3,10 @@
   "version": "0.1.7",
   "private": true,
   "description": "A simple GUI Manager for Docker.",
-  "author": "HsOjo",
+  "author": {
+    "name": "HsOjo",
+    "url": "https://github.com/HsOjo"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
