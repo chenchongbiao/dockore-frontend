@@ -17,6 +17,10 @@ const routes = [
     component: () => import('@/views/Home'),
     children: [
       {
+        path: '',
+        component: () => import('@/views/Index'),
+      },
+      {
         path: 'admin/system/config',
         component: () => import('@/views/admin/system/Config'),
         meta: {title: text.global.route_title.ADMIN_SYSTEM_CONFIG},
