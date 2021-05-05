@@ -16,7 +16,7 @@
       </el-aside>
       <el-main>
         <div v-show="step === '1'">
-          <el-col :span="12">
+          <div style="width: 480px">
             <el-form ref="form" :model="form" label-width="120px">
               <el-form-item label="网络名称">
                 <el-input v-model="form.name"></el-input>
@@ -39,7 +39,7 @@
                 <el-checkbox v-model="form.attachable">开放连接</el-checkbox>
               </el-form-item>
             </el-form>
-          </el-col>
+          </div>
         </div>
         <div v-show="step === '2'" style="text-align: left">
           <el-table :data="form.options" border>
@@ -115,12 +115,11 @@ export default {
     },
 
     createNetwork() {
-      let options = {};
-      for (let opt of this.form.options)
-        if (opt.key && opt.value)
-          options[opt.key] = opt.value;
+      this.form.options = this.form.options.filter(opt=>{
+        return opt.key && opt.value;
+      });
 
-      this.$api.networkCreate(this.form.name, this.form.driver, options,
+      this.$api.networkCreate(this.form.name, this.form.driver, this.form.options,
           this.form.attachable, this.form.subnet, this.form.gateway, this.form.ip_range).then(
           resp => {
             if (resp.code === 0)

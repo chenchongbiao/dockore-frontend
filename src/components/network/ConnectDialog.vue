@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="连接容器网络" :width="collapse? '1124px':'1280px'">
+  <el-dialog :visible.sync="dialog_visible" title="连接容器网络" :width="collapse? '960px':'1024px'">
     <el-container>
       <el-aside style="width: auto">
         <el-menu ref="menu" default-active="1" @select="x => step = x"
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div v-show="step === '2'">
-          <el-col :span="12">
+          <div style="width: 480px">
             <el-form ref="form" :model="form" label-width="120px">
               <el-form-item label="网络ID">
                 <el-input v-model="form.id" readonly></el-input>
@@ -68,10 +68,11 @@
                 <el-input v-model="container.name" readonly></el-input>
               </el-form-item>
               <el-form-item label="分配IPv4地址">
-                <el-input v-model="form.ipv4_address" placeholder="（留空则自动处理）"></el-input>
+                <el-input v-model="form.ipv4_address"
+                          :placeholder="`（子网：${item.subnet} 范围：${item.ip_range}）`"></el-input>
               </el-form-item>
             </el-form>
-          </el-col>
+          </div>
         </div>
       </el-main>
     </el-container>

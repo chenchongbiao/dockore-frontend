@@ -110,6 +110,8 @@ export default {
 
       items = this.$helper.copyObject(items);
       for (let item of items) {
+        if (!item.author)
+          item.author = '（未知）';
         item.create_time = this.$moment(item.create_time).from();
         item.size = this.$filesize(item.size);
       }

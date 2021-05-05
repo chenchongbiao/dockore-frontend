@@ -41,7 +41,8 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
     function (response) {
       // Do something with response data
-      console.log('Resp:', response.data);
+      if (process.env.NODE_ENV === 'development')
+        console.log('Resp:', response.data);
 
       let resp = response.data;
       let success = resp.code === 0;
@@ -85,7 +86,8 @@ _axios.interceptors.response.use(
     },
     function (error) {
       // Do something with response error
-      console.log('Error:', error);
+      if (process.env.NODE_ENV === 'development')
+        console.log('Error:', error);
 
       let title = '网络错误';
       if (error.config && error.config.url) {

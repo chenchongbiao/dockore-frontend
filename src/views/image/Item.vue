@@ -23,7 +23,7 @@
         <el-input v-model="item.os" readonly></el-input>
       </el-form-item>
       <el-form-item label="镜像作者">
-        <el-input v-model="item.author" readonly></el-input>
+        <el-input v-model="item.author" readonly placeholder="（未知）"></el-input>
       </el-form-item>
       <el-form-item label="启动命令">
         <el-input v-model="item.command" readonly></el-input>

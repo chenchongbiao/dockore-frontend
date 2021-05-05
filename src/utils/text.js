@@ -63,6 +63,7 @@ export default {
     Dockore: {
       hostname: '主机名',
       py_version: 'Python版本',
+      saika_version: 'Saika版本',
     },
     Docker: {
       go_version: 'Go版本',
@@ -96,6 +97,14 @@ export default {
   volume: {
     driver: {
       local: '本地设备',
+    },
+    mount_mode: {
+      ro: '只读',
+      rw: '读写',
+    },
+    mount_type: {
+      bind: '文件映射',
+      volume: '存储卷',
     },
   },
   user: {

@@ -33,7 +33,7 @@
       <el-tab-pane label="网络信息" name="options">
         <el-card shadow="hover" style="width: 720px">
           <div slot="header">
-            <span>参数选项</span>
+            <span>高级选项</span>
           </div>
           <el-table :data="itemOptions" border>
             <el-table-column label="键" prop="key" width="400"></el-table-column>

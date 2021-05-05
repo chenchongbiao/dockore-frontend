@@ -16,6 +16,10 @@
             <el-icon class="el-icon-link"></el-icon>
             <span slot="title">端口映射</span>
           </el-menu-item>
+          <el-menu-item index="4">
+            <el-icon class="el-icon-files"></el-icon>
+            <span slot="title">存储挂载</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
@@ -64,7 +68,7 @@
           </div>
         </div>
         <div v-show="step === '2'">
-          <el-col :span="12">
+          <div style="width: 480px">
             <el-form ref="form" :model="form" label-width="120px">
               <el-form-item label="容器名称">
                 <el-input v-model="form.name"></el-input>
@@ -85,9 +89,9 @@
                 <el-checkbox v-model="form.interactive">交互模式</el-checkbox>
               </el-form-item>
             </el-form>
-          </el-col>
+          </div>
         </div>
-        <div v-show="step === '3'" style="text-align: left">
+        <div v-show="step === '3'">
           <el-table :data="form.ports" border>
             <el-table-column label="内部端口" width="160">
               <template slot-scope="scope">
@@ -111,7 +115,7 @@
                 <el-autocomplete v-model="scope.row.listen_port" :fetch-suggestions="portSuggestion"></el-autocomplete>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="160">
+            <el-table-column label="操作" width="120">
               <template slot-scope="scope">
                 <el-button size="nano" type="danger" @click="removePortMapping(scope.row)">
                   <el-icon class="el-icon-delete"></el-icon>
@@ -121,6 +125,39 @@
           </el-table>
           <div style="margin-top: 8px">
             <el-button @click="appendPortMapping">
+              <el-icon class="el-icon-circle-plus"></el-icon>
+            </el-button>
+          </div>
+        </div>
+        <div v-show="step === '4'">
+          <el-table :data="form.volumes" border>
+            <el-table-column label="存储卷" width="240">
+              <template slot-scope="scope">
+                <el-autocomplete v-model="scope.row.path" :fetch-suggestions="pathSuggestion"></el-autocomplete>
+              </template>
+            </el-table-column>
+            <el-table-column label="挂载模式" width="160">
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.mode">
+                  <el-option v-for="(k, v) in mountModes" :key="k" :label="k" :value="v"></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="挂载位置" width="240">
+              <template slot-scope="scope">
+                <el-input v-model="scope.row.bind"></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="120">
+              <template slot-scope="scope">
+                <el-button size="nano" type="danger" @click="removeVolumeMapping(scope.row)">
+                  <el-icon class="el-icon-delete"></el-icon>
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="margin-top: 8px">
+            <el-button @click="appendVolumeMapping">
               <el-icon class="el-icon-circle-plus"></el-icon>
             </el-button>
           </div>
@@ -154,6 +191,7 @@ export default {
       item: {tags: []},
       port_suggestion: [22, 53, 80, 443],
       ip_suggestion: ['0.0.0.0', '127.0.0.1'],
+      volumes: [],
       run: true,
       collapse: false,
       ro: null,
@@ -172,6 +210,9 @@ export default {
   computed: {
     portProtocols() {
       return this.$text.network.port_protocol;
+    },
+    mountModes() {
+      return this.$text.volume.mount_mode;
     },
     tableData() {
       let items = this.items;
@@ -204,8 +245,9 @@ export default {
     open() {
       this.dialog_visible = true;
       this.step = '1';
-      this.form = {name: '', image: '', tag: '', command: '', interactive: false, tty: false, ports: []};
+      this.form = {name: '', image: '', tag: '', command: '', interactive: false, tty: false, ports: [], volumes: []};
       this.getImageItems();
+      this.getVolumeItems();
     },
     tableCurrentChange(n, o) {
       if (n) {
@@ -220,6 +262,15 @@ export default {
           resp => {
             if (resp.code === 0)
               this.items = resp.data.items;
+          }
+      )
+    },
+
+    getVolumeItems() {
+      this.$api.volumeList().then(
+          resp => {
+            if (resp.code === 0)
+              this.volumes = resp.data.items;
           }
       )
     },
@@ -247,17 +298,39 @@ export default {
     },
 
     createContainer() {
+      this.form.ports = this.form.ports.filter(item => {
+        return item.port && item.protocol && item.listen_ip && item.listen_port;
+      })
+      this.form.volumes = this.form.volumes.filter(item => {
+        return item.path && item.mode && item.bind;
+      })
+
       let api = this.$api.containerCreate;
       if (this.run)
         api = this.$api.containerRun;
       api(`${this.form.image}:${this.form.tag}`, this.form.command,
-          this.form.name, this.form.interactive, this.form.tty, this.form.ports).then(
+          this.form.name, this.form.interactive, this.form.tty, this.form.ports, this.form.volumes).then(
           resp => {
             if (resp.code === 0)
               this.dialog_visible = false;
             this.$bus.$emit(this.$event.refresh_containers);
           }
       )
+    },
+
+    appendVolumeMapping() {
+      this.form.volumes.push({path: '', mode: 'rw', bind: ''});
+    },
+    removeVolumeMapping(item) {
+      this.form.volumes = this.form.volumes.filter(x => x !== item);
+    },
+
+    pathSuggestion(_, cb) {
+      let suggestion = [];
+      for (let volume of this.volumes) {
+        suggestion.push({value: volume.name});
+      }
+      cb(suggestion);
     },
 
     appendPortMapping() {

@@ -42,7 +42,7 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="网络信息" name="network">
-        <el-form :model="item" label-width="120px" style="width: 640px">
+        <el-form :model="item.network" label-width="120px" style="width: 640px">
           <el-form-item label="IP">
             <el-input v-model="item.network.ip" placeholder="未启动" readonly></el-input>
           </el-form-item>
@@ -68,6 +68,49 @@
           </el-table>
         </el-card>
       </el-tab-pane>
+      <el-tab-pane label="存储信息" name="volume">
+        <el-card shadow="hover" style="width: 1100px">
+          <div slot="header">
+            <span>存储挂载列表</span>
+          </div>
+          <el-table :data="item.mounts" border>
+            <el-table-column label="存储类型" width="120">
+              <template slot-scope="scope">
+                {{ mountType(scope.row.type) }}
+              </template>
+            </el-table-column>
+            <el-table-column label="存储卷名称" width="200">
+              <template slot-scope="scope">
+                <router-link class="el-button el-button--mini" v-if="scope.row.name"
+                             :to="`/volume/${scope.row.name}`">
+                  {{ scope.row.name }}
+                </router-link>
+                <template v-else>（无）</template>
+              </template>
+            </el-table-column>
+            <el-table-column label="驱动器类型" width="120">
+              <template slot-scope="scope">
+                {{ volumeDriver(scope.row.driver) || '（文件）'}}
+              </template>
+            </el-table-column>
+            <el-table-column label="挂载模式" width="120">
+              <template slot-scope="scope">
+                {{ mountMode(scope.row.mode) }}
+              </template>
+            </el-table-column>
+            <el-table-column label="挂载源" width="240">
+              <template slot-scope="scope">
+                {{ scope.row.src }}
+              </template>
+            </el-table-column>
+            <el-table-column label="挂载目标" width="240">
+              <template slot-scope="scope">
+                {{ scope.row.dest }}
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -85,11 +128,20 @@ export default {
       if (status)
         return this.$text.$get('container', 'status', status);
     },
+    mountMode() {
+      return k => this.$text.$get('volume', 'mount_mode', k);
+    },
+    volumeDriver() {
+      return k => this.$text.$get('volume', 'driver', k);
+    },
+    mountType() {
+      return k => this.$text.$get('volume', 'mount_type', k);
+    },
   },
   data() {
     return {
       tab: 'basic',
-      item: {image: {}, network: {}},
+      item: {image: {}, network: {}, mounts: []},
     }
   },
   created() {

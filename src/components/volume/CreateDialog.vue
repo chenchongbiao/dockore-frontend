@@ -16,7 +16,7 @@
       </el-aside>
       <el-main>
         <div v-show="step === '1'">
-          <el-col :span="12">
+          <div style="width: 480px">
             <el-form ref="form" :model="form" label-width="120px">
               <el-form-item label="存储卷名称">
                 <el-input v-model="form.name"></el-input>
@@ -27,7 +27,7 @@
                 </el-select>
               </el-form-item>
             </el-form>
-          </el-col>
+          </div>
         </div>
         <div v-show="step === '2'" style="text-align: left">
           <el-table :data="form.driver_opts" border>
@@ -74,7 +74,7 @@ export default {
     return {
       dialog_visible: false,
       form: {driver_opts: []},
-      driver_option_suggestion: ['mountpoint'],
+      driver_option_suggestion: ['type', 'device', 'o'],
       collapse: false,
       ro: null,
       step: '1',
@@ -103,12 +103,11 @@ export default {
     },
 
     createVolume() {
-      let driver_options = {};
-      for (let opt of this.form.driver_opts)
-        if (opt.key && opt.value)
-          driver_options[opt.key] = opt.value;
+      this.form.driver_opts = this.form.driver_opts.filter(opt => {
+        return opt.key && opt.value;
+      });
 
-      this.$api.volumeCreate(this.form.name, this.form.driver, driver_options).then(
+      this.$api.volumeCreate(this.form.name, this.form.driver, this.form.driver_opts).then(
           resp => {
             if (resp.code === 0)
               this.dialog_visible = false;

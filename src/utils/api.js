@@ -58,7 +58,6 @@ for (let [k, v] of Object.entries(url))
   key[v] = k;
 
 let options = {
-  ADMIN_SYSTEM_CONFIG: {name: '系统设置'},
   ADMIN_USER_ADD: {name: '添加用户'},
   ADMIN_USER_EDIT: {name: '编辑用户'},
   ADMIN_USER_DELETE: {name: '删除用户'},
@@ -141,10 +140,10 @@ export default {
   containerList: is_all => axios.get(url.CONTAINER_LIST, {params: {is_all}}),
   containerItem: id => axios.get(`${url.CONTAINER_ITEM}/${id}`),
   containerDelete: ids => axios.post(url.CONTAINER_DELETE, {ids}),
-  containerCreate: (image, command, name, interactive, tty, ports) => axios.post(
-      url.CONTAINER_CREATE, {image, command, name, interactive, tty, ports}),
-  containerRun: (image, command, name, interactive, tty, ports) => axios.post(
-      url.CONTAINER_RUN, {image, command, name, interactive, tty, ports}),
+  containerCreate: (image, command, name, interactive, tty, ports, volumes) => axios.post(
+      url.CONTAINER_CREATE, {image, command, name, interactive, tty, ports, volumes}),
+  containerRun: (image, command, name, interactive, tty, ports, volumes) => axios.post(
+      url.CONTAINER_RUN, {image, command, name, interactive, tty, ports, volumes}),
   containerStart: ids => axios.post(url.CONTAINER_START, {ids}),
   containerStop: (ids, timeout) => axios.post(url.CONTAINER_STOP, {ids, timeout}),
   containerRestart: (ids, timeout) => axios.post(url.CONTAINER_RESTART, {ids, timeout}),
