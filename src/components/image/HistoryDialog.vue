@@ -5,7 +5,10 @@
           label="ID"
           width="160">
         <template slot-scope="scope">
-          <router-link class="el-button el-button--mini" :to="`/image/${scope.row.id}`">{{ scope.row.id }}</router-link>
+          <template v-if="scope.row.id === '<missing>'">{{ scope.row.id }}</template>
+          <router-link v-else class="el-button el-button--mini" :to="`/image/${scope.row.id}`">
+            {{ scope.row.id }}
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column
