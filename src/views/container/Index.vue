@@ -259,8 +259,8 @@ export default {
           }
       ).catch(_ => _);
     },
-    openContainerTerminal(id, cmd) {
-      this.$api.containerTerminal(id, cmd).then(
+    openContainerTerminal(id, command) {
+      this.$api.containerTerminal(id, command).then(
           resp => {
             if (resp.code === 0) {
               let token = resp.data.token;

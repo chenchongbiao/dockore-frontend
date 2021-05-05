@@ -63,7 +63,7 @@
     <div style="margin-top: 8px">
       <el-pagination
           :current-page.sync="page" :page-size.sync="per_page"
-          :page-sizes="[5, 10, 50, 100]" :total="total"
+          :page-sizes="[5, 10, 50, 100]" :total="total" @size-change="getUserItems"
           background layout="prev, pager, next, sizes"></el-pagination>
     </div>
   </div>

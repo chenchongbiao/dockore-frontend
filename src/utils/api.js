@@ -157,7 +157,7 @@ export default {
   containerDiff: id => axios.get(`${url.CONTAINER_DIFF}/${id}`),
   containerCommit: (id, name, tag, message, author) => axios.post(
       url.CONTAINER_COMMIT, {id, name, tag, message, author}),
-  containerTerminal: (id, cmd) => axios.post(`${url.CONTAINER_TERMINAL}`, {id, cmd}),
+  containerTerminal: (id, command) => axios.post(`${url.CONTAINER_TERMINAL}`, {id, command}),
 
   volumeList: () => axios.get(url.VOLUME_LIST),
   volumeItem: id => axios.get(`${url.VOLUME_ITEM}/${id}`),
