@@ -74,4 +74,7 @@ export default {
 .collapse-menu:not(.el-menu--collapse) {
   width: 256px;
 }
+.el-menu-item.is-active {
+  background: #ecf5ff;
+}
 </style>
