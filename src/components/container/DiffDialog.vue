@@ -1,7 +1,7 @@
 <template>
   <el-dialog :visible.sync="dialog_visible" title="容器文件差异对比" width="1280px">
-    <el-input v-model="keyword" placeholder="输入关键字进行过滤" style="margin-bottom: 8px">
-      <el-button slot="append" icon="el-icon-search" @click="$refs.tree.filter(keyword)"></el-button>
+    <el-input v-model="keyword" placeholder="输入关键字进行过滤" style="margin-bottom: 8px" @keyup.enter.native="searchItem">
+      <el-button slot="append" icon="el-icon-search" @click="searchItem"></el-button>
     </el-input>
 
     <el-tree v-show="!treeEmpty" ref="tree" :data="treeData"
@@ -97,6 +97,9 @@ export default {
           }
       );
     },
+    searchItem(){
+      this.$refs.tree.filter(this.keyword)
+    }
   },
 }
 </script>

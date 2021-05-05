@@ -57,7 +57,6 @@ export default {
       term: new Terminal({
         cursorBlink: true,
         macOptionIsMeta: true,
-        scrollback: true,
       }),
       web_link: new WebLinksAddon(),
       fit: new FitAddon(),
@@ -74,7 +73,7 @@ export default {
   },
   mounted() {
     this.term.open(this.$refs.terminal);
-    this.term.onKey(this.pty_input);
+    this.term.onData(this.pty_input);
     this.fit.fit();
   },
   sockets: {
@@ -119,7 +118,7 @@ export default {
     init_failed(resp) {
       helper.sendNotification('容器终端', resp.msg ? resp.msg : '打开容器终端失败。', 'error');
     },
-    pty_input({key, domEvent}) {
+    pty_input(key, domEvent) {
       this.emit("pty_input", {input: key});
     },
     pty_output(data) {
