@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     fit() {
-      this.collapse = document.body.clientWidth < 1440;
+      this.collapse = document.body.clientWidth < 1280;
     },
     updateActiveMenu(path) {
       if (path === undefined)
