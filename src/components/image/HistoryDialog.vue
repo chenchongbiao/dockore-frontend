@@ -5,7 +5,7 @@
           label="ID"
           width="160">
         <template slot-scope="scope">
-          <router-link :to="`/image/${scope.row.id}`">{{ scope.row.id }}</router-link>
+          <router-link class="el-button el-button--mini" :to="`/image/${scope.row.id}`">{{ scope.row.id }}</router-link>
         </template>
       </el-table-column>
       <el-table-column
@@ -41,7 +41,7 @@
               title="创建指令"
               trigger="hover"
               width="320">
-            <el-button slot="reference">查看</el-button>
+            <el-button slot="reference" size="mini">查看</el-button>
           </el-popover>
         </template>
       </el-table-column>
