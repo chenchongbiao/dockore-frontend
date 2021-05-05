@@ -205,11 +205,11 @@ export default {
       else if (cmd === 'rename')
         this.renameContainerItem(item);
       else if (cmd === 'logs')
-        this.$refs.logs_dialog.open(id);
+        this.$refs.logs_dialog.open(item.id);
       else if (cmd === 'diff')
-        this.$refs.diff_dialog.open(id)
+        this.$refs.diff_dialog.open(item.id)
       else if (cmd === 'commit')
-        this.$refs.commit_dialog.open(id)
+        this.$refs.commit_dialog.open(item.id)
       else if (cmd === 'terminal')
         this.openContainerTerminal(item.id);
       else if (cmd === 'exec') {

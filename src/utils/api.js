@@ -59,6 +59,8 @@ for (let [k, v] of Object.entries(url))
   key[v] = k;
 
 let options = {
+  ADMIN_SYSTEM_CONFIG: {name: '系统设置'},
+
   ADMIN_USER_ADD: {name: '添加用户'},
   ADMIN_USER_EDIT: {name: '编辑用户'},
   ADMIN_USER_DELETE: {name: '删除用户'},
