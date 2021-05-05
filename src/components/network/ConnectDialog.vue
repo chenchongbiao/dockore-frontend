@@ -98,7 +98,7 @@ export default {
       page_size: 10,
       form: {},
       container: {},
-      item: {},
+      item: {containers: []},
       collapse: false,
       ro: null,
     };
@@ -116,6 +116,9 @@ export default {
   computed: {
     tableData() {
       let items = this.items;
+      let existed_ids = this.item.containers.map(item => item.id);
+      items = items.filter(item => existed_ids.indexOf(item.id) === -1);
+
       if (this.keyword) {
         items = items.filter(item => item.name.indexOf(this.keyword) !== -1 || item.id.indexOf(this.keyword) !== -1);
       }

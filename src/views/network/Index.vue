@@ -30,7 +30,7 @@
       </el-table-column>
       <el-table-column
           label="驱动器类型"
-          prop="driver"
+          prop="driver_"
           width="160">
       </el-table-column>
       <el-table-column
@@ -50,7 +50,8 @@
         <template slot-scope="scope">
           <router-link :to="`/network/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <el-button size="mini" type="danger" @click="deleteNetworkItems([scope.row.id])">删除</el-button>
-          <el-button size="mini" type="primary" @click="$refs.connect_dialog.open(scope.row.id)">连接容器</el-button>
+          <el-button size="mini" type="primary" :disabled="scope.row.driver === 'host'"
+                     @click="$refs.connect_dialog.open(scope.row.id)">连接容器</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,7 +86,7 @@ export default {
 
       items = this.$helper.copyObject(items);
       for (let item of items) {
-        item.driver = this.$text.$get('network', 'driver', item.driver);
+        item.driver_ = this.$text.$get('network', 'driver', item.driver);
         item.create_time = this.$moment(item.create_time).from();
       }
 

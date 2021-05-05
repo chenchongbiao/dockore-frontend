@@ -66,7 +66,7 @@
       </el-table-column>
       <el-table-column
           label="状态"
-          prop="status"
+          prop="status_"
           width="120">
       </el-table-column>
       <el-table-column
@@ -75,7 +75,10 @@
           width="240">
         <template slot-scope="scope">
           <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
-          <el-button size="mini" type="danger" @click="deleteContainerItems([scope.row.id])">删除</el-button>
+          <el-button size="mini" type="info" v-show="scope.row.is_running"
+                     @click="stopContainerItems([scope.row.id])">停止</el-button>
+          <el-button size="mini" type="danger" v-show="!scope.row.is_running"
+                     @click="deleteContainerItems([scope.row.id])">删除</el-button>
           <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row, cmd)">
             <el-button size="mini" type="primary">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
@@ -97,11 +100,11 @@
                 <el-icon class="el-icon-s-promotion"></el-icon>
                 提交到镜像
               </el-dropdown-item>
-              <el-dropdown-item command="start" divided>
+              <el-dropdown-item divided command="start" :disabled="scope.row.is_running">
                 <el-icon class="el-icon-video-play"></el-icon>
                 启动容器
               </el-dropdown-item>
-              <el-dropdown-item command="stop">
+              <el-dropdown-item command="stop" :disabled="!scope.row.is_running">
                 <el-icon class="el-icon-circle-close"></el-icon>
                 停止容器
               </el-dropdown-item>
@@ -109,11 +112,11 @@
                 <el-icon class="el-icon-refresh-right"></el-icon>
                 重启容器
               </el-dropdown-item>
-              <el-dropdown-item command="terminal" divided>
+              <el-dropdown-item divided command="terminal" :disabled="!scope.row.is_running">
                 <el-icon class="el-icon-s-platform"></el-icon>
                 容器终端交互
               </el-dropdown-item>
-              <el-dropdown-item command="exec">
+              <el-dropdown-item command="exec" :disabled="!scope.row.is_running">
                 <el-icon class="el-icon-magic-stick"></el-icon>
                 容器命令执行
               </el-dropdown-item>
@@ -157,8 +160,9 @@ export default {
 
       items = this.$helper.copyObject(items);
       for (let item of items) {
-        item.status = this.$text.$get('container', 'status', item.status);
+        item.status_ = this.$text.$get('container', 'status', item.status);
         item.create_time = this.$moment(item.create_time).from();
+        item.is_running = item.status === 'running';
       }
       return items;
     },
