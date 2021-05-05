@@ -38,7 +38,7 @@
       <el-table-column
           label="用户角色"
           prop="role_type"
-          width="200">
+          width="160">
       </el-table-column>
       <el-table-column
           label="创建时间"
@@ -46,6 +46,12 @@
           width="200">
       </el-table-column>
       <el-table-column
+          label="使用资源数量"
+          prop="owner_item_num"
+          width="160">
+      </el-table-column>
+      <el-table-column
+          fixed="right"
           label="操作"
           width="160">
         <template slot-scope="scope">

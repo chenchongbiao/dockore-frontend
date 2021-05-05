@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="titlebar">
     <el-menu mode="horizontal" @select="menuSelect" ref="menu">
-      <el-menu-item index="home">
+      <el-menu-item index="home" :class="`${isElectron? 'title': ''}`">
         <template slot="title">
           <router-link to="/" class="el-link">
             <h1 style="margin: 0; font-size: 26px;">{{ title }}</h1>
@@ -39,7 +39,10 @@ export default {
     },
     title() {
       return this.$text.global.project.name;
-    }
+    },
+    isElectron() {
+      return process.env.IS_ELECTRON;
+    },
   },
   methods: {
     menuSelect(index) {
@@ -57,5 +60,15 @@ export default {
 </script>
 
 <style scoped>
+.titlebar {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
 
+.title {
+  width: 128px;
+
+  /* el-menu padding: 40px */
+  margin-left: calc(50vw - 64px - 40px);
+}
 </style>

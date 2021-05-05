@@ -39,6 +39,11 @@
           width="200">
       </el-table-column>
       <el-table-column
+          label="连接容器数量"
+          prop="container_num"
+          width="160">
+      </el-table-column>
+      <el-table-column
           fixed="right"
           label="操作"
           width="240">

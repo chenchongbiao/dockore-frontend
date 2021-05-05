@@ -2,10 +2,17 @@
   "name": "dockore-frontend",
   "version": "0.1.0",
   "private": true,
+  "description": "A simple GUI Manager for Docker.",
+  "author": "HsOjo",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
   },
+  "main": "background.js",
   "dependencies": {
     "@juggle/resize-observer": "^3.3.0",
     "element-ui": "^2.3.6",
@@ -25,7 +32,10 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "axios": "^0.18.0",
+    "electron": "^12.0.6",
+    "electron-devtools-installer": "^3.1.0",
     "vue-cli-plugin-axios": "0.0.4",
+    "vue-cli-plugin-electron-builder": "~2.0.0-rc.6",
     "vue-cli-plugin-element-ui": "~1.1.4",
     "vue-template-compiler": "^2.6.11"
   }

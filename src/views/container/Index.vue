@@ -44,11 +44,11 @@
       <el-table-column
           label="名称"
           prop="name"
-          width="200">
+          width="160">
       </el-table-column>
       <el-table-column
           label="镜像"
-          width="270">
+          width="280">
         <template slot-scope="scope">
           <router-link v-if="!scope.row.image.tags.length" :to="`/image/${scope.row.image.id}`">
             {{ scope.row.image.id }}
@@ -62,7 +62,7 @@
       <el-table-column
           label="创建时间"
           prop="create_time"
-          width="200">
+          width="160">
       </el-table-column>
       <el-table-column
           label="状态"

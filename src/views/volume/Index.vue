@@ -31,7 +31,7 @@
       <el-table-column
           label="挂载点"
           prop="mount_point"
-          width="280">
+          width="320">
       </el-table-column>
       <el-table-column
           label="创建时间"
