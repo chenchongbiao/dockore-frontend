@@ -86,7 +86,14 @@ export default {
     return {
       dialog_visible: false,
       form: {options: []},
-      option_suggestion: [],
+      option_suggestion: [
+        'com.docker.network.bridge.name',
+        'com.docker.network.bridge.host_binding_ipv4',
+        'com.docker.network.bridge.mtu',
+        'com.docker.network.bridge.default_bridge',
+        'com.docker.network.bridge.enable_icc',
+        'com.docker.network.bridge.enable_ip_masquerade',
+      ],
       collapse: false,
       ro: null,
       step: '1',
@@ -115,7 +122,7 @@ export default {
     },
 
     createNetwork() {
-      this.form.options = this.form.options.filter(opt=>{
+      this.form.options = this.form.options.filter(opt => {
         return opt.key && opt.value;
       });
 
@@ -136,10 +143,11 @@ export default {
       this.form.options = this.form.options.filter(x => x !== item);
     },
 
-    optionSuggestion(_, cb) {
+    optionSuggestion(input, cb) {
       let suggestion = [];
       for (let option of this.option_suggestion) {
-        suggestion.push({value: option.toString()});
+        if (option.indexOf(input) !== -1)
+          suggestion.push({value: option});
       }
       cb(suggestion);
     },

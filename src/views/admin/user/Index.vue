@@ -41,6 +41,11 @@
           width="200">
       </el-table-column>
       <el-table-column
+          label="创建时间"
+          prop="create_time"
+          width="200">
+      </el-table-column>
+      <el-table-column
           label="操作"
           width="160">
         <template slot-scope="scope">
@@ -66,6 +71,7 @@ export default {
       let items = this.$helper.copyObject(this.items);
       for (let item of items) {
         item.role_type = this.$text.$get('user', 'roles', item.role_type);
+        item.create_time = this.$moment(item.create_time).from();
       }
       return items;
     },

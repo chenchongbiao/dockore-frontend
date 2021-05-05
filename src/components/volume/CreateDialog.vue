@@ -123,10 +123,11 @@ export default {
       this.form.driver_opts = this.form.driver_opts.filter(x => x !== item);
     },
 
-    optionSuggestion(_, cb) {
+    optionSuggestion(input, cb) {
       let suggestion = [];
       for (let option of this.driver_option_suggestion) {
-        suggestion.push({value: option.toString()});
+        if (option.indexOf(input) !== -1)
+          suggestion.push({value: option});
       }
       cb(suggestion);
     },

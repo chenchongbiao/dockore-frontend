@@ -325,10 +325,11 @@ export default {
       this.form.volumes = this.form.volumes.filter(x => x !== item);
     },
 
-    pathSuggestion(_, cb) {
+    pathSuggestion(input, cb) {
       let suggestion = [];
       for (let volume of this.volumes) {
-        suggestion.push({value: volume.name});
+        if (volume.name.indexOf(input) !== -1)
+          suggestion.push({value: volume.name});
       }
       cb(suggestion);
     },
@@ -340,17 +341,20 @@ export default {
       this.form.ports = this.form.ports.filter(x => x !== item);
     },
 
-    portSuggestion(_, cb) {
+    portSuggestion(input, cb) {
       let suggestion = [];
       for (let port of this.port_suggestion) {
-        suggestion.push({value: port.toString()});
+        let port_str = port.toString();
+        if (port_str.indexOf(input) !== -1)
+          suggestion.push({value: port_str});
       }
       cb(suggestion);
     },
-    ipSuggestion(_, cb) {
+    ipSuggestion(input, cb) {
       let suggestion = [];
       for (let ip of this.ip_suggestion) {
-        suggestion.push({value: ip});
+        if (ip.indexOf(input) !== -1)
+          suggestion.push({value: ip});
       }
       cb(suggestion);
     },

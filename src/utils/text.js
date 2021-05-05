@@ -111,7 +111,13 @@ export default {
     roles: {
       0: '管理员',
       1: '普通用户',
-    }
+    },
+    own_item_type: {
+      1: '镜像',
+      2: '容器',
+      3: '网络',
+      4: '存储卷',
+    },
   },
   $get(s, i, k) {
     let text_ = this[s][i];

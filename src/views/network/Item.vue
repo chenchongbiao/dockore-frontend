@@ -83,7 +83,10 @@
           </el-table-column>
         </el-table>
         <div style="float: right; margin: 16px">
-          <el-checkbox v-model="force" label="强制断开"></el-checkbox>
+          <el-checkbox v-model="force" label="强制断开" style="margin-right: 8px"></el-checkbox>
+          <el-button v-if="selection.length" type="danger" @click="disconnectContainerItems(selectionIds)">
+            断开选中
+          </el-button>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -94,6 +97,9 @@
 export default {
   name: "Item",
   computed: {
+    selectionIds() {
+      return this.selection.map(items => items.id);
+    },
     itemCreateTime() {
       if (this.item.create_time)
         return this.$moment(this.item.create_time).from();
@@ -151,13 +157,22 @@ export default {
           }
       );
     },
-    disconnectContainerItem(id) {
+    disconnectContainerItem(id, reload) {
+      if (reload === undefined)
+        reload = true;
       this.$api.networkDisconnect(this.item.id, id, this.force).then(
           resp => {
-            this.getItemInfo(this.item.id)
+            if (reload)
+              this.getItemInfo(this.item.id)
           }
       )
     },
+    disconnectContainerItems(ids) {
+      let i = 0;
+      ids.map(id => {
+        setTimeout(() => this.disconnectContainerItem(id, i + 1 >= ids.length), i++ * 300);
+      });
+    }
   }
 }
 </script>

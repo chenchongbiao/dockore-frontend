@@ -11,6 +11,7 @@ let url = {
   ADMIN_USER_ADD: `${root}/admin/user/add`,
   ADMIN_USER_EDIT: `${root}/admin/user/edit`,
   ADMIN_USER_DELETE: `${root}/admin/user/delete`,
+  ADMIN_USER_REMOVE_OWNER_SHIP: `${root}/admin/user/remove-owner-ship`,
 
   SYSTEM_VERSION: `${root}/system/version`,
 
@@ -61,6 +62,7 @@ let options = {
   ADMIN_USER_ADD: {name: '添加用户'},
   ADMIN_USER_EDIT: {name: '编辑用户'},
   ADMIN_USER_DELETE: {name: '删除用户'},
+  ADMIN_USER_REMOVE_OWNER_SHIP: {name: '移除所有权'},
 
   USER_LOGIN: {name: '用户登录'},
   USER_INFO: {name: '获取用户信息', notify: false},
@@ -122,6 +124,7 @@ export default {
   adminUserEdit: (id, username, password, role_type) => axios.post(
       url.ADMIN_USER_EDIT, {id, username, password, role_type}),
   adminUserDelete: ids => axios.post(url.ADMIN_USER_DELETE, {ids}),
+  adminUserRemoveOwnerShip: ids => axios.post(url.ADMIN_USER_REMOVE_OWNER_SHIP, {ids}),
 
   queryVersion: () => axios.get(url.SYSTEM_VERSION),
 

@@ -24,7 +24,11 @@
             </el-input>
           </el-form-item>
           <el-form-item label="镜像ID">
-            <el-input v-model="item.image.id" readonly></el-input>
+            <el-input v-model="item.image.id" readonly>
+              <router-link class="el-link" slot="append" :to="`/image/${item.image.id}`">
+                <el-icon class="el-icon-right"></el-icon>
+              </router-link>
+            </el-input>
           </el-form-item>
           <el-form-item label="启动命令">
             <el-input v-model="item.command" readonly></el-input>
@@ -90,7 +94,7 @@
             </el-table-column>
             <el-table-column label="驱动器类型" width="120">
               <template slot-scope="scope">
-                {{ volumeDriver(scope.row.driver) || '（文件）'}}
+                {{ volumeDriver(scope.row.driver) || '（文件）' }}
               </template>
             </el-table-column>
             <el-table-column label="挂载模式" width="120">

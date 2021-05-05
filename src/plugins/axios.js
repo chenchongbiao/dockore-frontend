@@ -73,6 +73,10 @@ _axios.interceptors.response.use(
           }
         }
 
+        if (resp.code === -404){
+          history.back();
+        }
+
         msg = `<div>${msg}</div><div style="word-break: break-all;">${exc}</div>`;
 
         helper.sendNotification(title, msg,
