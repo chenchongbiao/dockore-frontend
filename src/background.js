@@ -16,11 +16,11 @@ async function createWindow() {
     width: 1440,
     height: 720,
     titleBarStyle: 'hidden',
+    frame: process.platform === 'darwin',
     webPreferences: {
-
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
     }
   })
 

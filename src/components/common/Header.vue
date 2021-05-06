@@ -1,15 +1,34 @@
 <template>
-  <div class="titlebar">
-    <el-menu mode="horizontal" @select="menuSelect" ref="menu">
-      <el-menu-item index="home" :class="`${isElectron? 'title': ''}`">
+  <div :class="{dragable: isMac}">
+    <el-menu ref="menu" mode="horizontal" @select="menuSelect" default-active="none">
+      <el-menu-item index="none" style="width: 0"></el-menu-item>
+
+      <template v-if="isElectron">
+        <el-menu-item class="control-area control-item">
+          <div v-show="!isMac">
+            <el-button type="danger" size="mini" circle class="control-item" @click="close"></el-button>
+            <el-button type="warning" size="mini" circle class="control-item" @click="minimize"></el-button>
+            <el-button type="success" size="mini" circle class="control-item" @click="maximize"></el-button>
+          </div>
+        </el-menu-item>
+        <el-menu-item class="dragable control-item dragable-left"></el-menu-item>
+      </template>
+
+      <el-menu-item index="home" class="title-item">
         <template slot="title">
-          <router-link to="/" class="el-link">
+          <router-link :to="`${isLogined? '/' : '#'}`" class="el-link" draggable="false">
             <h1 style="margin: 0; font-size: 26px;">{{ title }}</h1>
           </router-link>
         </template>
       </el-menu-item>
+
+      <template v-if="isElectron">
+        <el-menu-item :class="{'dragable-right': isLogined, 'dragable-right-no-menu':!isLogined}"
+                      class="dragable control-item"></el-menu-item>
+      </template>
+
       <template v-if="isLogined">
-        <el-submenu index="user" style="float: right">
+        <el-submenu index="user" style="float: right;">
           <template slot="title">{{ username }}</template>
           <el-menu-item index="change_password">
             <i class="el-icon-key"></i> 修改密码
@@ -43,32 +62,101 @@ export default {
     isElectron() {
       return process.env.IS_ELECTRON;
     },
+    isMac() {
+      return this.isElectron && this.remote.process.platform === 'darwin';
+    },
+    window() {
+      return this.remote.getCurrentWindow();
+    },
+  },
+  data() {
+    return {
+      remote: null,
+      last_click_time: 0,
+    };
+  },
+  created() {
+    if (this.isElectron) {
+      let {remote} = window.require('electron');
+      this.remote = remote;
+    }
+  },
+  mounted() {
+    this.$refs.menu.$on('item-click', () => {
+      let now = this.now();
+      if (now - this.last_click_time <= 200)
+        this.maximize();
+      this.last_click_time = now;
+    });
   },
   methods: {
+    now() {
+      return new Date().getTime();
+    },
     menuSelect(index) {
       if (index === 'change_password') {
         this.$refs.change_pwd_dialog.open();
       } else if (index === 'logout') {
         this.$store.commit('logout');
         this.$router.push('/login');
-      } else if (index === 'home') {
+      } else {
         this.$refs.menu.activeIndex = '';
       }
-    }
+    },
+    close() {
+      this.window.close()
+    },
+    minimize() {
+      this.window.minimize()
+    },
+    maximize() {
+      if (this.window.isMaximized())
+        this.window.unmaximize()
+      else
+        this.window.maximize()
+    },
   }
 }
 </script>
 
 <style scoped>
-.titlebar {
+.dragable {
   -webkit-user-select: none;
   -webkit-app-region: drag;
 }
 
-.title {
-  width: 128px;
+.dragable-left {
+  /* 50% - padding - control-area - title/2 */
+  width: calc(50vw - 20px - 72px - 64px);
+}
 
-  /* el-menu padding: 40px */
-  margin-left: calc(50vw - 64px - 40px);
+.dragable-right {
+  /* 50% - padding - right_menu - title/2 */
+  width: calc(50vw - 20px - 100px - 64px);
+}
+
+.dragable-right-no-menu {
+  /* 50% - padding - right_menu - title/2 */
+  width: calc(50vw - 20px - 64px);
+}
+
+.control-item {
+  cursor: default;
+}
+
+.el-menu-item {
+  padding: 0;
+}
+
+.control-area {
+  align-items: flex-start;
+  display: flex;
+  padding: 18px 0 0;
+  width: 72px
+}
+
+.title-item {
+  width: 128px;
+  text-align: center;
 }
 </style>
