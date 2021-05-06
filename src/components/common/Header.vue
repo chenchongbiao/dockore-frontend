@@ -149,10 +149,10 @@ export default {
 }
 
 .control-area {
-  align-items: flex-start;
-  display: flex;
-  padding: 18px 0 0;
-  width: 72px
+  position: relative;
+  width: 72px;
+  top: -4px;
+  left: -2px;
 }
 
 .title-item {
