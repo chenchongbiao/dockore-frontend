@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <div>
     <el-header>
       <Header></Header>
     </el-header>
@@ -14,20 +14,23 @@
             <el-input v-model="form.password" type="password" @keyup.enter.native="login"></el-input>
           </el-form-item>
           <el-form-item style="float: right">
+            <el-button @click="$refs.set_server_dialog.open()">指定服务器</el-button>
             <el-button type="primary" @click="login">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
     </el-container>
-  </el-container>
+    <SetServerDialog ref="set_server_dialog"></SetServerDialog>
+  </div>
 </template>
 
 <script>
 import Header from "@/components/common/Header";
+import SetServerDialog from "@/components/common/SetServerDialog";
 
 export default {
   name: "Login",
-  components: {Header},
+  components: {Header, SetServerDialog},
   data() {
     return {
       form: {},

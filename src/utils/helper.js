@@ -24,7 +24,10 @@ export default {
     offset |= 16;
     duration |= 3;
     duration *= 1000;
-    message = message.replace('\n', '<br>');
+    if (html === undefined)
+      html = true;
+    if (html)
+      message = message.replace('\n', '<br>');
     Notification({title, message, type, offset, duration, dangerouslyUseHTMLString: html, position: 'bottom-right'})
   },
   copyObject(obj) {

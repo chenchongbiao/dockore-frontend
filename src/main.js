@@ -18,8 +18,10 @@ import event from "@/utils/event";
 import helper from "@/utils/helper";
 import constant from "@/utils/constant";
 
+api.$action.generateURL();
+
 Vue.use(ElementUI)
-Vue.use(VueNativeSock, process.env.VUE_APP_WS_URL, {
+Vue.use(VueNativeSock, api.$action.getWSURL(), {
   connectManually: true,
   reconnection: false,
 })

@@ -95,7 +95,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/Login'),
+    component: () => import('@/views/user/Login'),
     meta: {title: '用户登录'},
   },
 ]

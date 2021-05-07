@@ -1,4 +1,9 @@
 export default {
+  global: {
+    storage: {
+      SERVER_INFO: 'server_info',
+    }
+  },
   role: {
     TYPE_ADMIN: 0,
     TYPE_USER: 1,

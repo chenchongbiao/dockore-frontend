@@ -1,10 +1,10 @@
 export default {
   local: {
-    get(key) {
+    get(key, default_) {
       let item_str = localStorage.getItem(key);
-      if (item_str) {
+      if (item_str)
         return JSON.parse(item_str);
-      }
+      return default_;
     },
     set(key, value) {
       let item_str = JSON.stringify(value);
