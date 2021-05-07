@@ -31,7 +31,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="权限信息" name="owner">
+      <el-tab-pane label="权限信息" name="owner" v-if="!isAdd">
         <el-table :data="tableData" border @selection-change="handleSelectionChange">
           <el-table-column
               type="selection"

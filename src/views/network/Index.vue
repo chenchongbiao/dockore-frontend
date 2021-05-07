@@ -50,8 +50,21 @@
         <template slot-scope="scope">
           <router-link :to="`/network/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <el-button size="mini" type="danger" @click="deleteNetworkItems([scope.row.id])">删除</el-button>
-          <el-button size="mini" type="primary" :disabled="scope.row.driver === 'host'"
-                     @click="$refs.connect_dialog.open(scope.row.id)">连接容器</el-button>
+          <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row, cmd)">
+            <el-button size="mini" type="primary">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="connect" :disabled="scope.row.driver === 'host'">
+                <el-icon class="el-icon-link"></el-icon>
+                连接容器
+              </el-dropdown-item>
+              <el-dropdown-item command="distribute" divided v-if="$store.getters.isAdmin">
+                <el-icon class="el-icon-share"></el-icon>
+                分配对象
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -63,16 +76,18 @@
     </div>
     <CreateDialog ref="create_dialog"></CreateDialog>
     <ConnectDialog ref="connect_dialog"></ConnectDialog>
+    <SelectDialog ref="distribute_dialog"></SelectDialog>
   </div>
 </template>
 
 <script>
 import CreateDialog from "@/components/network/CreateDialog";
 import ConnectDialog from "@/components/network/ConnectDialog";
+import SelectDialog from "@/components/admin/user/SelectDialog";
 
 export default {
   name: "Index",
-  components: {CreateDialog, ConnectDialog},
+  components: {CreateDialog, ConnectDialog, SelectDialog},
   computed: {
     tableData() {
       let items = this.items;
@@ -112,6 +127,27 @@ export default {
     this.$bus.$off(this.$event.refresh_networks);
   },
   methods: {
+    handleOperation(item, cmd) {
+      if (cmd === 'connect')
+        this.$refs.connect_dialog.open(item.id);
+      else if (cmd === 'distribute')
+        this.distributeItem(item.id);
+    },
+    distributeItem(id) {
+      this.$refs.distribute_dialog.open(
+          user_id => {
+            this.$api.adminUserDistributeObject(user_id, this.$const.object.TYPE_NETWORK, id).then(
+                resp => {
+                  if (resp.code === 0)
+                    this.$refs.distribute_dialog.close();
+                }
+            );
+          }, '分配网络对象',
+          item => {
+            return item.role_type !== this.$const.role.TYPE_ADMIN;
+          }
+      );
+    },
     handleSelectionChange(val) {
       this.selection = val;
     },

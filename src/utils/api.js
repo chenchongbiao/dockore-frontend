@@ -12,6 +12,7 @@ let url = {
   ADMIN_USER_EDIT: `${root}/admin/user/edit`,
   ADMIN_USER_DELETE: `${root}/admin/user/delete`,
   ADMIN_USER_REMOVE_OWNER_SHIP: `${root}/admin/user/remove-owner-ship`,
+  ADMIN_USER_DISTRIBUTE_OBJECT: `${root}/admin/user/distribute-object`,
 
   SYSTEM_VERSION: `${root}/system/version`,
 
@@ -65,6 +66,7 @@ let options = {
   ADMIN_USER_EDIT: {name: '编辑用户'},
   ADMIN_USER_DELETE: {name: '删除用户'},
   ADMIN_USER_REMOVE_OWNER_SHIP: {name: '移除所有权'},
+  ADMIN_USER_DISTRIBUTE_OBJECT: {name: '分配对象'},
 
   USER_LOGIN: {name: '用户登录'},
   USER_INFO: {name: '获取用户信息', notify: false},
@@ -127,6 +129,7 @@ export default {
       url.ADMIN_USER_EDIT, {id, username, password, role_type}),
   adminUserDelete: ids => axios.post(url.ADMIN_USER_DELETE, {ids}),
   adminUserRemoveOwnerShip: ids => axios.post(url.ADMIN_USER_REMOVE_OWNER_SHIP, {ids}),
+  adminUserDistributeObject: (id, type, obj_id) => axios.post(url.ADMIN_USER_DISTRIBUTE_OBJECT, {id, type, obj_id}),
 
   queryVersion: () => axios.get(url.SYSTEM_VERSION),
 

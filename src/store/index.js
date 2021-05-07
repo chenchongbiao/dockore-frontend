@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import storage from '@/utils/storage'
+import constant from '@/utils/constant'
 
 Vue.use(Vuex)
 
@@ -36,11 +37,17 @@ export default new Vuex.Store({
       return token;
     },
     userInfo(state) {
-      let user_token = state.user_token;
-      if (!user_token)
-        user_token = storage.local.get('user_token');
+      let user_info = state.user_info;
+      if (!user_info)
+        user_info = storage.local.get('user_info');
 
-      return state.user_info;
+      return user_info;
+    },
+    isAdmin(state, getters) {
+      let user_info = getters.userInfo;
+      if (user_info && user_info.role_type !== undefined)
+        return user_info.role_type === constant.role.TYPE_ADMIN;
+      return false;
     },
   }
 })

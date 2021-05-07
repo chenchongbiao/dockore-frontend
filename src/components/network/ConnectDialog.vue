@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="连接容器网络" :width="collapse? '960px':'1024px'">
+  <el-dialog :visible.sync="dialog_visible" title="连接容器网络" :width="collapse? '880px':'1024px'">
     <el-container>
       <el-aside style="width: auto">
         <el-menu ref="menu" default-active="1" @select="x => step = x"

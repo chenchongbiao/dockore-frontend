@@ -16,6 +16,7 @@ import storage from '@/utils/storage'
 import text from '@/utils/text'
 import event from "@/utils/event";
 import helper from "@/utils/helper";
+import constant from "@/utils/constant";
 
 Vue.use(ElementUI)
 Vue.use(VueNativeSock, process.env.VUE_APP_WS_URL, {
@@ -33,6 +34,7 @@ Vue.prototype.$event = event
 Vue.prototype.$moment = moment
 Vue.prototype.$filesize = fileSize
 Vue.prototype.$helper = helper
+Vue.prototype.$const = constant
 
 moment.locale('zh-cn')
 

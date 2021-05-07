@@ -76,9 +76,11 @@
         <template slot-scope="scope">
           <router-link :to="`/container/${scope.row.id}`" class="el-button el-button--mini">信息</router-link>
           <el-button size="mini" type="info" v-show="scope.row.is_running"
-                     @click="stopContainerItems([scope.row.id])">停止</el-button>
+                     @click="stopContainerItems([scope.row.id])">停止
+          </el-button>
           <el-button size="mini" type="danger" v-show="!scope.row.is_running"
-                     @click="deleteContainerItems([scope.row.id])">删除</el-button>
+                     @click="deleteContainerItems([scope.row.id])">删除
+          </el-button>
           <el-dropdown style="margin-left: 8px" trigger="click" @command="cmd => handleOperation(scope.row, cmd)">
             <el-button size="mini" type="primary">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
@@ -120,6 +122,10 @@
                 <el-icon class="el-icon-magic-stick"></el-icon>
                 容器命令执行
               </el-dropdown-item>
+              <el-dropdown-item command="distribute" divided v-if="$store.getters.isAdmin">
+                <el-icon class="el-icon-share"></el-icon>
+                分配对象
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -135,6 +141,7 @@
     <LogsDialog ref="logs_dialog"></LogsDialog>
     <DiffDialog ref="diff_dialog"></DiffDialog>
     <CommitDialog ref="commit_dialog"></CommitDialog>
+    <SelectDialog ref="distribute_dialog"></SelectDialog>
   </div>
 </template>
 
@@ -143,10 +150,11 @@ import CreateDialog from "@/components/container/CreateDialog";
 import LogsDialog from "@/components/container/LogsDialog";
 import DiffDialog from "@/components/container/DiffDialog";
 import CommitDialog from "@/components/container/CommitDialog";
+import SelectDialog from "@/components/admin/user/SelectDialog";
 
 export default {
   name: "Index",
-  components: {CommitDialog, CreateDialog, LogsDialog, DiffDialog},
+  components: {CommitDialog, CreateDialog, LogsDialog, DiffDialog, SelectDialog},
   computed: {
     tableData() {
       let items = this.items;
@@ -216,9 +224,25 @@ export default {
         this.$refs.commit_dialog.open(item.id)
       else if (cmd === 'terminal')
         this.openContainerTerminal(item.id);
-      else if (cmd === 'exec') {
+      else if (cmd === 'exec')
         this.execCommandContainer(item);
-      }
+      else if (cmd === 'distribute')
+        this.distributeItem(item.id);
+    },
+    distributeItem(id) {
+      this.$refs.distribute_dialog.open(
+          user_id => {
+            this.$api.adminUserDistributeObject(user_id, this.$const.object.TYPE_CONTAINER, id).then(
+                resp => {
+                  if (resp.code === 0)
+                    this.$refs.distribute_dialog.close();
+                }
+            );
+          }, '分配容器对象',
+          item => {
+            return item.role_type !== this.$const.role.TYPE_ADMIN;
+          }
+      );
     },
     getContainerItems() {
       this.$api.containerList(this.is_all).then(

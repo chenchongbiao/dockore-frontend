@@ -3,7 +3,7 @@
     <el-menu ref="menu" v-model="menu_index" :default-active="menu_index"
              :router="true" :collapse="collapse" class="collapse-menu">
       <el-menu-item v-for="item in menu_items" :key="item.path" :index="item.path"
-                    v-if="item.role_type === undefined||userRole === item.role_type">
+                    v-if="!item.admin||$store.getters.isAdmin">
         <i :class="item.icon"></i>
         <span slot="title">{{ item.title }}</span>
       </el-menu-item>
@@ -16,18 +16,13 @@ import {ResizeObserver} from "@juggle/resize-observer";
 
 export default {
   name: "LeftASide",
-  computed: {
-    userRole() {
-      return this.$store.getters.userInfo.role_type;
-    }
-  },
   data() {
     return {
       menu_index: null,
       menu_items: [
+        {path: '/admin/system/config', title: '系统设置', icon: 'el-icon-setting', admin: true},
         {path: '/system/version', title: '系统版本', icon: 'el-icon-warning-outline'},
-        {path: '/admin/system/config', title: '系统设置', icon: 'el-icon-setting', role_type: 0},
-        {path: '/admin/user', title: '用户管理', icon: 'el-icon-user', role_type: 0},
+        {path: '/admin/user', title: '用户管理', icon: 'el-icon-user', admin: true},
         {path: '/image', title: '镜像管理', icon: 'el-icon-document-copy'},
         {path: '/container', title: '容器管理', icon: 'el-icon-copy-document'},
         {path: '/network', title: '网络管理', icon: 'el-icon-connection'},
@@ -74,6 +69,7 @@ export default {
 .collapse-menu:not(.el-menu--collapse) {
   width: 256px;
 }
+
 .el-menu-item.is-active {
   background: #ecf5ff;
 }
