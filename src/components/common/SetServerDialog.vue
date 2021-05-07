@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialog_visible" title="指定服务器" width="640px">
+  <el-dialog :visible.sync="dialog_visible" title="指定：Dockore服务器" width="640px">
     <el-form ref="form" :model="form" label-width="120px" style="padding-right: 32px">
       <el-form-item label="服务器地址">
         <el-input placeholder="[域名/IP][:端口]" v-model="form.host" @input="hostInput">
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       dialog_visible: false,
-      form: {ssl: true},
+      form: {},
       sync_host: true,
     }
   },
@@ -44,7 +44,8 @@ export default {
     },
     open() {
       this.dialog_visible = true;
-      this.form = this.$api.$action.getServerInfo() || {};
+      this.form = this.$api.$action.getServerInfo() || {ssl: true, host: '', host_ws: ''};
+      this.sync_host = this.form.host === this.form.host_ws;
     },
     setServer() {
       this.$api.$action.setServerInfo(this.form);

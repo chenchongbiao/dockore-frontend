@@ -33,7 +33,7 @@ function getWSURL() {
   let url;
   let info = getServerInfo();
   if (info)
-    url = `${info.ssl ? 'wss' : 'ws'}://${info.host}`;
+    url = `${info.ssl ? 'wss' : 'ws'}://${info.host_ws}`;
   else
     url = `${process.env.VUE_APP_WS_URL}`
 
