@@ -58,7 +58,7 @@ function generateURL() {
 
     USER_LOGIN: `${root}/user/login`,
     USER_INFO: `${root}/user/info`,
-    USER_CHANGE_PASSWORD: `${root}/user/change_password`,
+    USER_CHANGE_PASSWORD: `${root}/user/change-password`,
 
     IMAGE_LIST: `${root}/image/list`,
     IMAGE_ITEM: `${root}/image/item`,
