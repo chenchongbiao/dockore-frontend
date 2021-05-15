@@ -132,7 +132,7 @@ export default {
 
 .dragable-right {
   /* 50% - padding - right_menu - title/2 */
-  width: calc(50vw - 20px - 100px - 64px);
+  width: calc(50vw - 20px - 100px - 64px - 20px);
 }
 
 .dragable-right-no-menu {
