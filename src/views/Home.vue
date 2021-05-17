@@ -7,7 +7,7 @@
       <el-aside v-if="isLogined" style="width: auto">
         <LeftASide></LeftASide>
       </el-aside>
-      <el-main>
+      <el-main class="content">
         <router-view/>
       </el-main>
     </el-container>
@@ -52,5 +52,9 @@ export default {
 </script>
 
 <style scoped>
-
+.content {
+  /* 100% - Header - Border */
+  height: calc(100vh - 60px - 1px);
+  margin-top: 1px;
+}
 </style>
