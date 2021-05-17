@@ -37,7 +37,7 @@
       <el-table-column
           label="镜像作者"
           prop="author"
-          width="240">
+          width="200">
       </el-table-column>
       <el-table-column
           label="创建时间"

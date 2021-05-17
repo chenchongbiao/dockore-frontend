@@ -48,7 +48,7 @@
       </el-table-column>
       <el-table-column
           label="镜像"
-          width="280">
+          width="240">
         <template slot-scope="scope">
           <router-link v-if="!scope.row.image.tags.length" :to="`/image/${scope.row.image.id}`">
             {{ scope.row.image.id }}

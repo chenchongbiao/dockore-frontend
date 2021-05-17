@@ -21,12 +21,12 @@
       <el-table-column
           label="名称"
           prop="name"
-          width="200">
+          width="180">
       </el-table-column>
       <el-table-column
           label="驱动器类型"
           prop="driver"
-          width="160">
+          width="140">
       </el-table-column>
       <el-table-column
           label="挂载点"
