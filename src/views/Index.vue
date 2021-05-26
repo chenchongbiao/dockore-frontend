@@ -1,8 +1,8 @@
 <template>
-  <div style="display: flex; align-items: center; height: 100%">
+  <div class="hint-area">
     <div style="opacity: 0.15">
-      <div style="font-size: 64px; padding-left: 64px; margin-bottom: 16px">⬅️ 点击菜单开始使用。</div>
-      <div style="text-align: center; font-size: 24px">Producer: HsOjo</div>
+      <div class="hint-text">⬅️ 点击菜单开始使用。</div>
+      <div class="hint-producer">Producer: HsOjo</div>
     </div>
   </div>
 </template>
@@ -14,5 +14,21 @@ export default {
 </script>
 
 <style scoped>
+.hint-area {
+  display: flex;
+  align-items: center;
+  height: 392px;
+  width: 800px;
+}
 
+.hint-text {
+  font-size: 64px;
+  padding-left: 96px;
+  margin-bottom: 16px;
+}
+
+.hint-producer {
+  text-align: center;
+  font-size: 24px;
+}
 </style>
