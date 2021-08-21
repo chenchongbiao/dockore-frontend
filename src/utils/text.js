@@ -31,6 +31,9 @@ export default {
       password: '密码',
       database: '数据库',
       charset: '编码',
+      echo_sql: '输出SQL',
+      path: '路径',
+      track_modifications: '追踪变化',
     },
     docker: {
       this: 'Docker设置',
@@ -42,8 +45,8 @@ export default {
       this: '用户设置',
       login_expires: '登录过期时间',
     },
-    core: {
-      this: 'Saika设置',
+    flask: {
+      this: 'Flask设置',
       SQLALCHEMY_TRACK_MODIFICATIONS: 'SQLAlchemy变更追踪',
       SECRET_KEY: '数据加密密钥',
       WTF_CSRF_ENABLED: '表单CSRF验证',

@@ -3,7 +3,7 @@
     <el-tabs v-model="tab">
       <el-tab-pane :label="text(i)" v-for="(s, i) in form" :key="i">
         <el-form :model="s" label-width="160px">
-          <el-form-item :label="text(i, k)" v-for="(v, k) in s" :key="k">
+          <el-form-item v-if="typeof s[k] !== 'object'" :label="text(i, k)" v-for="(v, k) in s" :key="k">
             <template v-if="typeof s[k] === 'string'">
               <el-input v-model="s[k]" type="password" v-if="k.indexOf('password') !== -1"></el-input>
               <el-input v-model="s[k]" v-else></el-input>

@@ -23,7 +23,7 @@ _axios.interceptors.request.use(
       // Do something before request is sent
       let token = storage.local.get('user_token')
       if (token)
-        config.headers.Token = token;
+        config.headers.Authorization = token;
 
       let options = Vue.prototype.$api.$options(config.url);
       if (options && options.loading)
