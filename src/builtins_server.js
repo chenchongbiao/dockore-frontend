@@ -38,8 +38,11 @@ function getResPath() {
 
 function install(data_dir) {
   let install_lock = `${data_dir}/install.lock`
-  if (fs.existsSync(install_lock))
+  if (fs.existsSync(install_lock)) {
+    server.exec(data_dir, true, 'db', 'migrate')
+    server.exec(data_dir, true, 'db', 'upgrade')
     return
+  }
 
   if (!fs.existsSync(data_dir))
     fs.mkdirSync(data_dir)
@@ -57,8 +60,6 @@ function start(data_dir, listen_all) {
   if (server.process)
     return
 
-  install(data_dir)
-
   server.host = listen_all ? '0.0.0.0' : '127.0.0.1'
   server.port = getAvailablePort()
   server.process = server.exec(data_dir, false,
@@ -66,6 +67,8 @@ function start(data_dir, listen_all) {
   server.process.on('close', () => {
     server.process = null
   })
+
+  install(data_dir)
 }
 
 function stop() {

@@ -43,7 +43,7 @@ function getBaseURL() {
 
 function getWSURL() {
   let url;
-  let info = getServerInfo();
+  let info = getUseBuiltins() ? getBuiltinServerInfo() : getServerInfo();
   if (info)
     url = `${info.ssl ? 'wss' : 'ws'}://${info.host_ws}`;
   else

@@ -8,10 +8,11 @@
         <h2>用户登录</h2>
         <el-form :model="form" label-position="right">
           <el-form-item label="用户名">
-            <el-input v-model="form.username"></el-input>
+            <el-input v-model="form.username" placeholder="（默认：admin）"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input v-model="form.password" type="password" @keyup.enter.native="login"></el-input>
+            <el-input v-model="form.password" placeholder="（默认：123456）"
+                      type="password" @keyup.enter.native="login"></el-input>
           </el-form-item>
           <el-form-item style="float: right">
             <el-dropdown style="margin-right: 8px" trigger="click" @command="handleOperation">
@@ -70,6 +71,7 @@ export default {
       if (cmd === 'builtins') {
         this.$api.$action.setUseBuiltins(true)
         this.$api.$action.generateURL()
+        this.$refs.set_server_dialog.showServer()
       } else if (cmd === 'remote')
         this.$refs.set_server_dialog.open()
     },
