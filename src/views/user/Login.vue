@@ -14,7 +14,21 @@
             <el-input v-model="form.password" type="password" @keyup.enter.native="login"></el-input>
           </el-form-item>
           <el-form-item style="float: right">
-            <el-button @click="$refs.set_server_dialog.open()">指定服务器</el-button>
+            <el-dropdown style="margin-right: 8px" trigger="click" @command="handleOperation">
+              <el-button>
+                指定服务器<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="builtins">
+                  <el-icon class="el-icon-s-home"></el-icon>
+                  内建服务器
+                </el-dropdown-item>
+                <el-dropdown-item command="remote">
+                  <el-icon class="el-icon-s-promotion"></el-icon>
+                  远程服务器
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <el-button type="primary" @click="login">登录</el-button>
           </el-form-item>
         </el-form>
@@ -34,7 +48,11 @@ export default {
   data() {
     return {
       form: {},
+      use_builtins: null,
     }
+  },
+  created() {
+    this.use_builtins = this.$api.$action.getUseBuiltins()
   },
   methods: {
     login() {
@@ -47,7 +65,14 @@ export default {
             }
           }
       )
-    }
+    },
+    handleOperation(cmd) {
+      if (cmd === 'builtins') {
+        this.$api.$action.setUseBuiltins(true)
+        this.$api.$action.generateURL()
+      } else if (cmd === 'remote')
+        this.$refs.set_server_dialog.open()
+    },
   }
 }
 </script>

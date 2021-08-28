@@ -5,7 +5,8 @@
   "description": "A simple GUI Manager for Docker.",
   "author": {
     "name": "HsOjo",
-    "url": "https://github.com/HsOjo"
+    "url": "https://github.com/HsOjo",
+    "email": "hsojo@qq.com"
   },
   "scripts": {
     "serve": "vue-cli-service serve",

@@ -60,7 +60,7 @@ export default {
       return this.$text.global.project.name;
     },
     isElectron() {
-      return process.env.IS_ELECTRON;
+      return !!this.remote;
     },
     isMac() {
       return this.isElectron && this.remote.process.platform === 'darwin';
@@ -76,10 +76,7 @@ export default {
     };
   },
   created() {
-    if (this.isElectron) {
-      let {remote} = window.require('electron');
-      this.remote = remote;
-    }
+    this.remote = this.$helper.getElectron().remote
   },
   mounted() {
     this.$refs.menu.$on('item-click', () => {

@@ -130,3 +130,4 @@ dist
 
 #Electron-builder output
 /dist_electron
+/extra_resources

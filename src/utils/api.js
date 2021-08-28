@@ -6,6 +6,10 @@ import constant from "@/utils/constant";
 let URL;
 let URL_KEY_MAPPING = {}
 
+function getBuiltinServerInfo() {
+  return helper.getElectron().remote.getGlobal('bs_info')
+}
+
 function getServerInfo() {
   return storage.local.get(constant.global.storage.SERVER_INFO);
 }
@@ -18,9 +22,17 @@ function setServerInfo(info) {
   return storage.local.set(constant.global.storage.SERVER_INFO, info);
 }
 
+function setUseBuiltins(v) {
+  return storage.local.set(constant.global.storage.USE_BUILTINS, v);
+}
+
+function getUseBuiltins() {
+  return storage.local.get(constant.global.storage.USE_BUILTINS, true);
+}
+
 function getBaseURL() {
   let url;
-  let info = getServerInfo();
+  let info = getUseBuiltins() ? getBuiltinServerInfo() : getServerInfo();
   if (info)
     url = `${info.ssl ? 'https' : 'http'}://${info.host}`;
   else
@@ -143,12 +155,15 @@ let axios = (new Vue()).$axios;
 export default {
   $url: URL,
   $action: {
-    getBaseURL: getBaseURL,
-    getWSURL: getWSURL,
-    generateURL: generateURL,
-    getServerInfo: getServerInfo,
-    setServerInfo: setServerInfo,
-    removeServerInfo: removeServerInfo,
+    getBaseURL,
+    getWSURL,
+    generateURL,
+    getServerInfo,
+    setServerInfo,
+    removeServerInfo,
+    getUseBuiltins,
+    setUseBuiltins,
+    getBuiltinServerInfo,
   },
   $options: (url, method) => {
     let k = URL_KEY_MAPPING[url];
@@ -170,11 +185,11 @@ export default {
   adminQueryConfig: () => axios.get(URL.ADMIN_SYSTEM_CONFIG),
   adminUpdateConfig: (config) => axios.post(URL.ADMIN_SYSTEM_CONFIG, {config}),
   adminUserList: (page, per_page, keyword) => axios.get(
-      URL.ADMIN_USER_LIST, {params: {page, per_page, keyword}}),
+    URL.ADMIN_USER_LIST, {params: {page, per_page, keyword}}),
   adminUserItem: (id) => axios.get(`${URL.ADMIN_USER_ITEM}/${id}`),
   adminUserAdd: (username, password, role_type) => axios.post(URL.ADMIN_USER_ADD, {username, password, role_type}),
   adminUserEdit: (id, username, password, role_type) => axios.post(
-      URL.ADMIN_USER_EDIT, {id, username, password, role_type}),
+    URL.ADMIN_USER_EDIT, {id, username, password, role_type}),
   adminUserDelete: ids => axios.post(URL.ADMIN_USER_DELETE, {ids}),
   adminUserRemoveOwnerShip: ids => axios.post(URL.ADMIN_USER_REMOVE_OWNER_SHIP, {ids}),
   adminUserDistributeObject: (id, type, obj_id) => axios.post(URL.ADMIN_USER_DISTRIBUTE_OBJECT, {id, type, obj_id}),
@@ -197,9 +212,9 @@ export default {
   containerItem: id => axios.get(`${URL.CONTAINER_ITEM}/${id}`),
   containerDelete: ids => axios.post(URL.CONTAINER_DELETE, {ids}),
   containerCreate: (image, command, name, interactive, tty, ports, volumes) => axios.post(
-      URL.CONTAINER_CREATE, {image, command, name, interactive, tty, ports, volumes}),
+    URL.CONTAINER_CREATE, {image, command, name, interactive, tty, ports, volumes}),
   containerRun: (image, command, name, interactive, tty, ports, volumes) => axios.post(
-      URL.CONTAINER_RUN, {image, command, name, interactive, tty, ports, volumes}),
+    URL.CONTAINER_RUN, {image, command, name, interactive, tty, ports, volumes}),
   containerStart: ids => axios.post(URL.CONTAINER_START, {ids}),
   containerStop: (ids, timeout) => axios.post(URL.CONTAINER_STOP, {ids, timeout}),
   containerRestart: (ids, timeout) => axios.post(URL.CONTAINER_RESTART, {ids, timeout}),
@@ -207,7 +222,7 @@ export default {
   containerLogs: (id, since, until) => axios.post(URL.CONTAINER_LOGS, {id, since, until}),
   containerDiff: id => axios.get(`${URL.CONTAINER_DIFF}/${id}`),
   containerCommit: (id, name, tag, message, author) => axios.post(
-      URL.CONTAINER_COMMIT, {id, name, tag, message, author}),
+    URL.CONTAINER_COMMIT, {id, name, tag, message, author}),
   containerTerminal: (id, command) => axios.post(`${URL.CONTAINER_TERMINAL}`, {id, command}),
 
   volumeList: () => axios.get(URL.VOLUME_LIST),
@@ -219,7 +234,7 @@ export default {
   networkItem: id => axios.get(`${URL.NETWORK_ITEM}/${id}`),
   networkDelete: ids => axios.post(URL.NETWORK_DELETE, {ids}),
   networkCreate: (name, driver, options, attachable, subnet, gateway, ip_range) => axios.post(
-      URL.NETWORK_CREATE, {name, driver, options, attachable, subnet, gateway, ip_range}),
+    URL.NETWORK_CREATE, {name, driver, options, attachable, subnet, gateway, ip_range}),
   networkConnect: (id, container_id, ipv4_address) => axios.post(URL.NETWORK_CONNECT, {id, container_id, ipv4_address}),
   networkDisconnect: (id, container_id, force) => axios.post(URL.NETWORK_DISCONNECT, {id, container_id, force}),
 }

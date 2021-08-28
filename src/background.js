@@ -1,13 +1,14 @@
 'use strict'
+import {app, protocol, BrowserWindow} from 'electron'
+import {createProtocol} from 'vue-cli-plugin-electron-builder/lib'
+import installExtension, {VUEJS_DEVTOOLS} from 'electron-devtools-installer'
+import builtins_server from "./builtins_server";
 
-import { app, protocol, BrowserWindow } from 'electron'
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  {scheme: 'app', privileges: {secure: true, standard: true}}
 ])
 
 async function createWindow() {
@@ -62,7 +63,13 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+  builtins_server.start(`${app.getPath('userData')}/Data`)
+  global.bs_info = builtins_server.getInfo()
   createWindow()
+})
+
+app.on('quit', () => {
+  builtins_server.stop()
 })
 
 // Exit cleanly on request from parent process in development mode.

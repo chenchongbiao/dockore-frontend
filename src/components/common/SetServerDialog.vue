@@ -48,12 +48,14 @@ export default {
       this.sync_host = this.form.host === this.form.host_ws;
     },
     setServer() {
+      this.$api.$action.setUseBuiltins(false)
       this.$api.$action.setServerInfo(this.form);
       this.$api.$action.generateURL();
       this.showServer();
       this.dialog_visible = false;
     },
     resetServer() {
+      this.$api.$action.setUseBuiltins(false)
       this.$api.$action.removeServerInfo();
       this.$api.$action.generateURL();
       this.showServer();

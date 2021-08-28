@@ -1,4 +1,14 @@
 {
   "appId": "com.hsojo.dockore",
-  "productName": "Dockore"
+  "productName": "Dockore",
+  "linux": {
+    "icon": "build/icons",
+    "target": [
+      "deb",
+      "AppImage"
+    ]
+  },
+  "extraResources": [
+    "./extra_resources/**"
+  ]
 }

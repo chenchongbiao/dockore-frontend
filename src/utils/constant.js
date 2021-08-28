@@ -1,6 +1,7 @@
 export default {
   global: {
     storage: {
+      USE_BUILTINS: 'use_builtins',
       SERVER_INFO: 'server_info',
     }
   },

@@ -37,4 +37,9 @@ export default {
     if (debounce_timeout[fn]) clearTimeout(debounce_timeout[fn])
     debounce_timeout[fn] = setTimeout(fn, wait)
   },
+  getElectron() {
+    if (!process.env.IS_ELECTRON)
+      return null
+    return window.require('electron')
+  }
 }
