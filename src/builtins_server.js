@@ -44,9 +44,6 @@ function install(data_dir) {
     return
   }
 
-  if (!fs.existsSync(data_dir))
-    fs.mkdirSync(data_dir)
-
   server.exec(data_dir, true, 'saika', 'cfgupd')
   server.exec(data_dir, true, 'db', 'init')
   server.exec(data_dir, true, 'db', 'migrate')
@@ -59,6 +56,9 @@ function install(data_dir) {
 function start(data_dir, listen_all) {
   if (server.process)
     return
+
+  if (!fs.existsSync(data_dir))
+    fs.mkdirSync(data_dir)
 
   server.host = listen_all ? '0.0.0.0' : '127.0.0.1'
   server.port = getAvailablePort()

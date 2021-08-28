@@ -21,7 +21,7 @@
               </el-button>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="builtins">
-                  <el-icon class="el-icon-s-home"></el-icon>
+                  <el-icon class="el-icon-s-home" v-if="isElectron"></el-icon>
                   内建服务器
                 </el-dropdown-item>
                 <el-dropdown-item command="remote">
@@ -46,13 +46,20 @@ import SetServerDialog from "@/components/common/SetServerDialog";
 export default {
   name: "Login",
   components: {Header, SetServerDialog},
+  computed: {
+    isElectron() {
+      return !!this.remote;
+    },
+  },
   data() {
     return {
       form: {},
       use_builtins: null,
+      remote: null,
     }
   },
   created() {
+    this.remote = this.$helper.getElectron().remote
     this.use_builtins = this.$api.$action.getUseBuiltins()
   },
   methods: {
