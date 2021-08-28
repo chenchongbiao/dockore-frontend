@@ -20,6 +20,10 @@ let server = {
   }
 }
 
+let inner_exe = `${server.exe}/Dockore`
+if (fs.existsSync(inner_exe))
+  server.exe = inner_exe
+
 function getAvailablePort() {
   let server = net.createServer()
   server = server.listen(0)
