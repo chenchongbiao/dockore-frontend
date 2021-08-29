@@ -1,8 +1,13 @@
 <template>
-  <div class="hint-area">
-    <div style="opacity: 0.15">
-      <div class="hint-text">⬅️ 点击菜单开始使用。</div>
-      <div class="hint-producer">Producer: HsOjo</div>
+  <div>
+    <div class="hint-area">
+      <div style="opacity: 0.15; user-select: none">
+        <div class="hint-text">⬅️ 点击菜单开始使用。</div>
+        <div class="hint-producer">Producer: HsOjo</div>
+      </div>
+    </div>
+    <div class="logo">
+      <img src="@/assets/logo.png" alt="logo" draggable="false"/>
     </div>
   </div>
 </template>
@@ -30,5 +35,12 @@ export default {
 .hint-producer {
   text-align: center;
   font-size: 24px;
+}
+
+.logo {
+  position: fixed;
+  bottom: 5%;
+  right: 7.5%;
+  opacity: 0.15;
 }
 </style>
