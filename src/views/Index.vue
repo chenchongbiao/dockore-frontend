@@ -42,5 +42,6 @@ export default {
   bottom: 5%;
   right: 7.5%;
   opacity: 0.15;
+  user-select: none;
 }
 </style>

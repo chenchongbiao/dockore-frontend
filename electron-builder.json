@@ -6,7 +6,8 @@
     "target": [
       "deb",
       "AppImage"
-    ]
+    ],
+    "category": "Development"
   },
   "extraResources": [
     "./extra_resources/**"
