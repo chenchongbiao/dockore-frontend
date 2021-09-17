@@ -27,7 +27,7 @@ function setUseBuiltins(v) {
 }
 
 function getUseBuiltins() {
-  return storage.local.get(constant.global.storage.USE_BUILTINS, true);
+  return helper.getElectron() && storage.local.get(constant.global.storage.USE_BUILTINS, true);
 }
 
 function getBaseURL() {
