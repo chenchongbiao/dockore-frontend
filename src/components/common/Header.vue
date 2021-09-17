@@ -76,7 +76,9 @@ export default {
     };
   },
   created() {
-    this.remote = this.$helper.getElectron().remote
+    let electron = this.$helper.getElectron()
+    if (electron)
+      this.remote = electron.remote
   },
   mounted() {
     this.$refs.menu.$on('item-click', () => {

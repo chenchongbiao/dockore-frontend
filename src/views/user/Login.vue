@@ -20,8 +20,8 @@
                 指定服务器<i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="builtins">
-                  <el-icon class="el-icon-s-home" v-if="isElectron"></el-icon>
+                <el-dropdown-item v-if="isElectron" command="builtins">
+                  <el-icon class="el-icon-s-home"></el-icon>
                   内建服务器
                 </el-dropdown-item>
                 <el-dropdown-item command="remote">
@@ -59,7 +59,9 @@ export default {
     }
   },
   created() {
-    this.remote = this.$helper.getElectron().remote
+    let electron = this.$helper.getElectron()
+    if (electron)
+      this.remote = electron.remote
     this.use_builtins = this.$api.$action.getUseBuiltins()
   },
   methods: {
