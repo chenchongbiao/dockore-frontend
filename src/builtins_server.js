@@ -10,7 +10,7 @@ let server = {
   host: null,
   port: null,
   exec: (data_dir, sync, ...args) => {
-    let options = {cwd: data_dir, env: {SAIKA_DATA_DIR: data_dir}}
+    let options = {cwd: data_dir, env: {SAIKA_DATA_DIR: data_dir, LC_ALL: 'en_US.utf-8'}}
     if (sync) {
       return child_process.execFileSync(server.exe, args, options)
     } else {
